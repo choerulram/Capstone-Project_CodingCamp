@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../states/authUser/slice.js";
 
@@ -33,30 +33,31 @@ const Header = () => {
             </h1>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
-            <a
-              href="#home"
+            {" "}
+            <Link
+              to="/"
               className="text-main hover:text-highlight transition-colors duration-300"
             >
               Home
-            </a>
-            <a
-              href="#scan"
+            </Link>
+            <Link
+              to="/scan"
               className="text-main hover:text-highlight transition-colors duration-300"
             >
               Scan
-            </a>
-            <a
-              href="#history"
+            </Link>
+            <Link
+              to="/history"
               className="text-main hover:text-highlight transition-colors duration-300"
             >
               History
-            </a>
-            <a
-              href="#profile"
+            </Link>
+            <Link
+              to="/profile"
               className="text-main hover:text-highlight transition-colors duration-300"
             >
               Profile
-            </a>
+            </Link>
           </nav>
           <div className="flex items-center space-x-4">
             <button
