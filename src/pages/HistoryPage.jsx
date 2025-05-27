@@ -12,6 +12,8 @@ const HistoryPage = () => {
       timestamp: new Date(),
       calories: 120,
       protein: 8,
+      carbs: 12,
+      fat: 4,
       imageUrl: "/placeholder-milk.jpg",
     },
     {
@@ -20,6 +22,8 @@ const HistoryPage = () => {
       timestamp: new Date(Date.now() - 86400000), // yesterday
       calories: 180,
       protein: 6,
+      carbs: 35,
+      fat: 2,
       imageUrl: "/placeholder-bread.jpg",
     },
   ]);
