@@ -10,7 +10,7 @@ export default merge(commonConfig, {
     hot: true,
     open: true,
     static: {
-      directory: "./dist",
+      directory: "./public",
       watch: true,
     },
     client: {
