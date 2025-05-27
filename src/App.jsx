@@ -1,30 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import HomePage from "./pages/HomePage";
 
 const App = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const handleNavigateToRegister = () => {
-    setIsLogin(false);
-  };
-
-  const handleNavigateToLogin = () => {
-    setIsLogin(true);
-  };
-
-  const handleLogin = (loginResult) => {
-    console.log("Login successful:", loginResult);
-    // Add your navigation logic here after successful login
-  };
-
-  return isLogin ? (
-    <LoginPage
-      onLogin={handleLogin}
-      onNavigateToRegister={handleNavigateToRegister}
-    />
-  ) : (
-    <RegisterPage onNavigateToLogin={handleNavigateToLogin} />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/login"
+          element={!isAuthenticated ? <LoginPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/register"
+          element={!isAuthenticated ? <RegisterPage /> : <Navigate to="/" />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

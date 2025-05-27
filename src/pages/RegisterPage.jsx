@@ -1,11 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import RegisterForm from "../components/RegisterForm";
 
-const RegisterPage = ({ onNavigateToLogin }) => {
-  const handleRegisterSuccess = () => {
-    onNavigateToLogin();
-  };
-
+const RegisterPage = () => {
   return (
     <div className="flex min-h-screen">
       {/* Left side - Form */}
@@ -19,7 +16,7 @@ const RegisterPage = ({ onNavigateToLogin }) => {
               Create your account to get started
             </p>
 
-            <RegisterForm onRegisterSuccess={handleRegisterSuccess} />
+            <RegisterForm />
 
             <div className="mt-8">
               <div className="relative">
@@ -34,12 +31,12 @@ const RegisterPage = ({ onNavigateToLogin }) => {
               </div>
 
               <div className="mt-6">
-                <button
-                  onClick={onNavigateToLogin}
+                <Link
+                  to="/login"
                   className="w-full flex justify-center py-3 px-4 border-2 border-main text-sm font-medium rounded-xl text-main bg-white hover:bg-main hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main transition-all duration-300"
                 >
                   Sign in to your account
-                </button>
+                </Link>
               </div>
             </div>
           </div>

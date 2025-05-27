@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import api from "../utils/api";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../states/authUser/slice.js";
 
-const LoginForm = ({ onLogin }) => {
+const LoginForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.auth);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -21,16 +26,13 @@ const LoginForm = ({ onLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     setError("");
 
     try {
-      const loginResult = await api.login(formData);
-      onLogin(loginResult);
+      await dispatch(loginUser(formData));
+      navigate("/");
     } catch (err) {
       setError(err.message || "An error occurred during login");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -127,10 +129,10 @@ const LoginForm = ({ onLogin }) => {
       </div>
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={loading}
         className="w-full bg-main text-white py-3 rounded-xl hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main transition-all duration-300 mt-6 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isLoading ? (
+        {loading ? (
           <span className="flex items-center justify-center">
             <svg
               className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"

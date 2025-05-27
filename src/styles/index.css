@@ -3,12 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --color-main: #084734;
-    --color-highlight: #cef17b;
-    --color-dark: #000000;
-  }
-
   body {
     @apply bg-gray-50;
   }

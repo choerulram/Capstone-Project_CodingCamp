@@ -1,13 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
 
-const LoginPage = ({ onLogin, onNavigateToRegister }) => {
-  const handleLogin = (loginResult) => {
-    localStorage.setItem("token", loginResult.token);
-    localStorage.setItem("userId", loginResult.userId);
-    onLogin(loginResult);
-  };
-
+const LoginPage = () => {
   return (
     <div className="flex min-h-screen">
       {/* Left side - Branding */}
@@ -42,7 +37,7 @@ const LoginPage = ({ onLogin, onNavigateToRegister }) => {
               Please sign in to your account
             </p>
 
-            <LoginForm onLogin={handleLogin} />
+            <LoginForm />
 
             <div className="mt-8">
               <div className="relative">
@@ -57,12 +52,12 @@ const LoginPage = ({ onLogin, onNavigateToRegister }) => {
               </div>
 
               <div className="mt-6">
-                <button
-                  onClick={onNavigateToRegister}
+                <Link
+                  to="/register"
                   className="w-full flex justify-center py-3 px-4 border-2 border-main text-sm font-medium rounded-xl text-main bg-white hover:bg-main hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main transition-all duration-300"
                 >
                   Create an account
-                </button>
+                </Link>
               </div>
             </div>
           </div>

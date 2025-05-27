@@ -6,7 +6,13 @@ export default {
       colors: {
         main: "#084734",
         highlight: "#CEF17B",
+        secondary: "#CEEDB2",
         dark: "#000000",
+        light: "#FFFFFF",
+        gray: {
+          100: "#EAEEED",
+          200: "#D9D9D9",
+        },
       },
       animation: {
         "fade-in": "fadeIn 1s ease-out",
