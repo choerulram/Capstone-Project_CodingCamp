@@ -62,7 +62,7 @@ const Scanner = () => {
         ) : (
           <div className="text-gray-500 flex flex-col items-center">
             <FaCamera className="text-4xl mb-2" />
-            <p>Klik tombol "Mulai Scan" untuk memulai pemindaian</p>
+            <p>Klik tombol "Mulai Scan" untuk memindai informasi nilai gizi</p>
           </div>
         )}
       </div>

@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import ScanPage from "./pages/ScanPage";
+import HistoryPage from "./pages/HistoryPage";
 
 const App = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -23,10 +24,14 @@ const App = () => {
         <Route
           path="/register"
           element={!isAuthenticated ? <RegisterPage /> : <Navigate to="/" />}
-        />
+        />{" "}
         <Route
           path="/scan"
           element={isAuthenticated ? <ScanPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/history"
+          element={isAuthenticated ? <HistoryPage /> : <Navigate to="/login" />}
         />
       </Routes>
     </BrowserRouter>
