@@ -1,12 +1,34 @@
-# React + Vite
+# PackFacts - Nutrition Scanner App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This application is a Capstone Project for the Coding Camp 2025 program powered by DBS Foundation. PackFacts enables users to scan nutritional information from food packaging and receive instant nutrition analysis.
 
-Currently, two official plugins are available:
+## Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📱 Food packaging scanning using camera
+- 📊 Real-time nutrition analysis
+- 📈 Scan history tracking
+- 🔍 Detailed nutrition information (calories, protein, carbs, fat, etc.)
+- 🔔 Daily nutrition alerts and warnings
 
-## Expanding the ESLint configuration
+### Frontend Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clone the repository
+
+```powershell
+git clone https://github.com/yourusername/Capstone-Project_CodingCamp.git
+cd Capstone-Project_CodingCamp
+```
+
+2. Install dependencies
+
+```powershell
+npm install
+```
+
+3. Run the development server
+
+```powershell
+npm run dev
+```
+
+4. Open your browser and visit http://localhost:3000
