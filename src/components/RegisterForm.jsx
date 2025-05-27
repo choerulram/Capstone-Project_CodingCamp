@@ -9,6 +9,9 @@ const RegisterForm = () => {
     name: "",
     email: "",
     password: "",
+    age: "",
+    height: "",
+    weight: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -74,7 +77,7 @@ const RegisterForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="w-full space-y-5">
+      <form onSubmit={handleSubmit} className="w-full space-y-6">
         {error && (
           <div
             className="p-4 mb-4 text-sm text-red-700 bg-red-50 rounded-xl border border-red-100"
@@ -83,43 +86,135 @@ const RegisterForm = () => {
             {error}
           </div>
         )}
-        <div className="space-y-2">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Full Name
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter your full name"
-            className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
-          />
+
+        {/* Basic Information */}
+        <div className="grid grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Full Name
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter your full name"
+              className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+            />
+          </div>
+          <div className="space-y-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email Address
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+              className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+            />
+          </div>
         </div>
-        <div className="space-y-2">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email Address
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-            className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
-          />
+
+        {/* Health Information Section */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-medium text-gray-900">
+              Health Information
+            </h3>
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+              Coming Soon
+            </span>
+          </div>
+          <div className="grid grid-cols-3 gap-6">
+            <div className="space-y-2">
+              <label
+                htmlFor="age"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Age
+              </label>
+              <div className="relative">
+                <input
+                  id="age"
+                  name="age"
+                  type="number"
+                  disabled
+                  value={formData.age}
+                  onChange={handleChange}
+                  placeholder="Years"
+                  className="w-full border border-gray-300 rounded-xl p-3 pr-14 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300 bg-gray-50 cursor-not-allowed"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
+                  years
+                </span>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label
+                htmlFor="height"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Height
+              </label>
+              <div className="relative">
+                <input
+                  id="height"
+                  name="height"
+                  type="number"
+                  disabled
+                  value={formData.height}
+                  onChange={handleChange}
+                  placeholder="cm"
+                  className="w-full border border-gray-300 rounded-xl p-3 pr-12 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300 bg-gray-50 cursor-not-allowed"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
+                  cm
+                </span>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label
+                htmlFor="weight"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Weight
+              </label>
+              <div className="relative">
+                <input
+                  id="weight"
+                  name="weight"
+                  type="number"
+                  disabled
+                  value={formData.weight}
+                  onChange={handleChange}
+                  placeholder="kg"
+                  className="w-full border border-gray-300 rounded-xl p-3 pr-10 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300 bg-gray-50 cursor-not-allowed"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
+                  kg
+                </span>
+              </div>
+            </div>
+          </div>
+          <p className="text-sm text-gray-500 mt-2 italic">
+            Health information input will be enabled in future updates
+          </p>
         </div>
-        <div className="space-y-2">
+
+        {/* Password Section */}
+        <div className="space-y-2 pt-6 border-t border-gray-200">
           <label
             htmlFor="password"
             className="block text-sm font-medium text-gray-700"

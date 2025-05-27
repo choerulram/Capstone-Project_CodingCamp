@@ -1,10 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+
+  const handleScanClick = () => {
+    navigate("/scan");
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -24,7 +30,10 @@ const HomePage = () => {
                   Scan kemasan makanan Anda dan dapatkan informasi gizi secara
                   instan
                 </p>
-                <button className="bg-highlight text-main px-8 py-3 rounded-xl font-medium hover:bg-secondary transition-colors duration-300 animate-slide-up opacity-0 [animation-delay:0.5s] [animation-fill-mode:forwards]">
+                <button
+                  onClick={handleScanClick}
+                  className="bg-highlight text-main px-8 py-3 rounded-xl font-medium hover:bg-secondary transition-colors duration-300 animate-slide-up opacity-0 [animation-delay:0.5s] [animation-fill-mode:forwards]"
+                >
                   Mulai Scan
                 </button>
               </div>

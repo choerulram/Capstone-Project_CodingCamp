@@ -6,8 +6,8 @@ const RegisterPage = () => {
   return (
     <div className="flex min-h-screen">
       {/* Left side - Form */}
-      <div className="w-[60%] bg-gray-50 p-10 flex flex-col justify-center items-center">
-        <div className="w-full max-w-2xl">
+      <div className="w-[65%] bg-gray-50 p-10 flex flex-col justify-center items-center">
+        <div className="w-full max-w-3xl">
           <div className="bg-white p-12 rounded-3xl shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300">
             <h2 className="text-dark text-4xl mb-3 font-bold">
               Join PackFacts
