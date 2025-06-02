@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   error: null,
   isAuthenticated: !!localStorage.getItem("token"),
+  token: localStorage.getItem("token") || null,
   user: null,
 };
 
@@ -19,7 +20,8 @@ const authSlice = createSlice({
     setAuthSuccess: (state, action) => {
       state.loading = false;
       state.isAuthenticated = true;
-      state.user = action.payload;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
       state.error = null;
     },
     setAuthError: (state, action) => {
@@ -29,6 +31,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.isAuthenticated = false;
       state.user = null;
+      state.token = null;
       state.error = null;
       localStorage.removeItem("token");
       localStorage.removeItem("userId");
@@ -49,24 +52,22 @@ export const loginUser = (credentials) => async (dispatch) => {
     // Save auth data to localStorage
     if (response.token) {
       localStorage.setItem("token", response.token);
-      localStorage.setItem("userId", response.userId);
-      localStorage.setItem("name", response.name);
+      // Save user data if available
+      if (response.user) {
+        localStorage.setItem("userId", response.user.id);
+        localStorage.setItem("name", response.user.name);
+      }
 
+      // Update Redux state with both token and user info
       dispatch(
         setAuthSuccess({
           token: response.token,
-          userId: response.userId,
-          name: response.name,
+          user: response.user,
         })
       );
-    } else {
-      throw new Error("Token tidak ditemukan dalam response");
     }
-
-    return response;
   } catch (error) {
     dispatch(setAuthError(error.message));
-    throw error;
   }
 };
 

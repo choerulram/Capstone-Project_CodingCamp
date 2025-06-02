@@ -1,91 +1,576 @@
-import React, { useState, useRef } from "react";
-import { FaCamera, FaStop } from "react-icons/fa";
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { FaCamera, FaStop, FaUpload, FaSearch } from "react-icons/fa";
+import useCamera from "../hooks/useCamera";
+import api from "../utils/api";
 
 const Scanner = () => {
+  const { token } = useSelector((state) => state.auth);
   const [isScanning, setIsScanning] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [currentFile, setCurrentFile] = useState(null);
+  const [error, setError] = useState(null);
+  const [nutritionData, setNutritionData] = useState(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const videoRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const canvasRef = useRef(null);
 
-  const startCamera = async () => {
+  const { startCamera, stopCamera } = useCamera();
+
+  // Handler untuk memulai kamera
+  const handleStartCamera = useCallback(async () => {
     setIsLoading(true);
+    setError(null);
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" },
-      });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
+      const mediaStream = await startCamera();
+      if (mediaStream && videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+        setIsScanning(true);
       }
-      setIsScanning(true);
-    } catch (error) {
-      console.error("Error accessing camera:", error);
-      alert("Tidak dapat mengakses kamera. Mohon berikan izin akses kamera.");
+    } catch (err) {
+      console.error("Error accessing camera:", err);
+      setError(
+        "Tidak dapat mengakses kamera. Mohon berikan izin akses kamera."
+      );
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  };
+  }, [startCamera]);
 
-  const stopCamera = () => {
-    if (videoRef.current?.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach((track) => track.stop());
+  // Handler untuk menghentikan kamera
+  const handleStopCamera = useCallback(() => {
+    stopCamera();
+    setIsScanning(false);
+    if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
-    setIsScanning(false);
+  }, [stopCamera]);
+
+  // Fungsi untuk memproses gambar dan mendapatkan data nutrisi
+  const processImage = async (file) => {
+    if (!file || !token) {
+      setError("File atau token tidak valid");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    setNutritionData(null);
+
+    try {
+      const result = await api.uploadImage(file, token);
+
+      if (!result) {
+        throw new Error("Gagal menganalisis gambar");
+      }
+
+      setNutritionData({
+        kandungan: result.kandungan_gizi || {},
+        perbandingan: result.perbandingan || [],
+        kebutuhan: result.kebutuhan_harian || {},
+      });
+    } catch (err) {
+      console.error("Error:", err);
+      setError(err.message || "Terjadi kesalahan saat menganalisis gambar");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleStartScan = () => {
-    startCamera();
+  // Handler untuk upload file
+  const handleFileUpload = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setError(null);
+      setNutritionData(null);
+
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+
+      // Store file for analysis
+      setCurrentFile(file);
+
+      // Stop camera if it's running
+      if (isScanning) {
+        handleStopCamera();
+      }
+    } catch (err) {
+      console.error("Error handling file:", err);
+      setError("Gagal memuat file: " + err.message);
+    }
   };
 
-  const handleStopScan = () => {
-    stopCamera();
+  // Handler untuk menangkap foto
+  const handleCapture = useCallback(async () => {
+    if (!videoRef.current || !canvasRef.current) return;
+
+    try {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      const context = canvas.getContext("2d");
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            throw new Error("Gagal mengambil gambar");
+          }
+
+          const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
+          setSelectedImage(URL.createObjectURL(blob));
+          setCurrentFile(file);
+          setNutritionData(null);
+          handleStopCamera();
+        },
+        "image/jpeg",
+        0.8
+      );
+    } catch (err) {
+      console.error("Error capturing image:", err);
+      setError("Gagal mengambil gambar: " + err.message);
+    }
+  }, [handleStopCamera]);
+
+  const handleAnalyze = async () => {
+    if (!currentFile) {
+      setError("Silakan pilih atau ambil gambar terlebih dahulu");
+      return;
+    }
+    await processImage(currentFile);
   };
+
+  // Effect untuk mengatur video stream
+  useEffect(() => {
+    if (videoRef.current && isScanning) {
+      const video = videoRef.current;
+
+      video.onloadedmetadata = () => {
+        video.play().catch((err) => {
+          console.error("Error playing video:", err);
+          setError("Gagal memulai video stream");
+        });
+      };
+
+      video.onerror = (err) => {
+        console.error("Video error:", err);
+        setError(
+          "Error pada video stream: " + (err.message || "Unknown error")
+        );
+      };
+
+      return () => {
+        video.onloadedmetadata = null;
+        video.onerror = null;
+      };
+    }
+  }, [isScanning]);
+
+  // Request camera permissions on mount
+  useEffect(() => {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setError("Browser Anda tidak mendukung akses kamera");
+      return;
+    }
+
+    const requestPermissions = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
+        stream.getTracks().forEach((track) => track.stop());
+        setError(null);
+      } catch (err) {
+        console.error("Permission error:", err);
+        setError("Mohon izinkan akses kamera untuk menggunakan fitur ini");
+      }
+    };
+
+    requestPermissions();
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
   return (
-    <div className="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-6">
-      <div className="aspect-video bg-gray-100 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-        {isScanning ? (
-          <div className="relative w-full h-full">
+    <div
+      className={`min-h-screen flex ${
+        nutritionData
+          ? "flex-row gap-6"
+          : "flex-col items-center justify-center"
+      } animate-fade-in transition-all duration-500 w-full py-4`}
+    >
+      {/* Kamera dan Kontrol */}
+      <div
+        className={`${
+          nutritionData ? "w-1/2" : "w-full max-w-2xl"
+        } flex flex-col space-y-4 transition-all duration-500 ${
+          nutritionData ? "" : "items-center"
+        }`}
+      >
+        <div
+          className={`relative w-full aspect-video bg-gray-100 rounded-xl overflow-hidden shadow-lg border-2 border-secondary ${
+            nutritionData ? "" : "max-w-2xl"
+          }`}
+        >
+          {isScanning ? (
             <video
               ref={videoRef}
+              className="w-full h-full object-cover"
               autoPlay
               playsInline
-              className="w-full h-full object-cover"
+              muted
             />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-64 h-64 border-2 border-highlight rounded-lg">
-                <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-highlight"></div>
-                <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-highlight"></div>
-                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-highlight"></div>
-                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-highlight"></div>
+          ) : selectedImage ? (
+            <img
+              src={selectedImage}
+              alt="Captured"
+              className="w-full h-full object-contain"
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full bg-gray-100 text-main p-8">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-16 w-16 mb-4 text-main opacity-50"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              <p className="text-main text-center">
+                Mulai dengan mengambil foto atau mengunggah gambar informasi
+                nilai gizi
+              </p>
+            </div>
+          )}
+          <canvas ref={canvasRef} className="hidden" />
+        </div>{" "}
+        <div
+          className={`flex gap-4 ${
+            nutritionData ? "justify-start" : "justify-center"
+          } flex-wrap`}
+        >
+          {!isScanning ? (
+            <>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-2 px-6 py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                disabled={isLoading}
+              >
+                <FaUpload /> Upload Foto
+              </button>
+              <button
+                onClick={handleStartCamera}
+                className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                disabled={isLoading}
+              >
+                <FaCamera /> Buka Kamera
+              </button>
+              {selectedImage && (
+                <button
+                  onClick={handleAnalyze}
+                  className="flex items-center gap-2 px-6 py-3 bg-secondary text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                  disabled={isLoading}
+                >
+                  <FaSearch /> Analisis Nutrisi
+                </button>
+              )}
+            </>
+          ) : (
+            <>
+              <button
+                onClick={handleCapture}
+                className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                disabled={isLoading}
+              >
+                <FaCamera /> Ambil Foto
+              </button>
+              <button
+                onClick={handleStopCamera}
+                className="flex items-center gap-2 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                disabled={isLoading}
+              >
+                <FaStop /> Tutup Kamera
+              </button>
+            </>
+          )}
+        </div>
+        <input
+          type="file"
+          ref={fileInputRef}
+          className="hidden"
+          accept="image/*"
+          capture="environment"
+          onChange={handleFileUpload}
+        />
+        {isLoading && (
+          <div className="text-center p-4">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-main mx-auto"></div>
+            <p className="mt-3 text-main">Memproses gambar...</p>
+          </div>
+        )}
+        {error && (
+          <div className="w-full p-4 bg-red-50 border-l-4 border-red-500 rounded-lg animate-fade-in">
+            <p className="text-red-700">{error}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Hasil Analisis - Hanya muncul saat ada data */}
+      {nutritionData && (
+        <div className="w-1/2 animate-slide-up overflow-y-auto max-h-screen px-4">
+          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 sticky top-4">
+            {/* Header dengan tanggal dan waktu yang diperbarui */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 pb-4 border-b border-gray-100 gap-4">
+              <h2 className="text-2xl font-bold text-main">
+                Hasil Analisis Nutrisi
+              </h2>
+              <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2">
+                <span className="px-4 py-2 bg-highlight text-main rounded-lg text-sm font-medium flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  {currentTime.toLocaleDateString("id-ID", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </span>
               </div>
             </div>
+
+            <div className="space-y-8">
+              {/* Kandungan Gizi */}
+              <div className="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                <h3 className="text-lg font-semibold mb-4 text-main flex items-center">
+                  <span className="bg-secondary p-2 rounded-lg mr-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      />
+                    </svg>
+                  </span>
+                  Kandungan Gizi per Sajian
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {Object.entries(nutritionData.kandungan).map(
+                    ([key, value]) => (
+                      <div
+                        key={key}
+                        className="flex justify-between p-3 bg-white rounded-lg hover:bg-gray-100 transition-colors border border-gray-100"
+                      >
+                        <span className="text-gray-600">
+                          {key
+                            .replace("_", " ")
+                            .replace(/\b\w/g, (c) => c.toUpperCase())}
+                        </span>
+                        <span className="font-medium text-main">
+                          {value ?? 0}
+                        </span>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
+
+              {/* Perbandingan Kebutuhan Harian */}
+              {nutritionData.perbandingan.length > 0 && (
+                <div className="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                  <h3 className="text-lg font-semibold mb-4 text-main flex items-center">
+                    <span className="bg-secondary p-2 rounded-lg mr-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </span>
+                    Perbandingan dengan Kebutuhan Harian
+                  </h3>
+
+                  {/* Peringatan jika ada yang melebihi - Dipindah ke sini */}
+                  {nutritionData.perbandingan.some(
+                    (row) => row.status === "Melebihi"
+                  ) && (
+                    <div className="mb-4 bg-red-50 border border-red-200 p-4 rounded-lg">
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0">
+                          <svg
+                            className="h-5 w-5 text-red-600"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                        <div className="ml-3">
+                          <h4 className="text-sm font-semibold text-red-800">
+                            Peringatan Nutrisi
+                          </h4>
+                          <div className="mt-1">
+                            <p className="text-sm text-red-700">
+                              Beberapa kandungan gizi{" "}
+                              <b>
+                                melebihi kebutuhan harian yang direkomendasikan
+                              </b>
+                            </p>
+                            <p className="text-xs text-red-600 mt-1">
+                              Saran: Pertimbangkan untuk mengurangi konsumsi
+                              atau mengimbangi dengan aktivitas fisik yang
+                              sesuai
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="overflow-hidden rounded-lg border border-gray-100">
+                    <table className="min-w-full divide-y divide-gray-100 bg-white">
+                      <thead>
+                        <tr className="bg-gray-50">
+                          <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Gizi
+                          </th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Hasil OCR
+                          </th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Kebutuhan
+                          </th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-100">
+                        {nutritionData.perbandingan.map((row, index) => (
+                          <tr
+                            key={index}
+                            className="hover:bg-gray-50 transition-colors"
+                          >
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-main">
+                              {row.label}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                              {row.hasil_ocr}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                              {row.kebutuhan_harian}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm">
+                              <span
+                                className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium ${
+                                  row.status === "Melebihi"
+                                    ? "bg-red-50 text-red-700 border border-red-200"
+                                    : "bg-green-50 text-green-700 border border-green-200"
+                                }`}
+                              >
+                                {row.status === "Melebihi" ? (
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-3.5 w-3.5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                                    />
+                                  </svg>
+                                ) : (
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-3.5 w-3.5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M5 13l4 4L19 7"
+                                    />
+                                  </svg>
+                                )}
+                                {row.status}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        ) : (
-          <div className="text-gray-500 flex flex-col items-center">
-            <FaCamera className="text-4xl mb-2" />
-            <p>Klik tombol "Mulai Scan" untuk memindai informasi nilai gizi</p>
-          </div>
-        )}
-      </div>
-      <div className="flex justify-center space-x-4">
-        {!isScanning ? (
-          <button
-            onClick={handleStartScan}
-            disabled={isLoading}
-            className="px-6 py-2 bg-main text-white rounded-xl hover:bg-teal-700 transition-colors duration-300 flex items-center space-x-2"
-          >
-            <FaCamera className="text-lg" />
-            <span>{isLoading ? "Memuat..." : "Mulai Scan"}</span>
-          </button>
-        ) : (
-          <button
-            onClick={handleStopScan}
-            className="px-6 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors duration-300 flex items-center space-x-2"
-          >
-            <FaStop className="text-lg" />
-            <span>Berhenti</span>
-          </button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

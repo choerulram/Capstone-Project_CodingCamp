@@ -116,6 +116,34 @@ const api = {
       handleApiError(error);
     }
   },
+
+  uploadImage: async (file, token) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch(`${BASE_URL}/upload/`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response
+          .json()
+          .catch(() => ({
+            message: "Terjadi kesalahan saat mengunggah gambar",
+          }));
+        throw new Error(errorData.message || "Gagal mengunggah gambar");
+      }
+
+      return response.json();
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
 };
 
 export default api;
