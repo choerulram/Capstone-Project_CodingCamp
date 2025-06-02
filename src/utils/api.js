@@ -1,4 +1,4 @@
-const BASE_URL = "http://54.151.129.129:8000";
+export const BASE_URL = "http://54.151.129.129:8000";
 
 const handleApiError = (error) => {
   if (error.name === "TypeError" && error.message === "Failed to fetch") {
@@ -116,7 +116,6 @@ const api = {
       handleApiError(error);
     }
   },
-
   uploadImage: async (file, token) => {
     try {
       const formData = new FormData();
@@ -131,15 +130,33 @@ const api = {
       });
 
       if (!response.ok) {
-        const errorData = await response
-          .json()
-          .catch(() => ({
-            message: "Terjadi kesalahan saat mengunggah gambar",
-          }));
+        const errorData = await response.json().catch(() => ({
+          message: "Terjadi kesalahan saat mengunggah gambar",
+        }));
         throw new Error(errorData.message || "Gagal mengunggah gambar");
       }
 
       return response.json();
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+  getScanHistory: async (token) => {
+    try {
+      const response = await fetch(`${BASE_URL}/scan-history`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Gagal mengambil riwayat pemindaian");
+      }
+
+      const data = await response.json();
+      console.log("Raw API Response:", data); // Debug: Lihat response mentah
+      return data;
     } catch (error) {
       handleApiError(error);
     }
