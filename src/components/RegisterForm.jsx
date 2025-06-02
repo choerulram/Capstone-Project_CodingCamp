@@ -12,6 +12,11 @@ const RegisterForm = () => {
     age: "",
     height: "",
     weight: "",
+    gender: "Male", // Changed default to English
+    is_pregnant: false,
+    pregnancy_age: "",
+    is_nursing: false,
+    child_age: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -40,11 +45,41 @@ const RegisterForm = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const { name, value, type, checked } = e.target;
+
+    if (type === "checkbox") {
+      if (name === "is_pregnant" && checked) {
+        // Jika memilih hamil, uncheck menyusui
+        setFormData((prev) => ({
+          ...prev,
+          [name]: checked,
+          is_nursing: false,
+          child_age: "",
+        }));
+      } else if (name === "is_nursing" && checked) {
+        // Jika memilih menyusui, uncheck hamil
+        setFormData((prev) => ({
+          ...prev,
+          [name]: checked,
+          is_pregnant: false,
+          pregnancy_age: "",
+        }));
+      } else {
+        // Untuk unchecking checkbox
+        setFormData((prev) => ({
+          ...prev,
+          [name]: checked,
+          // Reset related fields when unchecking
+          ...(name === "is_pregnant" && { pregnancy_age: "" }),
+          ...(name === "is_nursing" && { child_age: "" }),
+        }));
+      }
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
     if (error) setError("");
   };
 
@@ -129,15 +164,29 @@ const RegisterForm = () => {
 
         {/* Health Information Section */}
         <div className="mt-8 pt-6 border-t border-gray-200">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium text-gray-900">
-              Health Information
-            </h3>
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-              Coming Soon
-            </span>
-          </div>
-          <div className="grid grid-cols-3 gap-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">
+            Health Information
+          </h3>
+
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            <div className="space-y-2">
+              <label
+                htmlFor="gender"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Gender
+              </label>
+              <select
+                id="gender"
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
             <div className="space-y-2">
               <label
                 htmlFor="age"
@@ -150,17 +199,19 @@ const RegisterForm = () => {
                   id="age"
                   name="age"
                   type="number"
-                  disabled
                   value={formData.age}
                   onChange={handleChange}
-                  placeholder="Years"
-                  className="w-full border border-gray-300 rounded-xl p-3 pr-14 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300 bg-gray-50 cursor-not-allowed"
+                  placeholder="Enter your age"
+                  className="w-full border border-gray-300 rounded-xl p-3 pr-16 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                   years
                 </span>
               </div>
             </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 mb-6">
             <div className="space-y-2">
               <label
                 htmlFor="height"
@@ -173,13 +224,12 @@ const RegisterForm = () => {
                   id="height"
                   name="height"
                   type="number"
-                  disabled
                   value={formData.height}
                   onChange={handleChange}
-                  placeholder="cm"
-                  className="w-full border border-gray-300 rounded-xl p-3 pr-12 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300 bg-gray-50 cursor-not-allowed"
+                  placeholder="Enter your height"
+                  className="w-full border border-gray-300 rounded-xl p-3 pr-12 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                   cm
                 </span>
               </div>
@@ -196,21 +246,98 @@ const RegisterForm = () => {
                   id="weight"
                   name="weight"
                   type="number"
-                  disabled
                   value={formData.weight}
                   onChange={handleChange}
-                  placeholder="kg"
-                  className="w-full border border-gray-300 rounded-xl p-3 pr-10 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300 bg-gray-50 cursor-not-allowed"
+                  placeholder="Enter your weight"
+                  className="w-full border border-gray-300 rounded-xl p-3 pr-12 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                   kg
                 </span>
               </div>
             </div>
           </div>
-          <p className="text-sm text-gray-500 mt-2 italic">
-            Health information input will be enabled in future updates
-          </p>
+
+          {formData.gender === "Female" && (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center">
+                  <input
+                    id="is_pregnant"
+                    name="is_pregnant"
+                    type="checkbox"
+                    checked={formData.is_pregnant}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-main border-gray-300 rounded focus:ring-main"
+                  />
+                  <label
+                    htmlFor="is_pregnant"
+                    className="ml-2 text-sm text-gray-700"
+                  >
+                    Pregnant
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    id="is_nursing"
+                    name="is_nursing"
+                    type="checkbox"
+                    checked={formData.is_nursing}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-main border-gray-300 rounded focus:ring-main"
+                  />
+                  <label
+                    htmlFor="is_nursing"
+                    className="ml-2 text-sm text-gray-700"
+                  >
+                    Nursing
+                  </label>
+                </div>
+              </div>
+
+              {formData.is_pregnant && (
+                <div className="pl-6">
+                  <label
+                    htmlFor="pregnancy_age"
+                    className="block text-sm text-gray-700"
+                  >
+                    Pregnancy Age (months)
+                  </label>
+                  <input
+                    id="pregnancy_age"
+                    name="pregnancy_age"
+                    type="number"
+                    min="1"
+                    max="9"
+                    value={formData.pregnancy_age}
+                    onChange={handleChange}
+                    className="mt-1 w-32 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
+                  />
+                </div>
+              )}
+
+              {formData.is_nursing && (
+                <div className="pl-6">
+                  <label
+                    htmlFor="child_age"
+                    className="block text-sm text-gray-700"
+                  >
+                    Child Age (months)
+                  </label>
+                  <input
+                    id="child_age"
+                    name="child_age"
+                    type="number"
+                    min="0"
+                    max="60"
+                    value={formData.child_age}
+                    onChange={handleChange}
+                    className="mt-1 w-32 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
+                  />
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Password Section */}
@@ -264,7 +391,7 @@ const RegisterForm = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                   />
                   <path
                     strokeLinecap="round"
@@ -280,6 +407,7 @@ const RegisterForm = () => {
             Must be at least 8 characters long
           </p>
         </div>
+
         <button
           type="submit"
           disabled={isLoading}
