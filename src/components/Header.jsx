@@ -86,6 +86,12 @@ const Header = () => {
             >
               Profile
             </Link>
+            <Link
+              to="/nutrition"
+              className="text-main hover:text-highlight transition-colors duration-300"
+            >
+              Daily Nutrition
+            </Link>
           </nav>
           <div className="flex items-center space-x-4">
             {/* Notification Bell */}

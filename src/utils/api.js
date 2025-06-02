@@ -97,6 +97,25 @@ const api = {
       handleApiError(error);
     }
   },
+
+  getDailyNutrition: async (token) => {
+    try {
+      const response = await fetch(`${BASE_URL}/daily-nutrition`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Gagal mengambil data nutrisi harian");
+      }
+
+      return response.json();
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
 };
 
 export default api;

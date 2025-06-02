@@ -6,6 +6,7 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import ScanPage from "./pages/ScanPage";
 import HistoryPage from "./pages/HistoryPage";
+import NutritionPage from "./pages/NutritionPage";
 
 const App = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -32,6 +33,12 @@ const App = () => {
         <Route
           path="/history"
           element={isAuthenticated ? <HistoryPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/nutrition"
+          element={
+            isAuthenticated ? <NutritionPage /> : <Navigate to="/login" />
+          }
         />
       </Routes>
     </BrowserRouter>
