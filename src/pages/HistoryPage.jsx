@@ -22,7 +22,7 @@ const HistoryPage = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await api.getScanHistory(token);
+      const response = await api.getAllScanHistory(token);
 
       // Debug: Lihat struktur response
       console.log("API Response:", response);

@@ -141,9 +141,9 @@ const api = {
       handleApiError(error);
     }
   },
-  getScanHistory: async (token) => {
+  getAllScanHistory: async (token) => {
     try {
-      const response = await fetch(`${BASE_URL}/scan-history`, {
+      const response = await fetch(`${BASE_URL}/scan-history-all`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -155,7 +155,6 @@ const api = {
       }
 
       const data = await response.json();
-      console.log("Raw API Response:", data); // Debug: Lihat response mentah
       return data;
     } catch (error) {
       handleApiError(error);

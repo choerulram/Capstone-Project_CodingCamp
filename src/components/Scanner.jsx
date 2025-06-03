@@ -215,113 +215,251 @@ const Scanner = () => {
           : "flex-col items-center justify-center"
       } animate-fade-in transition-all duration-500 w-full py-4`}
     >
-      {/* Kamera dan Kontrol */}
       <div
         className={`${
-          nutritionData ? "w-1/2" : "w-full max-w-2xl"
-        } flex flex-col space-y-4 transition-all duration-500 ${
+          nutritionData ? "w-1/2" : "w-full max-w-4xl"
+        } flex flex-col space-y-6 transition-all duration-500 ${
           nutritionData ? "" : "items-center"
         }`}
       >
-        <div
-          className={`relative w-full aspect-video bg-gray-100 rounded-xl overflow-hidden shadow-lg border-2 border-secondary ${
-            nutritionData ? "" : "max-w-2xl"
-          }`}
-        >
-          {isScanning ? (
-            <video
-              ref={videoRef}
-              className="w-full h-full object-cover"
-              autoPlay
-              playsInline
-              muted
-            />
-          ) : selectedImage ? (
-            <img
-              src={selectedImage}
-              alt="Captured"
-              className="w-full h-full object-contain"
-            />
-          ) : (
-            <div className="flex flex-col items-center justify-center h-full bg-gray-100 text-main p-8">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-16 w-16 mb-4 text-main opacity-50"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-              <p className="text-main text-center">
-                Mulai dengan mengambil foto atau mengunggah gambar informasi
-                nilai gizi
-              </p>
-            </div>
-          )}
-          <canvas ref={canvasRef} className="hidden" />
-        </div>{" "}
-        <div
-          className={`flex gap-4 ${
-            nutritionData ? "justify-start" : "justify-center"
-          } flex-wrap`}
-        >
-          {!isScanning ? (
-            <>
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-2 px-6 py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                disabled={isLoading}
-              >
-                <FaUpload /> Upload Foto
-              </button>
-              <button
-                onClick={handleStartCamera}
-                className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                disabled={isLoading}
-              >
-                <FaCamera /> Buka Kamera
-              </button>
-              {selectedImage && (
-                <button
-                  onClick={handleAnalyze}
-                  className="flex items-center gap-2 px-6 py-3 bg-secondary text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                  disabled={isLoading}
+        {/* Main Scanner Container */}
+        <div className="w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-secondary overflow-hidden">
+          {/* Camera Preview Section */}
+          <div className="relative w-full aspect-video bg-gray-100">
+            {isScanning ? (
+              <video
+                ref={videoRef}
+                className="w-full h-full object-cover"
+                autoPlay
+                playsInline
+                muted
+              />
+            ) : selectedImage ? (
+              <img
+                src={selectedImage}
+                alt="Captured"
+                className="w-full h-full object-contain"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full bg-gray-100 text-main p-8">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-16 w-16 mb-4 text-main opacity-50"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  <FaSearch /> Analisis Nutrisi
-                </button>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                <p className="text-main text-center">
+                  Mulai dengan mengambil foto atau mengunggah gambar informasi
+                  nilai gizi
+                </p>
+              </div>
+            )}
+            <canvas ref={canvasRef} className="hidden" />
+          </div>{" "}
+          {/* Controls and Instructions Container */}
+          <div className="p-6 bg-highlight/5">
+            {/* Camera Controls */}
+            <div className="flex justify-center gap-4 flex-wrap">
+              {!isScanning ? (
+                <>
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex items-center gap-2 px-6 py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                    disabled={isLoading}
+                  >
+                    <FaUpload /> Upload Foto
+                  </button>
+                  <button
+                    onClick={handleStartCamera}
+                    className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                    disabled={isLoading}
+                  >
+                    <FaCamera /> Buka Kamera
+                  </button>
+                  {selectedImage && (
+                    <button
+                      onClick={handleAnalyze}
+                      className="flex items-center gap-2 px-6 py-3 bg-secondary text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                      disabled={isLoading}
+                    >
+                      <FaSearch /> Analisis Nutrisi
+                    </button>
+                  )}
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={handleCapture}
+                    className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                    disabled={isLoading}
+                  >
+                    <FaCamera /> Ambil Foto
+                  </button>
+                  <button
+                    onClick={handleStopCamera}
+                    className="flex items-center gap-2 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                    disabled={isLoading}
+                  >
+                    <FaStop /> Tutup Kamera
+                  </button>
+                </>
               )}
-            </>
-          ) : (
-            <>
-              <button
-                onClick={handleCapture}
-                className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                disabled={isLoading}
-              >
-                <FaCamera /> Ambil Foto
-              </button>
-              <button
-                onClick={handleStopCamera}
-                className="flex items-center gap-2 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                disabled={isLoading}
-              >
-                <FaStop /> Tutup Kamera
-              </button>
-            </>
-          )}
+            </div>
+            {/* Divider with Icon */}
+            <div className="flex items-center my-8">
+              <div className="flex-grow border-t-2 border-secondary/30"></div>
+              <div className="mx-4 p-2 bg-secondary/10 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-main/60"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+              </div>
+              <div className="flex-grow border-t-2 border-secondary/30"></div>
+            </div>{" "}
+            {/* Instructions Section */}
+            <div className="bg-gradient-to-br from-highlight/20 to-secondary/20 rounded-xl p-6 backdrop-blur-sm">
+              <h2 className="text-xl font-semibold text-main mb-6 flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Petunjuk Penggunaan
+              </h2>
+              <div className="space-y-3">
+                <div className="group bg-white/60 hover:bg-white/80 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-secondary flex items-center gap-4 animate-fade-in cursor-default transform hover:-translate-y-0.5">
+                  <div className="p-3 bg-highlight/20 rounded-xl group-hover:bg-highlight/30 transition-colors">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-main group-hover:text-highlight transition-colors"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-sm text-gray-600 group-hover:text-main flex-1 transition-colors">
+                    Pastikan tabel informasi nilai gizi terlihat jelas dan tidak
+                    terhalang
+                  </p>
+                </div>
+
+                <div className="group bg-white/60 hover:bg-white/80 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-secondary flex items-center gap-4 animate-fade-in [animation-delay:150ms] cursor-default transform hover:-translate-y-0.5">
+                  <div className="p-3 bg-highlight/20 rounded-xl group-hover:bg-highlight/30 transition-colors">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-main group-hover:text-highlight transition-colors"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-sm text-gray-600 group-hover:text-main flex-1 transition-colors">
+                    Posisikan informasi nilai gizi dalam area kotak pemindaian
+                  </p>
+                </div>
+
+                <div className="group bg-white/60 hover:bg-white/80 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-secondary flex items-center gap-4 animate-fade-in [animation-delay:300ms] cursor-default transform hover:-translate-y-0.5">
+                  <div className="p-3 bg-highlight/20 rounded-xl group-hover:bg-highlight/30 transition-colors">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-main group-hover:text-highlight transition-colors"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-sm text-gray-600 group-hover:text-main flex-1 transition-colors">
+                    Tahan ponsel Anda dengan stabil selama pemindaian
+                  </p>
+                </div>
+
+                <div className="group bg-white/60 hover:bg-white/80 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-secondary flex items-center gap-4 animate-fade-in [animation-delay:450ms] cursor-default transform hover:-translate-y-0.5">
+                  <div className="p-3 bg-highlight/20 rounded-xl group-hover:bg-highlight/30 transition-colors">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-main group-hover:text-highlight transition-colors"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-sm text-gray-600 group-hover:text-main flex-1 transition-colors">
+                    Pastikan pencahayaan cukup terang dan tidak ada pantulan
+                    cahaya
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
         <input
           type="file"
           ref={fileInputRef}
@@ -330,12 +468,15 @@ const Scanner = () => {
           capture="environment"
           onChange={handleFileUpload}
         />
+
+        {/* Loading and Error States */}
         {isLoading && (
           <div className="text-center p-4">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-main mx-auto"></div>
             <p className="mt-3 text-main">Memproses gambar...</p>
           </div>
         )}
+
         {error && (
           <div className="w-full p-4 bg-red-50 border-l-4 border-red-500 rounded-lg animate-fade-in">
             <p className="text-red-700">{error}</p>
