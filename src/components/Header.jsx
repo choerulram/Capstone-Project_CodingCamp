@@ -106,10 +106,14 @@ const Header = () => {
               }`}
             >
               Daily Nutrition
-            </Link>
+            </Link>{" "}
             <Link
               to="/daily-summary"
-              className="text-main hover:text-highlight transition-colors duration-300"
+              className={`transition-all duration-300 px-4 py-2 rounded-lg ${
+                isActive("/daily-summary")
+                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                  : "text-main hover:bg-highlight/10 hover:text-highlight"
+              }`}
             >
               Daily Summary
             </Link>
