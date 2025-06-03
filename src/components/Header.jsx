@@ -96,7 +96,7 @@ const Header = () => {
               }`}
             >
               History
-            </Link>
+            </Link>{" "}
             <Link
               to="/nutrition"
               className={`transition-all duration-300 px-4 py-2 rounded-lg ${
@@ -106,6 +106,12 @@ const Header = () => {
               }`}
             >
               Daily Nutrition
+            </Link>
+            <Link
+              to="/daily-summary"
+              className="text-main hover:text-highlight transition-colors duration-300"
+            >
+              Daily Summary
             </Link>
           </nav>
           <div className="flex items-center space-x-4">
