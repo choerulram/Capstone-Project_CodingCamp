@@ -272,8 +272,9 @@ const Scanner = () => {
           </div>{" "}
           {/* Controls and Instructions Container */}
           <div className="p-6 bg-highlight/5">
+            {" "}
             {/* Camera Controls */}
-            <div className="flex justify-center gap-4 flex-wrap">
+            <div className="flex justify-center gap-4 flex-wrap mb-12">
               {!isScanning ? (
                 <>
                   <button
@@ -317,29 +318,25 @@ const Scanner = () => {
                     <FaStop /> Tutup Kamera
                   </button>
                 </>
-              )}
+              )}{" "}
             </div>
-            {/* Divider with Icon */}
-            <div className="flex items-center my-8">
-              <div className="flex-grow border-t-2 border-secondary/30"></div>
-              <div className="mx-4 p-2 bg-secondary/10 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-main/60"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                  />
-                </svg>
+            {/* Decorative Divider */}
+            <div className="relative py-6 mb-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t-2 border-dashed border-secondary/50"></div>
               </div>
-              <div className="flex-grow border-t-2 border-secondary/30"></div>
-            </div>{" "}
+              <div className="relative flex justify-center">
+                <div className="bg-white px-6 py-2 rounded-full shadow-sm border border-secondary/20">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-secondary/60"></div>
+                    <div className="w-2 h-2 rounded-full bg-highlight"></div>
+                    <div className="w-3 h-3 rounded-full bg-main"></div>
+                    <div className="w-2 h-2 rounded-full bg-highlight"></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-secondary/60"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
             {/* Instructions Section */}
             <div className="bg-gradient-to-br from-highlight/20 to-secondary/20 rounded-xl p-6 backdrop-blur-sm">
               <h2 className="text-xl font-semibold text-main mb-6 flex items-center gap-2">
@@ -459,7 +456,6 @@ const Scanner = () => {
             </div>
           </div>
         </div>
-
         <input
           type="file"
           ref={fileInputRef}
@@ -467,16 +463,28 @@ const Scanner = () => {
           accept="image/*"
           capture="environment"
           onChange={handleFileUpload}
-        />
-
-        {/* Loading and Error States */}
+        />{" "}
+        {/* Loading Modal */}
         {isLoading && (
-          <div className="text-center p-4">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-main mx-auto"></div>
-            <p className="mt-3 text-main">Memproses gambar...</p>
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+            <div className="bg-white rounded-xl p-8 shadow-2xl transform transition-all animate-fade-in flex flex-col items-center max-w-sm w-full mx-4">
+              <div className="relative">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-main"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="h-8 w-8 rounded-full bg-white"></div>
+                </div>
+              </div>
+              <p className="mt-4 text-lg font-medium text-main">
+                Memproses gambar...
+              </p>
+              <p className="mt-2 text-sm text-gray-500 text-center">
+                Mohon tunggu sebentar, kami sedang menganalisis nutrisi dari
+                gambar Anda
+              </p>
+            </div>
           </div>
         )}
-
+        {/* Error State */}
         {error && (
           <div className="w-full p-4 bg-red-50 border-l-4 border-red-500 rounded-lg animate-fade-in">
             <p className="text-red-700">{error}</p>
