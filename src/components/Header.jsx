@@ -52,7 +52,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-md">
+    <header className="bg-white border-b border-gray-100 shadow-md">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -79,12 +79,6 @@ const Header = () => {
               className="text-main hover:text-highlight transition-colors duration-300"
             >
               History
-            </Link>
-            <Link
-              to="/profile"
-              className="text-main hover:text-highlight transition-colors duration-300"
-            >
-              Profile
             </Link>
             <Link
               to="/nutrition"

@@ -29,6 +29,7 @@ const HistoryPage = () => {
 
       // Pastikan kita mengambil data dengan benar
       let scanData;
+
       if (response && typeof response === "object") {
         // Jika response adalah object, coba ambil dari beberapa kemungkinan properti
         scanData =
@@ -47,7 +48,9 @@ const HistoryPage = () => {
       if (!Array.isArray(scanData)) {
         console.error("Invalid scan data format:", scanData);
         throw new Error("Format data tidak valid");
-      } // Menggunakan data langsung dari API tanpa transformasi yang tidak perlu
+      }
+
+      // Menggunakan data langsung dari API tanpa transformasi yang tidak perlu
       const formattedHistory = scanData.map((item, index) => ({
         ...item, // Mempertahankan semua data asli
         id: item.id || index.toString(), // Menggunakan index sebagai fallback untuk key
@@ -66,6 +69,13 @@ const HistoryPage = () => {
   useEffect(() => {
     fetchScanHistory();
   }, [fetchScanHistory]);
+
+  const handleDelete = useCallback((filename) => {
+    // Update the history state to remove the deleted item
+    setHistory((currentHistory) =>
+      currentHistory.filter((item) => item.filename !== filename)
+    );
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -128,9 +138,12 @@ const HistoryPage = () => {
               .filter((scan) => {
                 // Filter berdasarkan pencarian
                 if (searchQuery) {
-                  return scan.productName
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase());
+                  return (
+                    scan.filename &&
+                    scan.filename
+                      .toLowerCase()
+                      .includes(searchQuery.toLowerCase())
+                  );
                 }
                 return true;
               })
@@ -155,7 +168,13 @@ const HistoryPage = () => {
                 }
                 return true;
               })
-              .map((scan) => <ScanHistoryCard key={scan.id} scan={scan} />)
+              .map((scan) => (
+                <ScanHistoryCard
+                  key={scan.id}
+                  scan={scan}
+                  onDelete={handleDelete}
+                />
+              ))
           ) : (
             <div className="text-center py-12">
               <div className="text-gray-400 text-6xl mb-4">📄</div>
@@ -173,24 +192,6 @@ const HistoryPage = () => {
               </a>
             </div>
           )}
-        </div>
-        {/* Pagination */}
-        <div className="mt-8 flex justify-center">
-          <nav className="flex items-center space-x-2">
-            <button className="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50">
-              &lt;
-            </button>
-            <button className="px-3 py-1 rounded bg-main text-white">1</button>
-            <button className="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50">
-              2
-            </button>
-            <button className="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50">
-              3
-            </button>
-            <button className="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50">
-              &gt;
-            </button>
-          </nav>
         </div>
       </main>
 
