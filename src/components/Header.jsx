@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../states/authUser/slice.js";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const [showConfirm, setShowConfirm] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
+
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
 
   // Dummy function untuk demo notifikasi - nantinya bisa diganti dengan data real
   useEffect(() => {
@@ -60,29 +65,45 @@ const Header = () => {
               Pack
               <span className="text-highlight">Facts</span>
             </h1>
-          </div>
+          </div>{" "}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               to="/"
-              className="text-main hover:text-highlight transition-colors duration-300"
+              className={`transition-all duration-300 px-4 py-2 rounded-lg ${
+                isActive("/")
+                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                  : "text-main hover:bg-highlight/10 hover:text-highlight"
+              }`}
             >
               Home
             </Link>
             <Link
               to="/scan"
-              className="text-main hover:text-highlight transition-colors duration-300"
+              className={`transition-all duration-300 px-4 py-2 rounded-lg ${
+                isActive("/scan")
+                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                  : "text-main hover:bg-highlight/10 hover:text-highlight"
+              }`}
             >
               Scan
             </Link>
             <Link
               to="/history"
-              className="text-main hover:text-highlight transition-colors duration-300"
+              className={`transition-all duration-300 px-4 py-2 rounded-lg ${
+                isActive("/history")
+                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                  : "text-main hover:bg-highlight/10 hover:text-highlight"
+              }`}
             >
               History
             </Link>
             <Link
               to="/nutrition"
-              className="text-main hover:text-highlight transition-colors duration-300"
+              className={`transition-all duration-300 px-4 py-2 rounded-lg ${
+                isActive("/nutrition")
+                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                  : "text-main hover:bg-highlight/10 hover:text-highlight"
+              }`}
             >
               Daily Nutrition
             </Link>
