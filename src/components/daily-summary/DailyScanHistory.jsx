@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import api, { BASE_URL } from "../../utils/api";
-import ScanDetailModal from "../ScanDetailModal";
+import DailyScanDetailModal from "./DailyScanDetailModal";
 
 const DailyScanHistory = () => {
   const { token } = useSelector((state) => state.auth);
@@ -212,10 +212,9 @@ const DailyScanHistory = () => {
             ))}
           </div>
         )}
-      </div>
-
+      </div>{" "}
       {selectedScan && (
-        <ScanDetailModal
+        <DailyScanDetailModal
           isOpen={isModalOpen}
           onClose={() => {
             setIsModalOpen(false);
