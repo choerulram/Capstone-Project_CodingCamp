@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../states/authUser/slice.js"; // Add .js extension
-
+import { loginUser } from "../../states/authUser/slice.js";
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

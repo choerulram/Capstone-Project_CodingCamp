@@ -1,13 +1,15 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import HomePage from "./pages/HomePage";
-import ScanPage from "./pages/ScanPage";
-import HistoryPage from "./pages/HistoryPage";
-import NutritionPage from "./pages/NutritionPage";
-import DailySummaryPage from "./pages/DailySummaryPage";
+import {
+  LoginPage,
+  RegisterPage,
+  HomePage,
+  ScanPage,
+  HistoryPage,
+  NutritionPage,
+  DailySummaryPage,
+} from "./pages";
 
 const App = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);

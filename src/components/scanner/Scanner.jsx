@@ -1,8 +1,8 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { FaCamera, FaStop, FaUpload, FaSearch } from "react-icons/fa";
-import useCamera from "../hooks/useCamera";
-import api from "../utils/api";
+import useCamera from "../../hooks/useCamera";
+import api from "../../utils/api";
 
 const Scanner = () => {
   const { token } = useSelector((state) => state.auth);

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import ScanHistoryCard from "../components/ScanHistoryCard";
-import api from "../utils/api";
+import Header from "../../components/layouts/Header";
+import Footer from "../../components/layouts/Footer";
+import ScanHistoryCard from "../../components/history/ScanHistoryCard";
+import api from "../../utils/api";
 
 const HistoryPage = () => {
   const { token } = useSelector((state) => state.auth);

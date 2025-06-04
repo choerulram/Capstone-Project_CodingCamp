@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ScanDetailModal from "./ScanDetailModal";
-import { BASE_URL } from "../utils/api";
+import { BASE_URL } from "../../utils/api";
 
 const ScanHistoryCard = ({ scan, onDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

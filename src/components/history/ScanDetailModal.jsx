@@ -1,6 +1,6 @@
 import React from "react";
 import { createPortal } from "react-dom";
-import { BASE_URL } from "../utils/api";
+import { BASE_URL } from "../../utils/api";
 
 const ScanDetailModal = ({ isOpen, onClose, scan }) => {
   React.useEffect(() => {

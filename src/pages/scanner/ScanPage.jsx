@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Scanner from "../components/Scanner";
+import Header from "../../components/layouts/Header";
+import Footer from "../../components/layouts/Footer";
+import Scanner from "../../components/scanner/Scanner";
 
 const ScanPage = () => {
   return (

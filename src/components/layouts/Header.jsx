@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "../states/authUser/slice.js";
+import { logout } from "../../states/authUser/slice.js";
 
 const Header = () => {
   const navigate = useNavigate();

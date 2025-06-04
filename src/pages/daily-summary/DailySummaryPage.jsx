@@ -1,9 +1,9 @@
 import React from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import TotalNutritionSummary from "../components/daily-summary/TotalNutritionSummary";
-import DailyScanHistory from "../components/daily-summary/DailyScanHistory";
-import NutritionProgress from "../components/daily-summary/NutritionProgress";
+import Header from "../../components/layouts/Header";
+import Footer from "../../components/layouts/Footer";
+import TotalNutritionSummary from "../../components/daily-summary/TotalNutritionSummary";
+import DailyScanHistory from "../../components/daily-summary/DailyScanHistory";
+import NutritionProgress from "../../components/daily-summary/NutritionProgress";
 
 const DailySummaryPage = () => {
   return (
