@@ -13,31 +13,102 @@ const Scanner = () => {
   const [error, setError] = useState(null);
   const [nutritionData, setNutritionData] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [selectedDevice, setSelectedDevice] = useState(null);
   const videoRef = useRef(null);
   const fileInputRef = useRef(null);
   const canvasRef = useRef(null);
 
-  const { startCamera, stopCamera } = useCamera();
+  const { startCamera, stopCamera, devices, switchCamera } = useCamera();
+
+  // Handler untuk mengganti kamera
+  const handleSwitchCamera = async (deviceId) => {
+    if (isScanning) {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const mediaStream = await switchCamera(deviceId);
+        if (mediaStream && videoRef.current) {
+          videoRef.current.srcObject = mediaStream;
+        }
+      } catch (err) {
+        console.error("Error switching camera:", err);
+        setError("Gagal mengganti kamera");
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setSelectedDevice(deviceId);
+    }
+  };
 
   // Handler untuk memulai kamera
   const handleStartCamera = useCallback(async () => {
     setIsLoading(true);
     setError(null);
+
     try {
-      const mediaStream = await startCamera();
-      if (mediaStream && videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
-        setIsScanning(true);
+      console.log("Mempersiapkan kamera...");
+      setIsScanning(true);
+
+      const videoElement = videoRef.current;
+      if (!videoElement) {
+        throw new Error("Element video tidak ditemukan");
       }
+
+      // Reset video element
+      if (videoElement.srcObject) {
+        const tracks = videoElement.srcObject.getTracks();
+        tracks.forEach((track) => track.stop());
+        videoElement.srcObject = null;
+      }
+
+      console.log("Memulai stream kamera...");
+      const mediaStream = await startCamera(selectedDevice);
+      if (!mediaStream) {
+        throw new Error("Gagal mendapatkan media stream");
+      }
+
+      // Set stream ke video element
+      videoElement.srcObject = mediaStream;
+
+      // Tunggu video siap dengan Promise.race
+      await Promise.race([
+        new Promise((resolve) => {
+          const handleCanPlay = () => {
+            console.log("Video dapat diputar");
+            videoElement.removeEventListener("canplay", handleCanPlay);
+            resolve();
+          };
+          videoElement.addEventListener("canplay", handleCanPlay);
+        }),
+        new Promise((_, reject) => {
+          setTimeout(
+            () => reject(new Error("Timeout menunggu video siap")),
+            5000
+          );
+        }),
+      ]);
+
+      // Play video
+      await videoElement.play();
+      console.log("Video berhasil diputar");
     } catch (err) {
-      console.error("Error accessing camera:", err);
+      console.error("Error mengakses kamera:", err);
       setError(
-        "Tidak dapat mengakses kamera. Mohon berikan izin akses kamera."
+        `Tidak dapat mengakses kamera: ${err.message || "Unknown error"}`
       );
+      setIsScanning(false);
+
+      // Cleanup pada error
+      if (videoRef.current?.srcObject) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
+      }
     } finally {
       setIsLoading(false);
     }
-  }, [startCamera]);
+  }, [startCamera, selectedDevice]);
 
   // Handler untuk menghentikan kamera
   const handleStopCamera = useCallback(() => {
@@ -150,54 +221,69 @@ const Scanner = () => {
     }
     await processImage(currentFile);
   };
-
-  // Effect untuk mengatur video stream
+  // Effect untuk menangani perubahan video stream
   useEffect(() => {
-    if (videoRef.current && isScanning) {
-      const video = videoRef.current;
+    if (!videoRef.current || !isScanning) return;
 
-      video.onloadedmetadata = () => {
-        video.play().catch((err) => {
-          console.error("Error playing video:", err);
-          setError("Gagal memulai video stream");
-        });
-      };
+    const videoElement = videoRef.current;
+    let isComponentMounted = true;
 
-      video.onerror = (err) => {
-        console.error("Video error:", err);
-        setError(
-          "Error pada video stream: " + (err.message || "Unknown error")
-        );
-      };
+    const handleCanPlay = async () => {
+      if (!isComponentMounted || !videoElement) return;
 
-      return () => {
-        video.onloadedmetadata = null;
-        video.onerror = null;
-      };
-    }
-  }, [isScanning]);
-
-  // Request camera permissions on mount
-  useEffect(() => {
-    if (!navigator.mediaDevices?.getUserMedia) {
-      setError("Browser Anda tidak mendukung akses kamera");
-      return;
-    }
-
-    const requestPermissions = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        stream.getTracks().forEach((track) => track.stop());
-        setError(null);
+        console.log("Video dapat diputar");
+        await videoElement.play();
+        console.log("Video mulai berputar");
       } catch (err) {
-        console.error("Permission error:", err);
-        setError("Mohon izinkan akses kamera untuk menggunakan fitur ini");
+        if (isComponentMounted) {
+          console.error("Error memutar video:", err);
+          setError("Gagal memulai video stream");
+        }
       }
     };
 
-    requestPermissions();
+    const handleError = (err) => {
+      if (isComponentMounted) {
+        console.error("Error video:", err);
+        setError(
+          "Error pada video stream: " + (err.message || "Unknown error")
+        );
+      }
+    };
+
+    videoElement.addEventListener("canplay", handleCanPlay);
+    videoElement.addEventListener("error", handleError);
+
+    // Coba putar video jika sudah siap
+    if (videoElement.readyState >= 3) {
+      handleCanPlay();
+    }
+
+    return () => {
+      isComponentMounted = false;
+      if (videoElement) {
+        videoElement.removeEventListener("canplay", handleCanPlay);
+        videoElement.removeEventListener("error", handleError);
+        try {
+          const stream = videoElement.srcObject;
+          if (stream) {
+            stream.getTracks().forEach((track) => {
+              track.stop();
+            });
+          }
+          videoElement.srcObject = null;
+        } catch (err) {
+          console.error("Error stopping video stream:", err);
+        }
+      }
+    };
+  }, [isScanning]);
+  // Check browser support on mount
+  useEffect(() => {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setError("Browser Anda tidak mendukung akses kamera");
+    }
   }, []);
 
   useEffect(() => {
@@ -207,6 +293,15 @@ const Scanner = () => {
 
     return () => clearInterval(timer);
   }, []);
+  // Cleanup effect
+  useEffect(() => {
+    return () => {
+      if (isScanning) {
+        handleStopCamera();
+      }
+    };
+  }, [isScanning, handleStopCamera]);
+
   return (
     <div
       className={`min-h-screen flex ${
@@ -222,10 +317,32 @@ const Scanner = () => {
           nutritionData ? "" : "items-center"
         }`}
       >
-        {/* Main Scanner Container */}
+        {/* Main Scanner Container */}{" "}
         <div className="w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-secondary overflow-hidden">
+          {/* Pilihan Kamera */}
+          {devices.length > 1 && (
+            <div className="p-4 bg-highlight/5 border-b border-secondary/20">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-main">
+                  Pilih Kamera:
+                </span>
+                <select
+                  value={selectedDevice || ""}
+                  onChange={(e) => handleSwitchCamera(e.target.value)}
+                  className="ml-4 px-3 py-1.5 text-sm border border-secondary/20 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-highlight/50"
+                >
+                  {devices.map((device, index) => (
+                    <option key={device.deviceId} value={device.deviceId}>
+                      {device.label || `Kamera ${index + 1}`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          )}
           {/* Camera Preview Section */}
-          <div className="relative w-full aspect-video bg-gray-100">
+          <div className="relative w-full aspect-video bg-gray-900 rounded-lg overflow-hidden">
+            {" "}
             {isScanning ? (
               <video
                 ref={videoRef}
@@ -233,6 +350,19 @@ const Scanner = () => {
                 autoPlay
                 playsInline
                 muted
+                onLoadedMetadata={() => {
+                  console.log("Video metadata loaded");
+                  videoRef.current.play().catch((err) => {
+                    console.error("Error playing video:", err);
+                    setError("Gagal memulai video stream");
+                  });
+                }}
+                onError={(e) => {
+                  console.error("Video element error:", e);
+                  setError(
+                    "Error saat memuat video: " + (e.message || "Unknown error")
+                  );
+                }}
               />
             ) : selectedImage ? (
               <img
@@ -269,6 +399,11 @@ const Scanner = () => {
               </div>
             )}
             <canvas ref={canvasRef} className="hidden" />
+            {isLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
+              </div>
+            )}
           </div>{" "}
           {/* Controls and Instructions Container */}
           <div className="p-6 bg-highlight/5">
@@ -455,7 +590,7 @@ const Scanner = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>{" "}
         <input
           type="file"
           ref={fileInputRef}
@@ -463,7 +598,13 @@ const Scanner = () => {
           accept="image/*"
           capture="environment"
           onChange={handleFileUpload}
-        />{" "}
+          aria-label="Upload gambar makanan"
+          title="Upload gambar makanan"
+        />
+        {/* Hidden label for accessibility */}
+        <label htmlFor="file-upload" className="sr-only">
+          Upload gambar makanan
+        </label>
         {/* Loading Modal */}
         {isLoading && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
@@ -514,7 +655,7 @@ const Scanner = () => {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                     />
                   </svg>
                   {currentTime.toLocaleDateString("id-ID", {
@@ -600,6 +741,7 @@ const Scanner = () => {
                     <div className="mb-4 bg-red-50 border border-red-200 p-4 rounded-lg">
                       <div className="flex items-start">
                         <div className="flex-shrink-0">
+                          {" "}
                           <svg
                             className="h-5 w-5 text-red-600"
                             viewBox="0 0 20 20"
