@@ -160,6 +160,25 @@ const api = {
       handleApiError(error);
     }
   },
+  getTodayScanHistory: async (token) => {
+    try {
+      const response = await fetch(`${BASE_URL}/scan-history`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Gagal mengambil riwayat pemindaian hari ini");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
 };
 
 export default api;
