@@ -15,7 +15,7 @@ This application is a Capstone Project for the Coding Camp 2025 program powered 
 1. Clone the repository
 
 ```powershell
-git clone https://github.com/yourusername/Capstone-Project_CodingCamp.git
+git clone https://github.com/choerulram/Capstone-Project_CodingCamp.git
 cd Capstone-Project_CodingCamp
 ```
 
