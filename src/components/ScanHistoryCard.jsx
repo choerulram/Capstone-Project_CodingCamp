@@ -6,22 +6,6 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const formatNutritionValue = (value, key) => {
-    const val = value ? parseFloat(value).toFixed(1) : "0";
-    switch (true) {
-      case key.includes("energi"):
-        return `${val} kkal`;
-      case ["protein", "lemak", "karbohidrat", "gula"].some((k) =>
-        key.includes(k)
-      ):
-        return `${val} g`;
-      case key.includes("garam") || key.includes("natrium"):
-        return `${val} mg`;
-      default:
-        return val;
-    }
-  };
-
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -46,54 +30,30 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
     }
   };
 
-  // Urutan nutrisi yang diinginkan
-  const nutrientOrder = [
-    "energi_kal",
-    "protein",
-    "lemak_total",
-    "karbohidrat",
-    "serat",
-    "gula",
-    "garam",
-  ];
-
-  // Filter dan urutkan nutrisi sesuai urutan yang ditentukan
-  const orderedNutrients = nutrientOrder
-    .filter((key) => scan.kandungan_gizi?.[key] !== undefined)
-    .map((key) => ({
-      key,
-      value: scan.kandungan_gizi[key],
-    }));
-
-  // Tambahkan nutrisi lain yang mungkin ada tapi tidak dalam urutan
-  const otherNutrients = Object.entries(scan.kandungan_gizi || {})
-    .filter(([key]) => !nutrientOrder.includes(key))
-    .map(([key, value]) => ({ key, value }));
-
   return (
     <>
-      <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
-        <div className="p-6">
-          {/* Header dengan Gambar dan Info */}
-          <div className="flex items-start gap-6 mb-8">
-            <div className="relative w-32 h-32 rounded-xl overflow-hidden flex-shrink-0 border-2 border-highlight shadow-lg">
-              <div className="absolute inset-0 bg-gradient-to-br from-main/20 to-transparent"></div>
+      <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] overflow-hidden border border-gray-100/50">
+        <div className="p-4">
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Image Container - Ukuran dikecilkan */}
+            <div className="relative w-full md:w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 border border-highlight/30 shadow-sm group">
+              <div className="absolute inset-0 bg-gradient-to-br from-main/20 to-transparent group-hover:from-main/30 transition-all duration-300"></div>
               <img
                 src={`${BASE_URL}/images/${scan.filename}`}
                 alt="Foto Produk"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transform group-hover:scale-102 transition-transform duration-300"
               />
             </div>
+
+            {/* Content Container */}
             <div className="flex-1 min-w-0">
-              <div className="flex justify-between items-start gap-4">
-                <div className="min-w-0">
-                  <h3 className="text-2xl font-bold text-main mb-3 truncate">
-                    {scan.filename || "Nama Produk"}
-                  </h3>
-                  <p className="text-sm text-gray-600 flex items-center gap-2">
+              <div className="flex flex-col md:flex-row justify-between items-start gap-4">
+                <div className="w-full md:w-auto">
+                  {/* Timestamp */}
+                  <h3 className="text-lg md:text-xl font-bold text-main mb-2 flex items-center gap-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
+                      className="h-5 w-5 text-main/70"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -105,24 +65,74 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                       />
                     </svg>
-                    {new Date(scan.timestamp).toLocaleDateString("id-ID", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
+                    <span className="truncate">
+                      {new Date(scan.timestamp).toLocaleDateString("id-ID", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  </h3>{" "}
+                  {/* Nutrition Info - Style yang lebih subtle */}
+                  <div className="flex flex-wrap gap-2">
+                    {scan.kandungan_gizi && (
+                      <>
+                        <div className="flex items-center gap-1.5 bg-blue-50/80 text-blue-600 px-2.5 py-1 rounded-lg text-xs">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-3.5 w-3.5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
+                            />
+                          </svg>
+                          <span className="font-medium">
+                            Karbohidrat:{" "}
+                            {scan.kandungan_gizi.karbohidrat || "0"}g
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5 bg-green-50/80 text-green-600 px-2.5 py-1 rounded-lg text-xs">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-3.5 w-3.5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M13 10V3L4 14h7v7l9-11h-7z"
+                            />
+                          </svg>
+                          <span className="font-medium">
+                            Protein: {scan.kandungan_gizi.protein || "0"}g
+                          </span>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <div className="flex gap-2">
+
+                {/* Action Buttons - Style yang lebih subtle */}
+                <div className="flex gap-2 w-full md:w-auto">
                   <button
                     onClick={() => setIsModalOpen(true)}
-                    className="px-5 py-2.5 bg-main hover:bg-main/90 text-light rounded-lg transition-all duration-300 flex items-center gap-2 text-sm font-medium shadow-md hover:shadow-lg group"
+                    className="flex-1 md:flex-none px-4 py-2 bg-main/90 hover:bg-main text-light rounded-lg transition-colors duration-300 flex items-center justify-center gap-1.5 text-sm font-medium"
                   >
                     <span>Detail</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform"
+                      className="h-3.5 w-3.5 transform transition-transform duration-300 group-hover:translate-x-0.5"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -137,12 +147,12 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
                   </button>
                   <button
                     onClick={() => setShowDeleteConfirm(true)}
-                    className="px-5 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all duration-300 flex items-center gap-2 text-sm font-medium shadow-md hover:shadow-lg group"
+                    className="flex-1 md:flex-none px-4 py-2 bg-red-500/90 hover:bg-red-500 text-white rounded-lg transition-colors duration-300 flex items-center justify-center gap-1.5 text-sm font-medium"
                   >
                     <span>Hapus</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
+                      className="h-3.5 w-3.5"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -159,76 +169,6 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
               </div>
             </div>
           </div>
-
-          {/* Kandungan Gizi */}
-          {scan.kandungan_gizi && (
-            <div className="bg-gray-50/70 rounded-xl p-6 shadow-sm border border-gray-100/80 backdrop-blur-sm">
-              <div className="flex justify-between items-center mb-6">
-                <h4 className="text-xl font-bold text-main flex items-center gap-2.5">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-highlight"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                    />
-                  </svg>
-                  Kandungan Gizi
-                </h4>
-              </div>
-
-              {/* Semua Nutrisi dalam Grid */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {[...orderedNutrients, ...otherNutrients].map(
-                  ({ key, value }) => (
-                    <div
-                      key={key}
-                      className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-highlight group"
-                    >
-                      <div className="text-sm font-medium text-gray-600 mb-2.5 group-hover:text-main">
-                        {key
-                          .replace(/_/g, " ")
-                          .replace(/\b\w/g, (l) => l.toUpperCase())}
-                      </div>
-                      <div className="text-xl font-bold text-main group-hover:text-highlight transition-colors">
-                        {formatNutritionValue(value, key)}
-                      </div>
-                    </div>
-                  )
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Warning Badge */}
-          {scan.perbandingan &&
-            scan.perbandingan.some((item) => item.status === "Melebihi") && (
-              <div className="mt-6 flex items-center gap-3 text-sm bg-red-50 text-red-700 p-4 rounded-xl border border-red-200 animate-pulse">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 flex-shrink-0 text-red-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                  />
-                </svg>
-                <span className="font-medium">
-                  Beberapa nutrisi melebihi batas harian
-                </span>
-              </div>
-            )}
         </div>
       </div>
 
@@ -274,7 +214,7 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
                   <span>Ya, Hapus</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
+                    className="h-4 w-4 transform group-hover:scale-110 transition-transform"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
