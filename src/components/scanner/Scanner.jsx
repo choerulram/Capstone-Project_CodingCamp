@@ -1,123 +1,73 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaCamera, FaStop, FaUpload, FaSearch } from "react-icons/fa";
-import useCamera from "../../hooks/useCamera";
 import api from "../../utils/api";
+import {
+  startCamera,
+  stopCamera,
+  switchCamera,
+  getDevices,
+} from "../../states/camera/action.js";
+import { setIsScanning } from "../../states/camera/slice.js";
 
 const Scanner = () => {
+  const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
-  const [isScanning, setIsScanning] = useState(false);
+  const { devices, selectedDevice, stream, isScanning } = useSelector(
+    (state) => state.camera
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentFile, setCurrentFile] = useState(null);
   const [error, setError] = useState(null);
   const [nutritionData, setNutritionData] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [selectedDevice, setSelectedDevice] = useState(null);
+
   const videoRef = useRef(null);
   const fileInputRef = useRef(null);
   const canvasRef = useRef(null);
 
-  const { startCamera, stopCamera, devices, switchCamera } = useCamera();
-
   // Handler untuk mengganti kamera
   const handleSwitchCamera = async (deviceId) => {
-    if (isScanning) {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const mediaStream = await switchCamera(deviceId);
-        if (mediaStream && videoRef.current) {
-          videoRef.current.srcObject = mediaStream;
-        }
-      } catch (err) {
-        console.error("Error switching camera:", err);
-        setError("Gagal mengganti kamera");
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      setSelectedDevice(deviceId);
-    }
+    await dispatch(switchCamera(deviceId));
   };
-
   // Handler untuk memulai kamera
   const handleStartCamera = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      console.log("Mempersiapkan kamera...");
-      setIsScanning(true);
-
-      const videoElement = videoRef.current;
-      if (!videoElement) {
-        throw new Error("Element video tidak ditemukan");
-      }
-
-      // Reset video element
-      if (videoElement.srcObject) {
-        const tracks = videoElement.srcObject.getTracks();
-        tracks.forEach((track) => track.stop());
-        videoElement.srcObject = null;
-      }
-
-      console.log("Memulai stream kamera...");
-      const mediaStream = await startCamera(selectedDevice);
-      if (!mediaStream) {
-        throw new Error("Gagal mendapatkan media stream");
-      }
-
-      // Set stream ke video element
-      videoElement.srcObject = mediaStream;
-
-      // Tunggu video siap dengan Promise.race
-      await Promise.race([
-        new Promise((resolve) => {
-          const handleCanPlay = () => {
-            console.log("Video dapat diputar");
-            videoElement.removeEventListener("canplay", handleCanPlay);
-            resolve();
-          };
-          videoElement.addEventListener("canplay", handleCanPlay);
-        }),
-        new Promise((_, reject) => {
-          setTimeout(
-            () => reject(new Error("Timeout menunggu video siap")),
-            5000
-          );
-        }),
-      ]);
-
-      // Play video
-      await videoElement.play();
-      console.log("Video berhasil diputar");
-    } catch (err) {
-      console.error("Error mengakses kamera:", err);
-      setError(
-        `Tidak dapat mengakses kamera: ${err.message || "Unknown error"}`
-      );
-      setIsScanning(false);
-
-      // Cleanup pada error
-      if (videoRef.current?.srcObject) {
-        const tracks = videoRef.current.srcObject.getTracks();
-        tracks.forEach((track) => track.stop());
-        videoRef.current.srcObject = null;
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  }, [startCamera, selectedDevice]);
+    dispatch(setIsScanning(true));
+    await dispatch(startCamera(selectedDevice));
+  }, [dispatch, selectedDevice]);
 
   // Handler untuk menghentikan kamera
   const handleStopCamera = useCallback(() => {
-    stopCamera();
-    setIsScanning(false);
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
+    dispatch(setIsScanning(false));
+    dispatch(stopCamera());
+  }, [dispatch]);
+
+  // Effect untuk mengambil daftar kamera saat komponen dimount
+  useEffect(() => {
+    dispatch(getDevices());
+  }, [dispatch]);
+  // Effect untuk menangani video stream
+  useEffect(() => {
+    if (!videoRef.current || !stream || !isScanning) {
+      if (videoRef.current?.srcObject) {
+        videoRef.current.srcObject = null;
+      }
+      return;
     }
-  }, [stopCamera]);
+
+    const video = videoRef.current;
+    video.srcObject = stream;
+
+    // Cleanup function
+    return () => {
+      if (video.srcObject) {
+        const tracks = video.srcObject.getTracks();
+        tracks.forEach((track) => track.stop());
+        video.srcObject = null;
+      }
+    };
+  }, [stream, isScanning]);
 
   // Fungsi untuk memproses gambar dan mendapatkan data nutrisi
   const processImage = async (file) => {
