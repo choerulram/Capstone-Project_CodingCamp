@@ -40,9 +40,9 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex-1 bg-gray-50 p-10 flex flex-col justify-center items-center">
+    <div className="flex-1 bg-gray-50 p-4 md:p-10 flex flex-col justify-center items-center">
       <div className="w-full max-w-xl">
-        <div className="bg-white p-12 rounded-3xl shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300">
+        <div className="bg-white p-6 md:p-12 rounded-xl md:rounded-3xl shadow-xl md:shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300">
           <h2 className="text-dark text-4xl mb-3 font-bold">Welcome Back!</h2>
           <p className="text-gray-500 mb-10 text-lg">
             Please sign in to your account

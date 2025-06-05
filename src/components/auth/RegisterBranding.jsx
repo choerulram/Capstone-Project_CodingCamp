@@ -2,18 +2,18 @@ import React from "react";
 
 const RegisterBranding = () => {
   return (
-    <div className="flex-1 bg-main p-12 rounded-l-[15px] flex flex-col justify-center">
+    <div className="w-full md:w-[35%] bg-main p-6 sm:p-8 md:p-12 md:rounded-l-[15px] flex flex-col justify-center relative overflow-hidden min-h-[250px] sm:min-h-[300px] md:min-h-0">
       <div className="max-w-xl mx-auto">
-        <h1 className="text-7xl text-white mb-8 font-bold tracking-tight leading-tight animate-fade-in">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl text-white mb-6 sm:mb-8 font-bold tracking-tight leading-tight animate-fade-in">
           Join the
-          <span className="text-highlight block mt-2">Journey</span>
+          <span className="text-highlight block mt-1 sm:mt-2">Journey</span>
         </h1>
-        <div className="overflow-hidden mb-10">
-          <div className="flex items-center mb-6 animate-slide-up opacity-0 [animation-delay:0.3s] [animation-fill-mode:forwards]">
-            <div className="bg-highlight/20 p-3 rounded-full mr-4">
+        <div className="overflow-hidden mb-6 sm:mb-10">
+          <div className="flex items-center mb-4 sm:mb-6 animate-slide-up opacity-0 [animation-delay:0.3s] [animation-fill-mode:forwards]">
+            <div className="bg-highlight/20 p-2 sm:p-3 rounded-full mr-3 sm:mr-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-highlight"
+                className="h-5 w-5 sm:h-6 sm:w-6 text-highlight"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -26,15 +26,15 @@ const RegisterBranding = () => {
                 />
               </svg>
             </div>
-            <p className="text-white text-xl font-medium">
+            <p className="text-white text-base sm:text-xl font-medium">
               Akses Informasi Gizi Instan
             </p>
           </div>
-          <div className="flex items-center mb-6 animate-slide-up opacity-0 [animation-delay:0.5s] [animation-fill-mode:forwards]">
-            <div className="bg-highlight/20 p-3 rounded-full mr-4">
+          <div className="flex items-center mb-4 sm:mb-6 animate-slide-up opacity-0 [animation-delay:0.5s] [animation-fill-mode:forwards]">
+            <div className="bg-highlight/20 p-2 sm:p-3 rounded-full mr-3 sm:mr-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-highlight"
+                className="h-5 w-5 sm:h-6 sm:w-6 text-highlight"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -47,15 +47,15 @@ const RegisterBranding = () => {
                 />
               </svg>
             </div>
-            <p className="text-white text-xl font-medium">
+            <p className="text-white text-base sm:text-xl font-medium">
               Rekomendasi Makanan Sehat
             </p>
           </div>
           <div className="flex items-center animate-slide-up opacity-0 [animation-delay:0.7s] [animation-fill-mode:forwards]">
-            <div className="bg-highlight/20 p-3 rounded-full mr-4">
+            <div className="bg-highlight/20 p-2 sm:p-3 rounded-full mr-3 sm:mr-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-highlight"
+                className="h-5 w-5 sm:h-6 sm:w-6 text-highlight"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -68,13 +68,13 @@ const RegisterBranding = () => {
                 />
               </svg>
             </div>
-            <p className="text-white text-xl font-medium">
+            <p className="text-white text-base sm:text-xl font-medium">
               Analisis Gizi Real-time
             </p>
           </div>
         </div>
-        <div className="mt-8 bg-highlight/20 px-8 py-4 rounded-full inline-block animate-bounce-slow">
-          <p className="text-white text-base font-medium tracking-wide">
+        <div className="mt-6 sm:mt-8 bg-highlight/20 px-4 sm:px-8 py-3 sm:py-4 rounded-full inline-block animate-bounce-slow">
+          <p className="text-white text-sm sm:text-base font-medium tracking-wide">
             Mulai Perjalanan Sehatmu Hari Ini
           </p>
         </div>

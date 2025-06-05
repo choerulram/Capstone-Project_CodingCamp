@@ -4,7 +4,7 @@ import LoginBranding from "../../components/auth/LoginBranding";
 
 const LoginPage = () => {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex flex-col-reverse md:flex-row min-h-screen">
       <LoginBranding />
       <LoginForm />
     </div>

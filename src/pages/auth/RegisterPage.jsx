@@ -4,7 +4,7 @@ import RegisterBranding from "../../components/auth/RegisterBranding";
 
 const RegisterPage = () => {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex flex-col md:flex-row min-h-screen">
       <RegisterForm />
       <RegisterBranding />
     </div>
