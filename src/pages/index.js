@@ -8,3 +8,4 @@ export { default as ScanPage } from "./scanner/ScanPage.jsx";
 export { default as NutritionPage } from "./nutrition/NutritionPage.jsx";
 export { default as HistoryPage } from "./history/HistoryPage.jsx";
 export { default as DailySummaryPage } from "./daily-summary/DailySummaryPage.jsx";
+export { default as PricingPage } from "./pricing/PricingPage.jsx";

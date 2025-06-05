@@ -139,7 +139,7 @@ const NutritionProgress = () => {
   ];
 
   return (
-    <div className="bg-gray-50 p-6 rounded-xl border border-gray-100">
+    <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 relative">
       <h2 className="text-xl font-semibold text-main mb-6 flex items-center">
         <span className="bg-highlight/20 p-2 rounded-lg mr-2">
           <svg

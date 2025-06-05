@@ -30,6 +30,7 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
       alert(error.message || "Terjadi kesalahan saat menghapus data");
     }
   };
+
   return (
     <div className="relative">
       <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] overflow-hidden border border-gray-100/50">
@@ -132,7 +133,7 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
                     <span>Detail</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-3.5 w-3.5 transform transition-transform duration-300 group-hover:translate-x-0.5"
+                      className="h-3.5 w-3.5"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -145,6 +146,7 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
                       />
                     </svg>
                   </button>
+
                   <button
                     onClick={() => setShowDeleteConfirm(true)}
                     className="flex-1 md:flex-none px-4 py-2 bg-red-500/90 hover:bg-red-500 text-white rounded-lg transition-colors duration-300 flex items-center justify-center gap-1.5 text-sm font-medium"

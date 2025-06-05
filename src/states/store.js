@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authUser/slice.js";
 import cameraReducer from "./camera/slice.js";
+import subscriptionReducer from "./subscription/slice.js";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     camera: cameraReducer,
+    subscription: subscriptionReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

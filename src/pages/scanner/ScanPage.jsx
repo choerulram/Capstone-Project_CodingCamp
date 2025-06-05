@@ -1,9 +1,15 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import Scanner from "../../components/scanner/Scanner";
+import ScanLimitModal from "../../components/subscription/ScanLimitModal";
+import { setShowLimitModal } from "../../states/subscription/slice";
 
 const ScanPage = () => {
+  const dispatch = useDispatch();
+  const { showLimitModal } = useSelector((state) => state.subscription);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -23,6 +29,11 @@ const ScanPage = () => {
       </main>
 
       <Footer />
+
+      <ScanLimitModal
+        isOpen={showLimitModal}
+        onClose={() => dispatch(setShowLimitModal(false))}
+      />
     </div>
   );
 };

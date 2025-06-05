@@ -9,6 +9,7 @@ import {
   HistoryPage,
   NutritionPage,
   DailySummaryPage,
+  PricingPage,
 } from "./pages";
 import ScrollToTop from "./components/layouts/ScrollToTop";
 
@@ -51,6 +52,7 @@ const App = () => {
             isAuthenticated ? <DailySummaryPage /> : <Navigate to="/login" />
           }
         />
+        <Route path="/pricing" element={<PricingPage />} />
       </Routes>
     </BrowserRouter>
   );

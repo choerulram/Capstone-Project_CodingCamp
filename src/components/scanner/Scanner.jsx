@@ -9,6 +9,10 @@ import {
   getDevices,
 } from "../../states/camera/action.js";
 import { setIsScanning } from "../../states/camera/slice.js";
+import {
+  incrementScanCount,
+  setShowLimitModal,
+} from "../../states/subscription/slice";
 
 const Scanner = () => {
   const dispatch = useDispatch();
@@ -16,6 +20,7 @@ const Scanner = () => {
   const { devices, selectedDevice, stream, isScanning } = useSelector(
     (state) => state.camera
   );
+  const { isPremium, scanCount } = useSelector((state) => state.subscription);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentFile, setCurrentFile] = useState(null);
@@ -76,6 +81,12 @@ const Scanner = () => {
       return;
     }
 
+    // Cek batasan scan untuk user non-premium
+    if (!isPremium && scanCount >= 5) {
+      dispatch(setShowLimitModal(true));
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
     setNutritionData(null);
@@ -85,6 +96,11 @@ const Scanner = () => {
 
       if (!result) {
         throw new Error("Gagal menganalisis gambar");
+      }
+
+      // Increment scan count setelah berhasil
+      if (!isPremium) {
+        dispatch(incrementScanCount());
       }
 
       setNutritionData({

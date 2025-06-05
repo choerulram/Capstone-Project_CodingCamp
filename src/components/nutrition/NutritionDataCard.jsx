@@ -31,9 +31,7 @@ const NutritionDataCard = ({ nutritionData }) => {
               </span>
               <span className="text-main font-bold">
                 {typeof value === "number"
-                  ? `${value.toFixed(1)} ${
-                      nutritionUnits[key.toLowerCase()] || ""
-                    }`
+                  ? `${value.toFixed(1)} ${nutritionUnits[key.toLowerCase()] || ""}`
                   : value}
               </span>
             </div>
