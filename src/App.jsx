@@ -10,12 +10,14 @@ import {
   NutritionPage,
   DailySummaryPage,
 } from "./pages";
+import ScrollToTop from "./components/layouts/ScrollToTop";
 
 const App = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route
           path="/"
