@@ -10,6 +10,7 @@ const Header = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isActive = (path) => {
     return location.pathname === path;
@@ -56,8 +57,12 @@ const Header = () => {
     setShowNotifications(!showNotifications);
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <header className="bg-white border-b border-gray-100 shadow-md">
+    <header className="bg-white border-b border-gray-100 shadow-md relative">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -65,7 +70,34 @@ const Header = () => {
               Pack
               <span className="text-highlight">Facts</span>
             </h1>
-          </div>{" "}
+          </div>
+
+          {/* Hamburger Menu Button for Mobile */}
+          <button
+            onClick={toggleMobileMenu}
+            className="md:hidden text-main hover:text-highlight transition-colors duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={
+                  isMobileMenuOpen
+                    ? "M6 18L18 6M6 6l12 12"
+                    : "M4 6h16M4 12h16M4 18h16"
+                }
+              />
+            </svg>
+          </button>
+
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               to="/"
@@ -118,7 +150,9 @@ const Header = () => {
               Daily Summary
             </Link>
           </nav>
-          <div className="flex items-center space-x-4">
+
+          {/* Desktop Notifications and Sign Out */}
+          <div className="hidden md:flex items-center space-x-4">
             {/* Notification Bell */}
             <div className="relative">
               <button
@@ -145,7 +179,6 @@ const Header = () => {
                   </span>
                 )}
               </button>
-
               {/* Notification Dropdown */}
               {showNotifications && notifications.length > 0 && (
                 <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg z-50 border border-gray-100">
@@ -181,6 +214,107 @@ const Header = () => {
               Sign Out
             </button>
           </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div
+          className={`md:hidden fixed inset-x-0 bg-white border-b border-gray-100 shadow-lg transition-all duration-300 ease-in-out ${
+            isMobileMenuOpen
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 -translate-y-full pointer-events-none"
+          }`}
+          style={{ top: "72px", zIndex: 40 }}
+        >
+          <nav className="container mx-auto px-6 py-4 flex flex-col space-y-4">
+            <Link
+              to="/"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`transition-all duration-300 px-4 py-3 rounded-lg ${
+                isActive("/")
+                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                  : "text-main hover:bg-highlight/10 hover:text-highlight"
+              }`}
+            >
+              Home
+            </Link>
+            <Link
+              to="/scan"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`transition-all duration-300 px-4 py-3 rounded-lg ${
+                isActive("/scan")
+                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                  : "text-main hover:bg-highlight/10 hover:text-highlight"
+              }`}
+            >
+              Scan
+            </Link>
+            <Link
+              to="/history"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`transition-all duration-300 px-4 py-3 rounded-lg ${
+                isActive("/history")
+                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                  : "text-main hover:bg-highlight/10 hover:text-highlight"
+              }`}
+            >
+              History
+            </Link>
+            <Link
+              to="/nutrition"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`transition-all duration-300 px-4 py-3 rounded-lg ${
+                isActive("/nutrition")
+                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                  : "text-main hover:bg-highlight/10 hover:text-highlight"
+              }`}
+            >
+              Daily Nutrition
+            </Link>
+            <Link
+              to="/daily-summary"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`transition-all duration-300 px-4 py-3 rounded-lg ${
+                isActive("/daily-summary")
+                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                  : "text-main hover:bg-highlight/10 hover:text-highlight"
+              }`}
+            >
+              Daily Summary
+            </Link>
+
+            <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+              <button
+                onClick={toggleNotifications}
+                className="p-2 text-main hover:text-highlight transition-colors duration-300 relative"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  />
+                </svg>
+                {notifications.length > 0 && (
+                  <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
+                    {notifications.length}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
+              >
+                Sign Out
+              </button>
+            </div>
+          </nav>
         </div>
       </div>
 
