@@ -1,6 +1,6 @@
 import React from "react";
 
-const BrandingSection = () => {
+const LoginBranding = () => {
   return (
     <div className="w-[40%] bg-main p-12 rounded-r-[15px] flex flex-col justify-center relative overflow-hidden">
       {/* Background Pattern */}
@@ -47,4 +47,4 @@ const BrandingSection = () => {
   );
 };
 
-export default BrandingSection;
+export default LoginBranding;
