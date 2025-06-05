@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import ScanDetailModal from "./ScanDetailModal";
 import { BASE_URL } from "../../utils/api";
 
@@ -29,9 +30,8 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
       alert(error.message || "Terjadi kesalahan saat menghapus data");
     }
   };
-
   return (
-    <>
+    <div className="relative">
       <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] overflow-hidden border border-gray-100/50">
         <div className="p-4">
           <div className="flex flex-col md:flex-row gap-4">
@@ -173,48 +173,22 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
       </div>
 
       {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl animate-fade-in-up">
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-red-100 mx-auto flex items-center justify-center mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8 text-red-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Konfirmasi Penghapusan
-              </h3>
-              <p className="text-gray-500 mb-6">
-                Apakah Anda yakin ingin menghapus data pemindaian ini? Tindakan
-                ini tidak dapat dibatalkan.
-              </p>
-              <div className="flex gap-3 justify-center">
-                <button
-                  onClick={() => setShowDeleteConfirm(false)}
-                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200"
-                >
-                  Batal
-                </button>
-                <button
-                  onClick={handleDelete}
-                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2"
-                >
-                  <span>Ya, Hapus</span>
+      {showDeleteConfirm &&
+        createPortal(
+          <div
+            className="fixed inset-0 w-full h-full flex items-center justify-center"
+            style={{ zIndex: 999999 }}
+          >
+            {/* Backdrop */}
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
+
+            {/* Modal Content */}
+            <div className="relative z-10 bg-white rounded-xl p-6 max-w-sm w-full shadow-xl animate-fade-in-up mx-4">
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-red-100 mx-auto flex items-center justify-center mb-4">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 transform group-hover:scale-110 transition-transform"
+                    className="h-8 w-8 text-red-600"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -226,19 +200,54 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
                       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                     />
                   </svg>
-                </button>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Konfirmasi Penghapusan
+                </h3>
+                <p className="text-gray-500 mb-6">
+                  Apakah Anda yakin ingin menghapus data pemindaian ini?
+                  Tindakan ini tidak dapat dibatalkan.
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <button
+                    onClick={() => setShowDeleteConfirm(false)}
+                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    onClick={handleDelete}
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2"
+                  >
+                    <span>Ya, Hapus</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 transform group-hover:scale-110 transition-transform"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
 
       <ScanDetailModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         scan={scan}
       />
-    </>
+    </div>
   );
 };
 
