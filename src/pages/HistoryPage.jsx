@@ -14,6 +14,8 @@ const HistoryPage = () => {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [timeFilter, setTimeFilter] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   const fetchScanHistory = useCallback(async () => {
     if (!token) {
@@ -92,7 +94,7 @@ const HistoryPage = () => {
               setSearchQuery={setSearchQuery}
               timeFilter={timeFilter}
               setTimeFilter={setTimeFilter}
-            />
+            />{" "}
             <HistoryList
               loading={loading}
               error={error}
@@ -101,6 +103,9 @@ const HistoryPage = () => {
               timeFilter={timeFilter}
               fetchScanHistory={fetchScanHistory}
               handleDelete={handleDelete}
+              currentPage={currentPage}
+              itemsPerPage={itemsPerPage}
+              setCurrentPage={setCurrentPage}
             />
           </div>
         </div>

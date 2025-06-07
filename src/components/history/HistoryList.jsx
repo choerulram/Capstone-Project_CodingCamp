@@ -1,5 +1,6 @@
 import React from "react";
 import ScanHistoryCard from "./ScanHistoryCard";
+import Pagination from "./Pagination";
 
 const HistoryList = ({
   loading,
@@ -9,7 +10,41 @@ const HistoryList = ({
   timeFilter,
   fetchScanHistory,
   handleDelete,
+  currentPage,
+  itemsPerPage,
+  setCurrentPage,
 }) => {
+  const filteredHistory = history
+    .filter((scan) => {
+      if (searchQuery) {
+        const scanDate = new Date(scan.timestamp);
+        const formattedDate = scanDate.toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        return formattedDate.toLowerCase().includes(searchQuery.toLowerCase());
+      }
+      return true;
+    })
+    .filter((scan) => {
+      const scanDate = new Date(scan.timestamp);
+      const today = new Date();
+      if (timeFilter === "today") {
+        return scanDate.toDateString() === today.toDateString();
+      }
+      if (timeFilter === "week") {
+        const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        return scanDate >= lastWeek;
+      }
+      if (timeFilter === "month") {
+        const lastMonth = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+        return scanDate >= lastMonth;
+      }
+      return true;
+    });
   return (
     <div className="p-6 bg-gradient-to-br from-white/50 via-gray-50/30 to-highlight/5">
       {loading ? (
@@ -29,53 +64,31 @@ const HistoryList = ({
             Coba Lagi
           </button>
         </div>
-      ) : history.length > 0 ? (
-        <div className="grid gap-6">
-          {history
-            .filter((scan) => {
-              if (searchQuery) {
-                const scanDate = new Date(scan.timestamp);
-                const formattedDate = scanDate.toLocaleDateString("id-ID", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                });
-                return formattedDate
-                  .toLowerCase()
-                  .includes(searchQuery.toLowerCase());
-              }
-              return true;
-            })
-            .filter((scan) => {
-              const scanDate = new Date(scan.timestamp);
-              const today = new Date();
-              if (timeFilter === "today") {
-                return scanDate.toDateString() === today.toDateString();
-              }
-              if (timeFilter === "week") {
-                const lastWeek = new Date(
-                  today.getTime() - 7 * 24 * 60 * 60 * 1000
-                );
-                return scanDate >= lastWeek;
-              }
-              if (timeFilter === "month") {
-                const lastMonth = new Date(
-                  today.getTime() - 30 * 24 * 60 * 60 * 1000
-                );
-                return scanDate >= lastMonth;
-              }
-              return true;
-            })
-            .map((scan) => (
-              <ScanHistoryCard
-                key={scan.id}
-                scan={scan}
-                onDelete={handleDelete}
-              />
-            ))}
-        </div>
+      ) : filteredHistory.length > 0 ? (
+        <>
+          <div className="grid gap-6">
+            {filteredHistory
+              .slice(
+                (currentPage - 1) * itemsPerPage,
+                currentPage * itemsPerPage
+              )
+              .map((scan) => (
+                <ScanHistoryCard
+                  key={scan.id}
+                  scan={scan}
+                  onDelete={handleDelete}
+                />
+              ))}
+          </div>
+          <div className="mt-6">
+            <Pagination
+              currentPage={currentPage}
+              totalItems={filteredHistory.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+        </>
       ) : (
         <div className="text-center py-12">
           <div className="bg-gray-50/80 backdrop-blur-sm p-8 rounded-2xl inline-block shadow-sm border border-gray-100/50">
