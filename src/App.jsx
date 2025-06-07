@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ScrollToTop from "./components/layouts/ScrollToTop";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import { privateRoutes, publicRoutes, sharedRoutes } from "./routes/routes";
+import { privateRoutes, publicRoutes } from "./routes/routes";
 import NotFoundPage from "./pages/NotFoundPage";
 
 const App = () => {
@@ -19,21 +19,18 @@ const App = () => {
         }
       >
         <Routes>
-          {/* Shared Routes - Bisa diakses semua */}
-          {sharedRoutes.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
-          ))}
-
           {/* Public Routes - Hanya untuk yang belum login */}
           {publicRoutes.map(({ path, element }) => (
             <Route
               key={path}
               path={path}
-              element={isAuthenticated ? <Navigate to="/" replace /> : element}
+              element={
+                !isAuthenticated ? element : <Navigate to="/" replace={true} />
+              }
             />
           ))}
 
-          {/* Protected Routes - Hanya untuk yang sudah login */}
+          {/* Protected Routes - Harus login */}
           {privateRoutes.map(({ path, element }) => (
             <Route
               key={path}
@@ -42,7 +39,7 @@ const App = () => {
             />
           ))}
 
-          {/* Not Found Route */}
+          {/* 404 Not Found */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

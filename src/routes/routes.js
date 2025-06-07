@@ -5,7 +5,6 @@ import NutritionPage from "../pages/NutritionPage.jsx";
 import DailySummaryPage from "../pages/DailySummaryPage.jsx";
 import LoginPage from "../pages/LoginPage.jsx";
 import RegisterPage from "../pages/RegisterPage.jsx";
-import PricingPage from "../pages/PricingPage.jsx";
 
 // Routes yang membutuhkan autentikasi
 export const privateRoutes = [
@@ -47,14 +46,5 @@ export const publicRoutes = [
     path: "/register",
     element: <RegisterPage />,
     title: "Daftar",
-  },
-];
-
-// Routes yang bisa diakses baik saat login maupun tidak
-export const sharedRoutes = [
-  {
-    path: "/pricing",
-    element: <PricingPage />,
-    title: "Harga",
   },
 ];
