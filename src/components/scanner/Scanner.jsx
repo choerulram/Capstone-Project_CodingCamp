@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaCamera, FaStop, FaUpload, FaSearch } from "react-icons/fa";
+import { FaCamera, FaStop, FaUpload, FaSearch, FaRedo } from "react-icons/fa";
 import api from "../../utils/api";
 import DecorativeDivider from "./DecorativeDivider";
 import InstructionsSection from "./InstructionsSection";
@@ -29,6 +29,7 @@ const Scanner = () => {
   const [error, setError] = useState(null);
   const [nutritionData, setNutritionData] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [imageSource, setImageSource] = useState(null); // 'upload' atau 'camera'
 
   const videoRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -134,8 +135,9 @@ const Scanner = () => {
       };
       reader.readAsDataURL(file);
 
-      // Store file for analysis
+      // Store file for analysis and set image source
       setCurrentFile(file);
+      setImageSource("upload");
 
       // Stop camera if it's running
       if (isScanning) {
@@ -170,6 +172,7 @@ const Scanner = () => {
           const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
           setSelectedImage(URL.createObjectURL(blob));
           setCurrentFile(file);
+          setImageSource("camera");
           setNutritionData(null);
           handleStopCamera();
         },
@@ -181,6 +184,13 @@ const Scanner = () => {
       setError("Gagal mengambil gambar: " + err.message);
     }
   }, [handleStopCamera]);
+
+  // Handler untuk mengulang foto
+  const handleRetakePhoto = useCallback(() => {
+    setSelectedImage(null);
+    setCurrentFile(null);
+    handleStartCamera();
+  }, [handleStartCamera]);
 
   const handleAnalyze = async () => {
     if (!currentFile) {
@@ -379,28 +389,50 @@ const Scanner = () => {
             <div className="flex justify-center gap-4 flex-wrap mb-12">
               {!isScanning ? (
                 <>
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="flex items-center gap-2 px-6 py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                    disabled={isLoading}
-                  >
-                    <FaUpload /> Upload Foto
-                  </button>
-                  <button
-                    onClick={handleStartCamera}
-                    className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                    disabled={isLoading}
-                  >
-                    <FaCamera /> Buka Kamera
-                  </button>
-                  {selectedImage && (
-                    <button
-                      onClick={handleAnalyze}
-                      className="flex items-center gap-2 px-6 py-3 bg-secondary text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                      disabled={isLoading}
-                    >
-                      <FaSearch /> Analisis Nutrisi
-                    </button>
+                  {!selectedImage ? (
+                    <>
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex items-center gap-2 px-6 py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                        disabled={isLoading}
+                      >
+                        <FaUpload /> Upload Foto
+                      </button>
+                      <button
+                        onClick={handleStartCamera}
+                        className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                        disabled={isLoading}
+                      >
+                        <FaCamera /> Buka Kamera
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      {imageSource === "camera" ? (
+                        <button
+                          onClick={handleRetakePhoto}
+                          className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                          disabled={isLoading}
+                        >
+                          <FaRedo /> Ambil Ulang Foto
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                          disabled={isLoading}
+                        >
+                          <FaUpload /> Upload Ulang Foto
+                        </button>
+                      )}
+                      <button
+                        onClick={handleAnalyze}
+                        className="flex items-center gap-2 px-6 py-3 bg-secondary text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                        disabled={isLoading}
+                      >
+                        <FaSearch /> Analisis Nutrisi
+                      </button>
+                    </>
                   )}
                 </>
               ) : (
