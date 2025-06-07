@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../states/authUser/slice.js";
@@ -9,36 +9,11 @@ const Header = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const [showConfirm, setShowConfirm] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const [showNotifications, setShowNotifications] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isActive = (path) => {
     return location.pathname === path;
   };
-
-  // Dummy function untuk demo notifikasi - nantinya bisa diganti dengan data real
-  useEffect(() => {
-    // Simulasi pengecekan nutrisi
-    const checkNutrition = () => {
-      const dailyIntake = {
-        sugar: 50, // batas gula harian (gram)
-        currentSugar: 65, // simulasi gula yang dikonsumsi hari ini
-      };
-
-      if (dailyIntake.currentSugar > dailyIntake.sugar) {
-        setNotifications([
-          {
-            id: Date.now(),
-            type: "warning",
-            message: `Peringatan: Konsumsi gula Anda hari ini (${dailyIntake.currentSugar}g) telah melebihi batas harian (${dailyIntake.sugar}g)`,
-          },
-        ]);
-      }
-    };
-
-    checkNutrition();
-  }, []);
 
   const handleLogout = () => {
     setShowConfirm(true);
@@ -52,10 +27,6 @@ const Header = () => {
 
   const cancelLogout = () => {
     setShowConfirm(false);
-  };
-
-  const toggleNotifications = () => {
-    setShowNotifications(!showNotifications);
   };
 
   const toggleMobileMenu = () => {
@@ -72,7 +43,6 @@ const Header = () => {
               <span className="text-highlight">Facts</span>
             </h1>
           </div>
-
           {/* Hamburger Menu Button for Mobile */}
           <button
             onClick={toggleMobileMenu}
@@ -97,10 +67,8 @@ const Header = () => {
               />
             </svg>
           </button>
-
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <UpgradeButton />
             <Link
               to="/"
               className={`transition-all duration-300 px-4 py-2 rounded-lg ${
@@ -130,7 +98,7 @@ const Header = () => {
               }`}
             >
               History
-            </Link>{" "}
+            </Link>
             <Link
               to="/nutrition"
               className={`transition-all duration-300 px-4 py-2 rounded-lg ${
@@ -140,7 +108,7 @@ const Header = () => {
               }`}
             >
               Daily Nutrition
-            </Link>{" "}
+            </Link>
             <Link
               to="/daily-summary"
               className={`transition-all duration-300 px-4 py-2 rounded-lg ${
@@ -152,63 +120,9 @@ const Header = () => {
               Daily Summary
             </Link>
           </nav>
-
-          {/* Desktop Notifications and Sign Out */}
+          {/* Desktop Upgrade Button and Sign Out */}
           <div className="hidden md:flex items-center space-x-4">
-            {/* Notification Bell */}
-            <div className="relative">
-              <button
-                onClick={toggleNotifications}
-                className="p-2 text-main hover:text-highlight transition-colors duration-300 relative"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  />
-                </svg>
-                {notifications.length > 0 && (
-                  <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
-                    {notifications.length}
-                  </span>
-                )}
-              </button>
-              {/* Notification Dropdown */}
-              {showNotifications && notifications.length > 0 && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg z-50 border border-gray-100">
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-main mb-2">
-                      Notifikasi
-                    </h3>
-                    <div className="space-y-3">
-                      {notifications.map((notification) => (
-                        <div
-                          key={notification.id}
-                          className={`p-3 rounded-lg ${
-                            notification.type === "warning"
-                              ? "bg-yellow-50 border-l-4 border-yellow-400"
-                              : "bg-white"
-                          }`}
-                        >
-                          <p className="text-sm text-gray-600">
-                            {notification.message}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
+            <UpgradeButton />
             <button
               onClick={handleLogout}
               className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
@@ -271,8 +185,7 @@ const Header = () => {
               }`}
             >
               Daily Nutrition
-            </Link>
-            <Link
+            </Link>            <Link
               to="/daily-summary"
               onClick={() => setIsMobileMenuOpen(false)}
               className={`transition-all duration-300 px-4 py-3 rounded-lg ${
@@ -283,43 +196,9 @@ const Header = () => {
             >
               Daily Summary
             </Link>
-            <Link
-              to="/pricing"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`transition-all duration-300 px-4 py-3 rounded-lg ${
-                isActive("/pricing")
-                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
-                  : "text-main hover:bg-highlight/10 hover:text-highlight"
-              }`}
-            >
-              Pricing
-            </Link>
 
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-              <button
-                onClick={toggleNotifications}
-                className="p-2 text-main hover:text-highlight transition-colors duration-300 relative"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  />
-                </svg>
-                {notifications.length > 0 && (
-                  <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
-                    {notifications.length}
-                  </span>
-                )}
-              </button>
+              <UpgradeButton />
               <button
                 onClick={handleLogout}
                 className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"

@@ -7,6 +7,7 @@ import LoginPage from "../pages/LoginPage.jsx";
 import RegisterPage from "../pages/RegisterPage.jsx";
 import PricingPage from "../pages/PricingPage.jsx";
 
+// Routes yang membutuhkan autentikasi
 export const privateRoutes = [
   {
     path: "/",
@@ -35,6 +36,7 @@ export const privateRoutes = [
   },
 ];
 
+// Routes yang hanya bisa diakses saat tidak login
 export const publicRoutes = [
   {
     path: "/login",
@@ -46,6 +48,10 @@ export const publicRoutes = [
     element: <RegisterPage />,
     title: "Daftar",
   },
+];
+
+// Routes yang bisa diakses baik saat login maupun tidak
+export const sharedRoutes = [
   {
     path: "/pricing",
     element: <PricingPage />,
