@@ -2,6 +2,8 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaCamera, FaStop, FaUpload, FaSearch } from "react-icons/fa";
 import api from "../../utils/api";
+import DecorativeDivider from "./DecorativeDivider";
+import InstructionsSection from "./InstructionsSection";
 import {
   startCamera,
   stopCamera,
@@ -373,7 +375,6 @@ const Scanner = () => {
           </div>{" "}
           {/* Controls and Instructions Container */}
           <div className="p-6 bg-highlight/5">
-            {" "}
             {/* Camera Controls */}
             <div className="flex justify-center gap-4 flex-wrap mb-12">
               {!isScanning ? (
@@ -419,142 +420,14 @@ const Scanner = () => {
                     <FaStop /> Tutup Kamera
                   </button>
                 </>
-              )}{" "}
+              )}
             </div>
-            {/* Decorative Divider */}
-            <div className="relative py-6 mb-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t-2 border-dashed border-secondary/50"></div>
-              </div>
-              <div className="relative flex justify-center">
-                <div className="bg-white px-6 py-2 rounded-full shadow-sm border border-secondary/20">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-secondary/60"></div>
-                    <div className="w-2 h-2 rounded-full bg-highlight"></div>
-                    <div className="w-3 h-3 rounded-full bg-main"></div>
-                    <div className="w-2 h-2 rounded-full bg-highlight"></div>
-                    <div className="w-1.5 h-1.5 rounded-full bg-secondary/60"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Instructions Section */}
-            <div className="bg-gradient-to-br from-highlight/20 to-secondary/20 rounded-xl p-6 backdrop-blur-sm">
-              <h2 className="text-xl font-semibold text-main mb-6 flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                Petunjuk Penggunaan
-              </h2>
-              <div className="space-y-3">
-                <div className="group bg-white/60 hover:bg-white/80 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-secondary flex items-center gap-4 animate-fade-in cursor-default transform hover:-translate-y-0.5">
-                  <div className="p-3 bg-highlight/20 rounded-xl group-hover:bg-highlight/30 transition-colors">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-main group-hover:text-highlight transition-colors"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                      />
-                    </svg>
-                  </div>
-                  <p className="text-sm text-gray-600 group-hover:text-main flex-1 transition-colors">
-                    Pastikan tabel informasi nilai gizi terlihat jelas dan tidak
-                    terhalang
-                  </p>
-                </div>
 
-                <div className="group bg-white/60 hover:bg-white/80 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-secondary flex items-center gap-4 animate-fade-in [animation-delay:150ms] cursor-default transform hover:-translate-y-0.5">
-                  <div className="p-3 bg-highlight/20 rounded-xl group-hover:bg-highlight/30 transition-colors">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-main group-hover:text-highlight transition-colors"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-                      />
-                    </svg>
-                  </div>
-                  <p className="text-sm text-gray-600 group-hover:text-main flex-1 transition-colors">
-                    Posisikan informasi nilai gizi dalam area kotak pemindaian
-                  </p>
-                </div>
+            {/* Decorative Divider Component */}
+            <DecorativeDivider />
 
-                <div className="group bg-white/60 hover:bg-white/80 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-secondary flex items-center gap-4 animate-fade-in [animation-delay:300ms] cursor-default transform hover:-translate-y-0.5">
-                  <div className="p-3 bg-highlight/20 rounded-xl group-hover:bg-highlight/30 transition-colors">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-main group-hover:text-highlight transition-colors"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </div>
-                  <p className="text-sm text-gray-600 group-hover:text-main flex-1 transition-colors">
-                    Tahan ponsel Anda dengan stabil selama pemindaian
-                  </p>
-                </div>
-
-                <div className="group bg-white/60 hover:bg-white/80 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-secondary flex items-center gap-4 animate-fade-in [animation-delay:450ms] cursor-default transform hover:-translate-y-0.5">
-                  <div className="p-3 bg-highlight/20 rounded-xl group-hover:bg-highlight/30 transition-colors">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-main group-hover:text-highlight transition-colors"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                      />
-                    </svg>
-                  </div>
-                  <p className="text-sm text-gray-600 group-hover:text-main flex-1 transition-colors">
-                    Pastikan pencahayaan cukup terang dan tidak ada pantulan
-                    cahaya
-                  </p>
-                </div>
-              </div>
-            </div>
+            {/* Instructions Section Component */}
+            <InstructionsSection />
           </div>
         </div>{" "}
         <input
