@@ -15,9 +15,9 @@ const DailySummaryPage = () => {
             Ringkasan Nutrisi Harian
           </h1>
           <div className="space-y-8">
+            <NutritionProgress />
             <TotalNutritionSummary />
             <DailyScanHistory />
-            <NutritionProgress />
           </div>
         </div>
       </main>
