@@ -139,9 +139,9 @@ const NutritionProgress = () => {
   ];
 
   return (
-    <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 relative">
-      <h2 className="text-xl font-semibold text-main mb-6 flex items-center">
-        <span className="bg-highlight/20 p-2 rounded-lg mr-2">
+    <div className="bg-gray-50 p-4 sm:p-6 rounded-xl border border-gray-100 relative">
+      <h2 className="text-lg sm:text-xl font-semibold text-main mb-4 sm:mb-6 flex items-center">
+        <span className="bg-highlight/20 p-1.5 sm:p-2 rounded-lg mr-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 text-highlight"
@@ -158,40 +158,40 @@ const NutritionProgress = () => {
           </svg>
         </span>
         Progress Kebutuhan Harian
-      </h2>{" "}
-      <div className="flex justify-center gap-4 mb-6">
-        <div className="flex items-center gap-3 bg-gradient-to-r from-red-50 to-red-50/30 px-4 py-2 rounded-xl border border-red-100 shadow-sm">
-          <div className="w-4 h-4 rounded-full bg-gradient-to-r from-red-600 to-red-400 shadow-inner"></div>
-          <div className="text-sm font-medium text-red-700">
+      </h2>
+      <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mb-4 sm:mb-6">
+        <div className="flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-red-50 to-red-50/30 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-red-100 shadow-sm">
+          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-gradient-to-r from-red-600 to-red-400 shadow-inner"></div>
+          <div className="text-xs sm:text-sm font-medium text-red-700">
             Berlebih &gt;100%
           </div>
         </div>
-        <div className="flex items-center gap-3 bg-gradient-to-r from-green-50 to-green-50/30 px-4 py-2 rounded-xl border border-green-100 shadow-sm">
-          <div className="w-4 h-4 rounded-full bg-gradient-to-r from-green-600 to-green-400 shadow-inner"></div>
-          <div className="text-sm font-medium text-green-700">
+        <div className="flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-green-50 to-green-50/30 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-green-100 shadow-sm">
+          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-gradient-to-r from-green-600 to-green-400 shadow-inner"></div>
+          <div className="text-xs sm:text-sm font-medium text-green-700">
             Ideal 80-100%
           </div>
         </div>
-        <div className="flex items-center gap-3 bg-gradient-to-r from-yellow-50 to-yellow-50/30 px-4 py-2 rounded-xl border border-yellow-100 shadow-sm">
-          <div className="w-4 h-4 rounded-full bg-gradient-to-r from-yellow-600 to-yellow-400 shadow-inner"></div>
-          <div className="text-sm font-medium text-yellow-700">
+        <div className="flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-yellow-50 to-yellow-50/30 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-yellow-100 shadow-sm">
+          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-gradient-to-r from-yellow-600 to-yellow-400 shadow-inner"></div>
+          <div className="text-xs sm:text-sm font-medium text-yellow-700">
             Kurang &lt;80%
           </div>
-        </div>{" "}
+        </div>
       </div>
-      <div className="grid grid-cols-7 gap-4 h-96">
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-4 h-[680px] sm:h-96">
         {nutrients.map((nutrient) => (
-          <div key={nutrient.id} className="flex flex-col items-center">
-            <div className="text-sm font-medium text-main mb-2">
+          <div key={nutrient.id} className="flex flex-col items-center h-full">
+            <div className="text-xs sm:text-sm font-medium text-main mb-1 sm:mb-2">
               {nutrient.current.toFixed(1)}/{Number(nutrient.target).toFixed(1)}{" "}
               {nutrient.unit}
-            </div>{" "}
-            <div className="relative flex-grow w-full flex items-end justify-center group">
-              {/* Target bar (background) */}{" "}
-              <div className="absolute inset-0 bg-gray-200/40 rounded-2xl w-28 mx-auto shadow-inner backdrop-blur-sm border border-gray-200/50">
+            </div>
+            <div className="relative w-full flex-1 flex items-end justify-center group">
+              {/* Target bar (background) */}
+              <div className="absolute inset-0 bg-gray-200/40 rounded-xl sm:rounded-2xl w-20 sm:w-28 mx-auto shadow-inner backdrop-blur-sm border border-gray-200/50">
                 {/* Progress bar stacked on top */}
                 <div
-                  className={`absolute bottom-0 w-full rounded-2xl transition-all duration-500 shadow-lg ${
+                  className={`absolute bottom-0 w-full rounded-xl sm:rounded-2xl transition-all duration-500 shadow-lg ${
                     calculatePercentage(nutrient.current, nutrient.target) > 100
                       ? "bg-gradient-to-t from-red-600 via-red-500 to-red-400 hover:from-red-500 hover:via-red-400 hover:to-red-300 hover:shadow-red-200/50"
                       : calculatePercentage(
@@ -209,23 +209,23 @@ const NutritionProgress = () => {
                   }}
                 >
                   {/* Shine effect */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/40 via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-white/40 via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   {/* Glass effect */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/20 to-black/5"></div>
+                  <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-b from-white/20 to-black/5"></div>
                   {/* Bottom highlight */}
-                  <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white/30 rounded-b-2xl"></div>
+                  <div className="absolute bottom-0 left-0 right-0 h-1 sm:h-1.5 bg-white/30 rounded-b-xl sm:rounded-b-2xl"></div>
                 </div>
               </div>
               {/* Enhanced hover tooltip */}
-              <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-gray-800/95 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-xl scale-95 group-hover:scale-100 pointer-events-none">
-                <div className="font-semibold mb-1">
+              <div className="absolute -top-12 sm:-top-16 left-1/2 transform -translate-x-1/2 bg-gray-800/95 backdrop-blur-sm text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-xl scale-95 group-hover:scale-100 pointer-events-none z-10">
+                <div className="font-semibold mb-0.5 sm:mb-1">
                   {calculatePercentage(
                     nutrient.current,
                     nutrient.target
                   ).toFixed(1)}
                   %
                 </div>
-                <div className="text-gray-300 text-[10px]">
+                <div className="text-gray-300 text-[8px] sm:text-[10px]">
                   {nutrient.current.toFixed(1)} / {nutrient.target.toFixed(1)}{" "}
                   {nutrient.unit}
                 </div>
@@ -233,7 +233,7 @@ const NutritionProgress = () => {
                 <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-800/95 rotate-45"></div>
               </div>
             </div>
-            <div className="mt-2 text-sm text-gray-600 text-center">
+            <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-600 text-center max-w-[90px] sm:max-w-full">
               {nutrient.label}
             </div>
           </div>

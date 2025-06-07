@@ -185,7 +185,8 @@ const Header = () => {
               }`}
             >
               Daily Nutrition
-            </Link>            <Link
+            </Link>{" "}
+            <Link
               to="/daily-summary"
               onClick={() => setIsMobileMenuOpen(false)}
               className={`transition-all duration-300 px-4 py-3 rounded-lg ${
@@ -196,7 +197,6 @@ const Header = () => {
             >
               Daily Summary
             </Link>
-
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
               <UpgradeButton />
               <button
