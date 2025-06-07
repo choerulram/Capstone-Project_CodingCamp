@@ -1,6 +1,6 @@
 import React from "react";
-import RegisterForm from "../../components/auth/RegisterForm";
-import RegisterBranding from "../../components/auth/RegisterBranding";
+import RegisterForm from "../components/auth/RegisterForm";
+import RegisterBranding from "../components/auth/RegisterBranding";
 
 const RegisterPage = () => {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
-import LoginForm from "../../components/auth/LoginForm";
-import LoginBranding from "../../components/auth/LoginBranding";
+import LoginForm from "../components/auth/LoginForm";
+import LoginBranding from "../components/auth/LoginBranding";
 
 const LoginPage = () => {
   return (

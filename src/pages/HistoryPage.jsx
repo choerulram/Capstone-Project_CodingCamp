@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
-import Header from "../../components/layouts/Header";
-import Footer from "../../components/layouts/Footer";
-import HistoryHeader from "../../components/history/HistoryHeader";
-import HistoryFilter from "../../components/history/HistoryFilter";
-import HistoryList from "../../components/history/HistoryList";
-import api from "../../utils/api";
+import Header from "../components/layouts/Header";
+import Footer from "../components/layouts/Footer";
+import HistoryHeader from "../components/history/HistoryHeader";
+import HistoryFilter from "../components/history/HistoryFilter";
+import HistoryList from "../components/history/HistoryList";
+import api from "../utils/api";
 
 const HistoryPage = () => {
   const { token } = useSelector((state) => state.auth);

@@ -1,16 +1,14 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {
-  LoginPage,
-  RegisterPage,
-  HomePage,
-  ScanPage,
-  HistoryPage,
-  NutritionPage,
-  DailySummaryPage,
-  PricingPage,
-} from "./pages";
+import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import ScanPage from "./pages/ScanPage.jsx";
+import HistoryPage from "./pages/HistoryPage.jsx";
+import NutritionPage from "./pages/NutritionPage.jsx";
+import DailySummaryPage from "./pages/DailySummaryPage.jsx";
+import PricingPage from "./pages/PricingPage.jsx";
 import ScrollToTop from "./components/layouts/ScrollToTop";
 
 const App = () => {

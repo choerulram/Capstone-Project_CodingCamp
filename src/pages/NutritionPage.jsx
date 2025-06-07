@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../utils/api.js";
-import Header from "../../components/layouts/Header";
-import Footer from "../../components/layouts/Footer";
-import NutritionHeader from "../../components/nutrition/NutritionHeader";
-import NutritionDataCard from "../../components/nutrition/NutritionDataCard";
-import CalculationInfoCard from "../../components/nutrition/CalculationInfoCard";
-import NutritionTipsCard from "../../components/nutrition/NutritionTipsCard";
-import AdditionalRecommendations from "../../components/nutrition/AdditionalRecommendations";
+import api from "../utils/api.js";
+import Header from "../components/layouts/Header";
+import Footer from "../components/layouts/Footer";
+import NutritionHeader from "../components/nutrition/NutritionHeader";
+import NutritionDataCard from "../components/nutrition/NutritionDataCard";
+import CalculationInfoCard from "../components/nutrition/CalculationInfoCard";
+import NutritionTipsCard from "../components/nutrition/NutritionTipsCard";
+import AdditionalRecommendations from "../components/nutrition/AdditionalRecommendations";
 
 const NutritionPage = () => {
   const navigate = useNavigate();
