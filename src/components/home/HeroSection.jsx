@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import LoginRequiredModal from "../auth/LoginRequiredModal";
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const handleScanClick = () => {
-    navigate("/scan");
+    if (!token) {
+      setShowLoginModal(true);
+    } else {
+      navigate("/scan");
+    }
   };
 
   return (
@@ -108,11 +114,17 @@ const HeroSection = () => {
                     <p className="text-gray-600">Pantau pola makan Anda</p>
                   </div>
                 </div>
-              </div>
+              </div>{" "}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Login Required Modal */}
+      <LoginRequiredModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
     </section>
   );
 };

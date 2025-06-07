@@ -1,15 +1,27 @@
 import React, { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../states/authUser/slice.js";
 import UpgradeButton from "../subscription/UpgradeButton";
+import LoginRequiredModal from "../auth/LoginRequiredModal";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  const { token } = useSelector((state) => state.auth);
   const [showConfirm, setShowConfirm] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const handleProtectedLink = (e, path) => {
+    e.preventDefault();
+    if (!token) {
+      setShowLoginModal(true);
+    } else {
+      navigate(path);
+    }
+  };
 
   const isActive = (path) => {
     return location.pathname === path;
@@ -43,7 +55,7 @@ const Header = () => {
               <span className="text-highlight">Facts</span>
             </h1>
           </div>
-          {/* Hamburger Menu Button for Mobile */}
+
           <button
             onClick={toggleMobileMenu}
             className="md:hidden text-main hover:text-highlight transition-colors duration-300"
@@ -67,6 +79,7 @@ const Header = () => {
               />
             </svg>
           </button>
+
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
@@ -79,8 +92,10 @@ const Header = () => {
             >
               Home
             </Link>
-            <Link
-              to="/scan"
+            {/* Protected Routes */}
+            <a
+              href="/scan"
+              onClick={(e) => handleProtectedLink(e, "/scan")}
               className={`transition-all duration-300 px-4 py-2 rounded-lg ${
                 isActive("/scan")
                   ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
@@ -88,9 +103,10 @@ const Header = () => {
               }`}
             >
               Scan
-            </Link>
-            <Link
-              to="/history"
+            </a>
+            <a
+              href="/history"
+              onClick={(e) => handleProtectedLink(e, "/history")}
               className={`transition-all duration-300 px-4 py-2 rounded-lg ${
                 isActive("/history")
                   ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
@@ -98,9 +114,10 @@ const Header = () => {
               }`}
             >
               History
-            </Link>
-            <Link
-              to="/nutrition"
+            </a>
+            <a
+              href="/nutrition"
+              onClick={(e) => handleProtectedLink(e, "/nutrition")}
               className={`transition-all duration-300 px-4 py-2 rounded-lg ${
                 isActive("/nutrition")
                   ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
@@ -108,9 +125,10 @@ const Header = () => {
               }`}
             >
               Daily Nutrition
-            </Link>
-            <Link
-              to="/daily-summary"
+            </a>
+            <a
+              href="/daily-summary"
+              onClick={(e) => handleProtectedLink(e, "/daily-summary")}
               className={`transition-all duration-300 px-4 py-2 rounded-lg ${
                 isActive("/daily-summary")
                   ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
@@ -118,17 +136,29 @@ const Header = () => {
               }`}
             >
               Daily Summary
-            </Link>
+            </a>
           </nav>
-          {/* Desktop Upgrade Button and Sign Out */}
+
+          {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <UpgradeButton />
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
-            >
-              Sign Out
-            </button>
+            {token ? (
+              <>
+                <UpgradeButton />
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
+                >
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
+              >
+                Sign In
+              </Link>
+            )}
           </div>
         </div>
 
@@ -153,9 +183,13 @@ const Header = () => {
             >
               Home
             </Link>
-            <Link
-              to="/scan"
-              onClick={() => setIsMobileMenuOpen(false)}
+            {/* Protected Mobile Routes */}
+            <a
+              href="/scan"
+              onClick={(e) => {
+                setIsMobileMenuOpen(false);
+                handleProtectedLink(e, "/scan");
+              }}
               className={`transition-all duration-300 px-4 py-3 rounded-lg ${
                 isActive("/scan")
                   ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
@@ -163,10 +197,13 @@ const Header = () => {
               }`}
             >
               Scan
-            </Link>
-            <Link
-              to="/history"
-              onClick={() => setIsMobileMenuOpen(false)}
+            </a>
+            <a
+              href="/history"
+              onClick={(e) => {
+                setIsMobileMenuOpen(false);
+                handleProtectedLink(e, "/history");
+              }}
               className={`transition-all duration-300 px-4 py-3 rounded-lg ${
                 isActive("/history")
                   ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
@@ -174,10 +211,13 @@ const Header = () => {
               }`}
             >
               History
-            </Link>
-            <Link
-              to="/nutrition"
-              onClick={() => setIsMobileMenuOpen(false)}
+            </a>
+            <a
+              href="/nutrition"
+              onClick={(e) => {
+                setIsMobileMenuOpen(false);
+                handleProtectedLink(e, "/nutrition");
+              }}
               className={`transition-all duration-300 px-4 py-3 rounded-lg ${
                 isActive("/nutrition")
                   ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
@@ -185,10 +225,13 @@ const Header = () => {
               }`}
             >
               Daily Nutrition
-            </Link>{" "}
-            <Link
-              to="/daily-summary"
-              onClick={() => setIsMobileMenuOpen(false)}
+            </a>
+            <a
+              href="/daily-summary"
+              onClick={(e) => {
+                setIsMobileMenuOpen(false);
+                handleProtectedLink(e, "/daily-summary");
+              }}
               className={`transition-all duration-300 px-4 py-3 rounded-lg ${
                 isActive("/daily-summary")
                   ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
@@ -196,15 +239,29 @@ const Header = () => {
               }`}
             >
               Daily Summary
-            </Link>
+            </a>
+
+            {/* Mobile Auth Buttons */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-              <UpgradeButton />
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
-              >
-                Sign Out
-              </button>
+              {token ? (
+                <>
+                  <UpgradeButton />
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className="w-full text-center px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
           </nav>
         </div>
@@ -237,6 +294,12 @@ const Header = () => {
           </div>
         </div>
       )}
+
+      {/* Login Required Modal */}
+      <LoginRequiredModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
     </header>
   );
 };
