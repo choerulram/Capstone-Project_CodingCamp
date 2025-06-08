@@ -93,6 +93,7 @@ const healthArticles = [
 const ArticlesSection = () => {
   const articleContainerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   const scrollArticles = (direction) => {
     if (articleContainerRef.current) {
@@ -127,6 +128,33 @@ const ArticlesSection = () => {
       );
     }
   };
+  // Auto-scroll effect dengan infinite loop
+  useEffect(() => {
+    let interval;
+
+    if (!isHovered) {
+      interval = setInterval(() => {
+        const nextIndex = (activeIndex + 1) % healthArticles.length;
+        const isLastCard = activeIndex === healthArticles.length - 1;
+
+        if (isLastCard) {
+          // Ketika di card terakhir, kembali ke awal dengan smooth
+          setActiveIndex(0);
+          scrollToIndex(0);
+        } else {
+          // Geser ke card berikutnya
+          setActiveIndex(nextIndex);
+          scrollToIndex(nextIndex);
+        }
+      }, 3000); // Dipercepat menjadi 3 detik untuk pengalaman yang lebih dinamis
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [activeIndex, isHovered]);
 
   useEffect(() => {
     const container = articleContainerRef.current;
@@ -155,11 +183,12 @@ const ArticlesSection = () => {
             />
           </svg>
           Artikel Kesehatan Terkini
-        </h2>
-
-        <div className="relative group">
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
+        </h2>{" "}
+        <div
+          className="relative group"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <div
             ref={articleContainerRef}
             className="flex gap-8 overflow-x-auto overflow-y-visible scroll-smooth no-scrollbar pb-2 mb-6"
@@ -171,15 +200,19 @@ const ArticlesSection = () => {
                 href={article.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-none w-[280px] bg-white rounded-xl overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 group/card"
+                className="flex-none w-[280px] bg-white rounded-xl overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group/card animate-fade-in [transform-style:preserve-3d]"
+                style={{
+                  animation: `fadeIn 0.5s ease-out`,
+                  transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+                }}
               >
-                <div className="aspect-[4/3] relative overflow-hidden">
+                <div className="aspect-[4/3] relative overflow-hidden rounded-t-xl">
                   <img
                     src={article.image}
                     alt={article.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110 rounded-t-xl"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 rounded-t-xl"></div>
                 </div>
                 <div className="p-5 bg-gradient-to-b from-white to-gray-50/50">
                   <h3 className="text-lg font-semibold text-main mb-3 line-clamp-2 group-hover/card:text-highlight transition-colors min-h-[3.25rem]">
