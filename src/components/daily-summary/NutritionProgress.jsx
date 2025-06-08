@@ -73,16 +73,10 @@ const NutritionProgress = () => {
     if (token) {
       fetchData();
     }
-  }, [token]);
-  // Helper function to calculate actual percentage
+  }, [token]); // Helper function to calculate actual percentage
   const calculatePercentage = (current, target) => {
     if (!target || target === 0) return 0;
     return (current / target) * 100;
-  };
-
-  // Helper function to calculate progress bar width (capped at 100%)
-  const calculateProgressWidth = (current, target) => {
-    return Math.min(calculatePercentage(current, target), 100);
   };
 
   // Array of nutrients in correct order with their units
@@ -178,66 +172,117 @@ const NutritionProgress = () => {
             Kurang &lt;80%
           </div>
         </div>
-      </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-4 h-[680px] sm:h-96">
-        {nutrients.map((nutrient) => (
-          <div key={nutrient.id} className="flex flex-col items-center h-full">
-            <div className="text-xs sm:text-sm font-medium text-main mb-1 sm:mb-2">
-              {nutrient.current.toFixed(1)}/{Number(nutrient.target).toFixed(1)}{" "}
-              {nutrient.unit}
-            </div>
-            <div className="relative w-full flex-1 flex items-end justify-center group">
-              {/* Target bar (background) */}
-              <div className="absolute inset-0 bg-gray-200/40 rounded-xl sm:rounded-2xl w-20 sm:w-28 mx-auto shadow-inner backdrop-blur-sm border border-gray-200/50">
-                {/* Progress bar stacked on top */}
+      </div>{" "}
+      {/* Bar Chart Container */}
+      <div className="relative h-[360px] w-full pt-[30px]">
+        {/* Chart Area with Y-axis and Grid */}
+        <div className="absolute inset-0 flex pt-[30px]">
+          {" "}
+          {/* Y-axis labels (percentages) */}
+          <div className="w-16 flex flex-col justify-between h-[300px]">
+            {[100, 80, 60, 40, 20, 0].map((percent) => (
+              <div key={percent} className="relative h-0">
+                <div className="absolute -top-2 right-0 flex items-center">
+                  <span className="text-xs text-gray-600 mr-2">{percent}%</span>
+                  <div className="h-[1px] w-2 bg-gray-300"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Grid lines */}
+          <div className="flex-1 flex flex-col justify-between h-[300px]">
+            {[100, 80, 60, 40, 20, 0].map((percent) => (
+              <div key={percent} className="relative">
+                <div className="absolute top-0 w-full h-[1px] bg-gray-200"></div>
+              </div>
+            ))}
+          </div>
+        </div>{" "}
+        {/* Bars Container */}
+        <div className="absolute left-16 right-0 top-[30px] h-[300px] flex items-stretch justify-between px-8">
+          {nutrients.map((nutrient) => {
+            const percentage = calculatePercentage(
+              nutrient.current,
+              nutrient.target
+            );
+            return (
+              <div
+                key={nutrient.id}
+                className="relative flex flex-col items-center group"
+                style={{ width: `${100 / nutrients.length}%` }}
+              >
+                {/* Bar Container - Aligns with grid */}{" "}
+                <div className="relative w-14 sm:w-20 h-full">
+                  {/* Target Bar (Background) */}
+                  <div className="absolute inset-0 rounded-lg bg-gray-200/50 border border-gray-300/30 backdrop-blur-sm"></div>{" "}
+                  {/* Progress Bar */}{" "}
+                  <div
+                    className={`absolute bottom-0 w-full rounded-t-lg transition-all duration-500 ease-in-out ${
+                      percentage > 100
+                        ? "bg-red-500"
+                        : percentage >= 80
+                        ? "bg-green-500"
+                        : "bg-yellow-500"
+                    } border-2 border-transparent hover:border-blue-400/80 hover:shadow-[0_0_8px_rgba(59,130,246,0.3)]`}
+                    style={{
+                      height: `${Math.min(percentage, 100)}%`,
+                    }}
+                  >
+                    {/* Shine effect */}
+                    <div className="absolute inset-0 rounded-t-lg bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out"></div>
+                  </div>
+                </div>{" "}
+                {/* X-axis label (nutrient name) */}
+                <div className="absolute bottom-[-2rem] left-1/2 transform -translate-x-1/2 text-sm font-semibold text-gray-700 whitespace-nowrap text-center w-full">
+                  {nutrient.label}
+                </div>{" "}
+                {/* Tooltip */}
                 <div
-                  className={`absolute bottom-0 w-full rounded-xl sm:rounded-2xl transition-all duration-500 shadow-lg ${
-                    calculatePercentage(nutrient.current, nutrient.target) > 100
-                      ? "bg-gradient-to-t from-red-600 via-red-500 to-red-400 hover:from-red-500 hover:via-red-400 hover:to-red-300 hover:shadow-red-200/50"
-                      : calculatePercentage(
-                          nutrient.current,
-                          nutrient.target
-                        ) >= 80
-                      ? "bg-gradient-to-t from-green-600 via-green-500 to-green-400 hover:from-green-500 hover:via-green-400 hover:to-green-300 hover:shadow-green-200/50"
-                      : "bg-gradient-to-t from-yellow-600 via-yellow-500 to-yellow-400 hover:from-yellow-500 hover:via-yellow-400 hover:to-yellow-300 hover:shadow-yellow-200/50"
-                  }`}
+                  className="absolute left-1/2 transform -translate-x-1/2 bg-gray-800/95 backdrop-blur-sm text-white px-4 py-2 rounded-xl text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 shadow-lg border border-gray-700/50"
                   style={{
-                    height: `${calculateProgressWidth(
-                      nutrient.current,
-                      nutrient.target
-                    )}%`,
+                    bottom: `${Math.min(percentage, 100)}%`,
+                    marginBottom: "8px",
                   }}
                 >
-                  {/* Shine effect */}
-                  <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-white/40 via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  {/* Glass effect */}
-                  <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-b from-white/20 to-black/5"></div>
-                  {/* Bottom highlight */}
-                  <div className="absolute bottom-0 left-0 right-0 h-1 sm:h-1.5 bg-white/30 rounded-b-xl sm:rounded-b-2xl"></div>
+                  {/* Status Badge */}
+                  <div
+                    className={`text-[10px] font-medium rounded-full px-2 py-0.5 mb-1 inline-block ${
+                      percentage > 100
+                        ? "bg-red-500/20 text-red-300"
+                        : percentage >= 80
+                        ? "bg-green-500/20 text-green-300"
+                        : "bg-yellow-500/20 text-yellow-300"
+                    }`}
+                  >
+                    {percentage > 100
+                      ? "Berlebihan"
+                      : percentage >= 80
+                      ? "Ideal"
+                      : "Kurang"}
+                  </div>
+
+                  {/* Percentage */}
+                  <div className="font-bold text-sm mb-0.5">
+                    {percentage.toFixed(1)}%
+                  </div>
+
+                  {/* Values */}
+                  <div className="text-gray-300 text-[10px] flex items-center gap-1">
+                    <span className="font-medium">
+                      {nutrient.current.toFixed(1)}
+                    </span>
+                    <span className="opacity-50">/</span>
+                    <span>{nutrient.target.toFixed(1)}</span>
+                    <span className="text-gray-400">{nutrient.unit}</span>
+                  </div>
+
+                  {/* Arrow */}
+                  <div className="absolute -bottom-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-gray-800/95 rotate-45 border-b border-r border-gray-700/50"></div>
                 </div>
               </div>
-              {/* Enhanced hover tooltip */}
-              <div className="absolute -top-12 sm:-top-16 left-1/2 transform -translate-x-1/2 bg-gray-800/95 backdrop-blur-sm text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-xl scale-95 group-hover:scale-100 pointer-events-none z-10">
-                <div className="font-semibold mb-0.5 sm:mb-1">
-                  {calculatePercentage(
-                    nutrient.current,
-                    nutrient.target
-                  ).toFixed(1)}
-                  %
-                </div>
-                <div className="text-gray-300 text-[8px] sm:text-[10px]">
-                  {nutrient.current.toFixed(1)} / {nutrient.target.toFixed(1)}{" "}
-                  {nutrient.unit}
-                </div>
-                {/* Tooltip arrow */}
-                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-800/95 rotate-45"></div>
-              </div>
-            </div>
-            <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-600 text-center max-w-[90px] sm:max-w-full">
-              {nutrient.label}
-            </div>
-          </div>
-        ))}
+            );
+          })}
+        </div>
       </div>
     </div>
   );
