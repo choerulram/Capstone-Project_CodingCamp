@@ -174,23 +174,25 @@ const NutritionProgress = () => {
         </div>
       </div>{" "}
       {/* Bar Chart Container */}
-      <div className="relative h-[360px] w-full pt-[30px]">
+      <div className="relative h-[280px] sm:h-[360px] w-full pt-[30px]">
         {/* Chart Area with Y-axis and Grid */}
         <div className="absolute inset-0 flex pt-[30px]">
           {" "}
           {/* Y-axis labels (percentages) */}
-          <div className="w-16 flex flex-col justify-between h-[300px]">
+          <div className="w-12 sm:w-16 flex flex-col justify-between h-[220px] sm:h-[300px]">
             {[100, 80, 60, 40, 20, 0].map((percent) => (
               <div key={percent} className="relative h-0">
                 <div className="absolute -top-2 right-0 flex items-center">
-                  <span className="text-xs text-gray-600 mr-2">{percent}%</span>
+                  <span className="text-[10px] sm:text-xs text-gray-600 mr-1 sm:mr-2">
+                    {percent}%
+                  </span>
                   <div className="h-[1px] w-2 bg-gray-300"></div>
                 </div>
               </div>
             ))}
-          </div>
+          </div>{" "}
           {/* Grid lines */}
-          <div className="flex-1 flex flex-col justify-between h-[300px]">
+          <div className="flex-1 flex flex-col justify-between h-[220px] sm:h-[300px]">
             {[100, 80, 60, 40, 20, 0].map((percent) => (
               <div key={percent} className="relative">
                 <div className="absolute top-0 w-full h-[1px] bg-gray-200"></div>
@@ -199,7 +201,7 @@ const NutritionProgress = () => {
           </div>
         </div>{" "}
         {/* Bars Container */}
-        <div className="absolute left-16 right-0 top-[30px] h-[300px] flex items-stretch justify-between px-8">
+        <div className="absolute left-12 sm:left-16 right-0 top-[30px] h-[220px] sm:h-[300px] flex items-stretch justify-between px-2 sm:px-8">
           {nutrients.map((nutrient) => {
             const percentage = calculatePercentage(
               nutrient.current,
@@ -212,7 +214,7 @@ const NutritionProgress = () => {
                 style={{ width: `${100 / nutrients.length}%` }}
               >
                 {/* Bar Container - Aligns with grid */}{" "}
-                <div className="relative w-14 sm:w-20 h-full">
+                <div className="relative w-8 sm:w-14 md:w-20 h-full">
                   {/* Target Bar (Background) */}
                   <div className="absolute inset-0 rounded-lg bg-gray-200/50 border border-gray-300/30 backdrop-blur-sm"></div>{" "}
                   {/* Progress Bar */}{" "}
@@ -233,8 +235,19 @@ const NutritionProgress = () => {
                   </div>
                 </div>{" "}
                 {/* X-axis label (nutrient name) */}
-                <div className="absolute bottom-[-2rem] left-1/2 transform -translate-x-1/2 text-sm font-semibold text-gray-700 whitespace-nowrap text-center w-full">
-                  {nutrient.label}
+                <div className="absolute bottom-[-2.5rem] sm:bottom-[-2.5rem] left-1/2 transform -translate-x-1/2 sm:translate-x-[-50%] rotate-[-25deg] sm:rotate-0 origin-left sm:origin-center text-[10px] sm:text-sm font-semibold text-gray-700 whitespace-nowrap text-start sm:text-center">
+                  {nutrient.label.length > 6 && window.innerWidth < 640 ? (
+                    <>
+                      {nutrient.label.split(" ").map((word, i, arr) => (
+                        <React.Fragment key={i}>
+                          {word}
+                          {i < arr.length - 1 && <br />}
+                        </React.Fragment>
+                      ))}
+                    </>
+                  ) : (
+                    nutrient.label
+                  )}
                 </div>{" "}
                 {/* Tooltip */}
                 <div
