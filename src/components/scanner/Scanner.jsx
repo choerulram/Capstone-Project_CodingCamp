@@ -28,6 +28,7 @@ const Scanner = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentFile, setCurrentFile] = useState(null);
   const [error, setError] = useState(null);
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
   const [nutritionData, setNutritionData] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [imageSource, setImageSource] = useState(null); // 'upload' atau 'camera'
@@ -280,6 +281,12 @@ const Scanner = () => {
       }
     };
   }, [isScanning, handleStopCamera]);
+  useEffect(() => {
+    if (error) {
+      setIsErrorVisible(true);
+    }
+  }, [error]);
+
   return (
     <div
       className={`min-h-screen flex ${
@@ -382,7 +389,53 @@ const Scanner = () => {
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
               </div>
             )}
-          </div>{" "}
+          </div>
+
+          {/* Error Message */}
+          {error && isErrorVisible && (
+            <div className="mx-6 mt-4 mb-2">
+              <div className="relative p-4 bg-red-50 rounded-lg border border-red-100 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <div className="flex-shrink-0">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-red-600"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <p className="flex-1 text-sm text-red-700 font-medium">
+                    {error}
+                  </p>
+                  <button
+                    onClick={() => setIsErrorVisible(false)}
+                    className="p-1 rounded-lg hover:bg-red-100 transition-colors duration-200"
+                    aria-label="Tutup pesan error"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 text-red-600"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Controls and Instructions Container */}
           <div className="p-6 bg-highlight/5">
             {/* Camera Controls */}
@@ -521,12 +574,6 @@ const Scanner = () => {
                 gambar Anda
               </p>
             </div>
-          </div>
-        )}
-        {/* Error State */}
-        {error && (
-          <div className="w-full p-4 bg-red-50 border-l-4 border-red-500 rounded-lg animate-fade-in">
-            <p className="text-red-700">{error}</p>
           </div>
         )}
       </div>
