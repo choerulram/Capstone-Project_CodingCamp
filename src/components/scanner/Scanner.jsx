@@ -499,11 +499,14 @@ const Scanner = () => {
         {/* Hidden label for accessibility */}
         <label htmlFor="file-upload" className="sr-only">
           Upload gambar makanan
-        </label>
-        {/* Loading Modal */}
+        </label>{" "}
+        {/* Loading Modal */}{" "}
         {isLoading && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-            <div className="bg-white rounded-xl p-8 shadow-2xl transform transition-all animate-fade-in flex flex-col items-center max-w-sm w-full mx-4">
+          <div
+            className="fixed inset-0 min-h-[100vh] w-screen bg-black/50 backdrop-blur-sm z-[9999] overflow-hidden flex items-center justify-center"
+            style={{ margin: 0, padding: 0 }}
+          >
+            <div className="bg-white rounded-xl p-8 shadow-2xl transform transition-all animate-fade-in flex flex-col items-center max-w-sm w-[90%] sm:w-full mx-4">
               <div className="relative">
                 <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-main"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
