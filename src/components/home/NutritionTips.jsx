@@ -22,6 +22,7 @@ const NutritionTips = () => {
           Tips & Fakta Gizi
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Protein Card */}
           <div className="relative group">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
             <div className="relative bg-white p-6 rounded-xl shadow-md">
@@ -37,91 +38,24 @@ const NutritionTips = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
                   />
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-main mb-2">
-                Makanan Tinggi Protein
-              </h3>
+                Protein: Fondasi Kesehatan
+              </h3>{" "}
               <p className="text-gray-600 mb-4">
-                Konsumsi makanan tinggi protein seperti telur, dada ayam, dan
-                ikan dapat membantu mempertahankan massa otot dan memberikan
-                rasa kenyang lebih lama.
+                Perhatikan kandungan protein dalam label makanan kemasan. Pilih
+                produk dengan protein minimal 5g per sajian untuk camilan.
+                Konsumsi harian yang dianjurkan: 0.8-1g protein per kg berat
+                badan. Cek produk seperti susu, yogurt, bars protein, dan
+                makanan ringan berbahan kacang.
               </p>
-              <a
-                href="#"
-                className="text-highlight hover:text-highlight/80 font-medium flex items-center"
-              >
-                Pelajari lebih lanjut
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 ml-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </a>
             </div>
           </div>
 
-          <div className="relative group">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-            <div className="relative bg-white p-6 rounded-xl shadow-md">
-              <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-highlight"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-main mb-2">
-                Manfaat Serat untuk Pencernaan
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Serat membantu menjaga kesehatan pencernaan dan memberikan rasa
-                kenyang lebih lama. Konsumsi buah, sayur, dan biji-bijian untuk
-                asupan serat yang cukup.
-              </p>
-              <a
-                href="#"
-                className="text-highlight hover:text-highlight/80 font-medium flex items-center"
-              >
-                Pelajari lebih lanjut
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 ml-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
-
+          {/* Lemak Card */}
           <div className="relative group">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
             <div className="relative bg-white p-6 rounded-xl shadow-md">
@@ -142,21 +76,26 @@ const NutritionTips = () => {
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-main mb-2">
-                Pentingnya Vitamin D
-              </h3>
+                Lemak yang Sehat
+              </h3>{" "}
               <p className="text-gray-600 mb-4">
-                Vitamin D penting untuk kesehatan tulang dan sistem imun.
-                Dapatkan dari sinar matahari pagi dan makanan seperti ikan
-                berlemak dan telur.
+                Periksa jenis lemak pada kemasan: total lemak, lemak jenuh, dan
+                lemak trans. Pilih produk dengan lemak jenuh kurang dari 10%
+                per sajian. Hindari produk dengan kandungan lemak trans pada
+                ingredient list. Perhatikan minyak yang digunakan: pilih minyak
+                nabati seperti kanola atau zaitun.
               </p>
-              <a
-                href="#"
-                className="text-highlight hover:text-highlight/80 font-medium flex items-center"
-              >
-                Pelajari lebih lanjut
+            </div>
+          </div>
+
+          {/* Karbohidrat Card */}
+          <div className="relative group">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+            <div className="relative bg-white p-6 rounded-xl shadow-md">
+              <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 ml-1"
+                  className="h-6 w-6 text-highlight"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -165,10 +104,122 @@ const NutritionTips = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M9 5l7 7-7 7"
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                   />
                 </svg>
-              </a>
+              </div>
+              <h3 className="text-lg font-semibold text-main mb-2">
+                Karbohidrat Cerdas
+              </h3>{" "}
+              <p className="text-gray-600 mb-4">
+                Cek total karbohidrat dan serat pada label informasi nilai gizi.
+                Perhatikan rasio karbohidrat dengan serat untuk pilihan lebih
+                sehat. Pilih produk dengan "whole grain" sebagai bahan utama.
+                Waspadai istilah seperti "modified starch" atau "corn syrup"
+                pada kemasan.
+              </p>
+            </div>
+          </div>
+
+          {/* Serat Card */}
+          <div className="relative group">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+            <div className="relative bg-white p-6 rounded-xl shadow-md">
+              <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-highlight"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-main mb-2">
+                Pentingnya Serat
+              </h3>
+              <p className="text-gray-600 mb-4">
+                {" "}
+                Perhatikan kandungan serat di label "Dietary Fiber" pada
+                kemasan. Pilih produk minimal 3g serat per sajian untuk camilan
+                sehat. Target harian: 25-35g serat, cek % Daily Value pada
+                kemasan. Cari produk dengan biji-bijian utuh sebagai bahan
+                pertama.
+              </p>
+            </div>
+          </div>
+
+          {/* Gula Card */}
+          <div className="relative group">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+            <div className="relative bg-white p-6 rounded-xl shadow-md">
+              <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-highlight"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-main mb-2">
+                Bijak dengan Gula
+              </h3>
+              <p className="text-gray-600 mb-4">
+                {" "}
+                Cek daftar gula pada ingredient list di kemasan makanan.
+                Waspadai nama lain gula: syrup, dextrose, sucrose, atau
+                berakhiran -ose. Batasan gula tambahan: maksimal 25g (wanita)
+                dan 36g (pria) per hari. Pilih produk "no added sugar" atau
+                "less sugar" bila tersedia.
+              </p>
+            </div>
+          </div>
+
+          {/* Garam Card */}
+          <div className="relative group">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+            <div className="relative bg-white p-6 rounded-xl shadow-md">
+              <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-highlight"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-main mb-2">
+                Kendali Asupan Garam
+              </h3>
+              <p className="text-gray-600 mb-4">
+                {" "}
+                Perhatikan kandungan "Sodium" atau "Garam" pada label makanan.
+                Pilih produk dengan sodium kurang dari 20% Daily Value per
+                sajian. Batasan harian: maksimal 2000mg sodium (± 1 sendok teh
+                garam). Bandingkan label produk sejenis untuk pilih yang lebih
+                rendah sodium.
+              </p>
             </div>
           </div>
         </div>
