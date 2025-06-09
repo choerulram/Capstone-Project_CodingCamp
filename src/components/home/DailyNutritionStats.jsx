@@ -127,9 +127,10 @@ const DailyNutritionStats = () => {
           </div>
         </div>
         <div className="flex justify-center mt-8">
+          {" "}
           <Link
             to="/daily-summary"
-            className="inline-flex items-center px-6 py-3 bg-main text-white font-medium rounded-lg hover:bg-main/90 transition-colors duration-300 shadow-md hover:shadow-lg"
+            className="inline-flex items-center px-6 py-3 bg-highlight text-white font-medium rounded-lg hover:bg-highlight/90 transition-all duration-300 shadow-sm hover:shadow"
           >
             <span>Lihat Ringkasan Lengkap</span>
             <svg
