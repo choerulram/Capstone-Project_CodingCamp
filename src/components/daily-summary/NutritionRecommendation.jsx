@@ -114,47 +114,30 @@ const NutritionRecommendation = () => {
       };
 
       // Get recommendation
-      try {
-        const response = await fetch(`${BASE_URL}/recommendation`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(inputData),
-        });
+      const response = await fetch(`${BASE_URL}/recommendation`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(inputData),
+      });
 
-        let data;
-        try {
-          data = await response.json();
-        } catch (jsonError) {
-          console.error("JSON Parse Error:", jsonError);
-          throw new Error(
-            "Maaf, fitur rekomendasi sedang dalam tahap pengembangan. Silakan coba beberapa saat lagi."
-          );
-        }
+      const data = await response.json();
 
-        if (!response.ok) {
-          throw new Error(
-            data?.error ||
-              data?.message ||
-              "Fitur rekomendasi sedang dalam perbaikan. Mohon tunggu beberapa saat lagi."
-          );
-        }
-
-        if (!data) {
-          throw new Error(
-            "Mohon maaf, layanan rekomendasi belum tersedia untuk sementara waktu."
-          );
-        }
-
-        setRecommendation(data);
-      } catch (apiError) {
-        console.error("API Error:", apiError);
+      if (!response.ok) {
         throw new Error(
-          "Fitur rekomendasi sedang dalam pengembangan dan akan segera hadir. Mohon tunggu pembaruan selanjutnya."
+          data?.error ||
+            data?.message ||
+            "Terjadi kesalahan saat memuat rekomendasi"
         );
       }
+
+      if (!data) {
+        throw new Error("Tidak dapat memuat rekomendasi. Silakan coba lagi.");
+      }
+
+      setRecommendation(data);
     } catch (err) {
       console.error("Recommendation Error:", err);
       setError(err.message);
@@ -164,54 +147,200 @@ const NutritionRecommendation = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex justify-between items-center mb-4">
-        <div>
-          <h2 className="text-xl font-semibold text-gray-800">
-            Rekomendasi Gizi
-          </h2>
-          <p className="text-sm text-gray-500 mt-1">
-            *Fitur dalam tahap pengembangan
-          </p>
-        </div>
+    <div className="bg-gray-50 p-6 rounded-xl border border-gray-100">
+      <h2 className="text-xl font-semibold text-main mb-6 flex items-center">
+        <span className="bg-highlight/20 p-2 rounded-lg mr-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 text-highlight"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+            />
+          </svg>
+        </span>
+        Rekomendasi Gizi
+      </h2>
+
+      <div className="flex justify-between items-center mb-6">
+        <p className="text-sm text-gray-600">
+          Dapatkan saran nutrisi personal berdasarkan konsumsi harian Anda
+        </p>
         <button
           onClick={handleGetRecommendation}
           disabled={loading}
-          className="px-4 py-2 bg-main text-white rounded-lg hover:bg-main-600 transition-colors disabled:opacity-50"
+          className="px-4 py-2 bg-main/90 hover:bg-main text-white rounded-lg transition-colors duration-300 flex items-center gap-2 disabled:opacity-50"
         >
-          {loading ? "Memuat..." : "Cek Rekomendasi Gizi"}
+          {loading ? (
+            <>
+              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                />
+              </svg>
+              <span>Memuat...</span>
+            </>
+          ) : (
+            <>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              <span>Cek Rekomendasi</span>
+            </>
+          )}
         </button>
       </div>
+
       {error && (
-        <div className="p-4 bg-red-100 text-red-700 rounded-lg mb-4">
-          {error}
+        <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-6 border border-red-100">
+          <div className="flex items-center gap-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{error}</span>
+          </div>
         </div>
       )}
+
       {recommendation && (
         <div className="space-y-4">
-          <div className="bg-gray-50 rounded-lg p-4">
-            {recommendation.message ? (
-              <div className="text-gray-800">{recommendation.message}</div>
-            ) : (
-              <div className="grid gap-4">
-                <div className="bg-white p-4 rounded-lg shadow-sm">
-                  <h3 className="font-semibold mb-2">Rekomendasi Nutrisi:</h3>
-                  <div className="space-y-2">
-                    {Object.entries(recommendation).map(([key, value]) => (
-                      <div key={key} className="text-sm">
-                        <span className="font-medium">{key}: </span>
-                        <span>
-                          {typeof value === "object"
-                            ? JSON.stringify(value)
-                            : value}
-                        </span>
+          {recommendation.message ? (
+            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-gray-100/50 text-gray-800">
+              {recommendation.message}
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {Object.entries(recommendation).map(([key, value]) => (
+                <div
+                  key={key}
+                  className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100/50 overflow-hidden hover:shadow-sm transition-all duration-300"
+                >
+                  <div className="p-4">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="bg-highlight/20 p-2 rounded-lg">
+                        {key.includes("energi") || key.includes("energy") ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 text-highlight"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M13 10V3L4 14h7v7l9-11h-7z"
+                            />
+                          </svg>
+                        ) : key.includes("protein") ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 text-highlight"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
+                            />
+                          </svg>
+                        ) : (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 text-highlight"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                            />
+                          </svg>
+                        )}
                       </div>
-                    ))}
+                      <h3 className="text-lg font-semibold text-main capitalize">
+                        {key.split("_").join(" ")}
+                      </h3>
+                    </div>
+
+                    {typeof value === "object" && Array.isArray(value) ? (
+                      <div className="space-y-3">
+                        <p className="text-sm text-gray-600 font-medium">
+                          Rekomendasi Produk:
+                        </p>
+                        <div className="space-y-2">
+                          {value.map((item, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center justify-between p-3 bg-gray-50/80 rounded-lg hover:bg-gray-100/80 transition-colors"
+                            >
+                              <span className="text-gray-700">
+                                {item.product_name}
+                              </span>
+                              <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                                Skor: {item.skor_gizi}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex justify-between items-center p-3 bg-gray-50/80 rounded-lg">
+                        <span className="text-gray-600">Nilai rekomendasi</span>
+                        <span className="text-main font-semibold">{value}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
