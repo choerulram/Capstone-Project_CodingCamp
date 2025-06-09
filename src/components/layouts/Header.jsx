@@ -49,13 +49,13 @@ const Header = () => {
     <header className="bg-white border-b border-gray-100 shadow-md relative">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
+          {" "}
           <div className="flex items-center">
             <h1 className="text-3xl font-bold">
-              Pack
-              <span className="text-highlight">Facts</span>
+              Nu
+              <span className="text-highlight">Track</span>
             </h1>
           </div>
-
           <button
             onClick={toggleMobileMenu}
             className="md:hidden text-main hover:text-highlight transition-colors duration-300"
@@ -79,7 +79,6 @@ const Header = () => {
               />
             </svg>
           </button>
-
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
@@ -138,7 +137,6 @@ const Header = () => {
               Daily Summary
             </a>
           </nav>
-
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {token ? (

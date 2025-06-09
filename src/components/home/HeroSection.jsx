@@ -21,9 +21,10 @@ const HeroSection = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="md:w-1/2 mb-10 md:mb-0">
+            {" "}
             <h1 className="text-5xl font-bold text-light mb-6 animate-fade-in">
               {user ? `Welcome back, ${user.name}!` : "Welcome to"}
-              <span className="text-highlight block mt-2">PackFacts</span>
+              <span className="text-highlight block mt-2">NuTrack</span>
             </h1>
             <p className="text-xl text-gray-100 mb-8 animate-slide-up opacity-0 [animation-delay:0.3s] [animation-fill-mode:forwards]">
               Scan kemasan makanan Anda dan dapatkan informasi gizi secara

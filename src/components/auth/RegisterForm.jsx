@@ -114,11 +114,11 @@ const RegisterForm = () => {
     <div className="w-full md:w-[65%] bg-gray-50 p-4 sm:p-6 md:p-10 flex flex-col justify-center items-center">
       <div className="w-full max-w-3xl">
         <div className="bg-white p-6 sm:p-8 md:p-12 rounded-xl sm:rounded-2xl md:rounded-3xl shadow-xl md:shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300">
-          <h2 className="text-dark text-4xl mb-3 font-bold">Join PackFacts</h2>
+          {" "}
+          <h2 className="text-dark text-4xl mb-3 font-bold">Join NuTrack</h2>
           <p className="text-gray-500 mb-10 text-lg">
             Create your account to get started
           </p>
-
           <form onSubmit={handleSubmit} className="w-full space-y-6">
             {error && (
               <div
@@ -449,7 +449,6 @@ const RegisterForm = () => {
               )}
             </button>
           </form>
-
           <div className="mt-8">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">

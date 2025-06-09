@@ -108,7 +108,7 @@ const PricingModal = ({ isOpen, onClose }) => {
               Pilih Paket yang Sesuai
             </h2>
             <p className="mt-3 text-lg text-gray-500">
-              Nikmati fitur lengkap PackFacts untuk pengalaman analisis nutrisi
+              Nikmati fitur lengkap NuTrack untuk pengalaman analisis nutrisi
               yang lebih baik
             </p>
           </div>
@@ -204,8 +204,8 @@ const PricingModal = ({ isOpen, onClose }) => {
                 </h4>
                 <p className="mt-2 text-sm text-gray-600">
                   Paket Premium memberikan akses tanpa batas ke semua fitur
-                  PackFacts, termasuk scan tanpa batas, analisis nutrisi
-                  lengkap, dan kemampuan untuk mengekspor data.
+                  NuTrack, termasuk scan tanpa batas, analisis nutrisi lengkap,
+                  dan kemampuan untuk mengekspor data.
                 </p>
               </div>
               <div>

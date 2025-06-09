@@ -13,8 +13,9 @@ const LoginBranding = () => {
         {/* Logo and Brand */}
         <div className="mb-6 md:mb-12">
           <div className="flex items-baseline space-x-3 animate-fade-in">
+            {" "}
             <h1 className="text-5xl md:text-8xl text-white font-bold tracking-tight leading-none">
-              Pack<span className="text-highlight">Facts</span>
+              Nu<span className="text-highlight">Track</span>
             </h1>
           </div>
         </div>
