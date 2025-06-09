@@ -3,6 +3,26 @@ import { createPortal } from "react-dom";
 import ScanDetailModal from "./ScanDetailModal";
 import { BASE_URL } from "../../utils/api";
 
+const calculateTimeAgo = (timestamp) => {
+  const now = new Date();
+  const then = new Date(timestamp);
+  const diffInSeconds = Math.floor((now - then) / 1000);
+
+  if (diffInSeconds < 60) {
+    return `${diffInSeconds} detik yang lalu`;
+  }
+  if (diffInSeconds < 3600) {
+    const minutes = Math.floor(diffInSeconds / 60);
+    return `${minutes} menit yang lalu`;
+  }
+  if (diffInSeconds < 86400) {
+    const hours = Math.floor(diffInSeconds / 3600);
+    return `${hours} jam yang lalu`;
+  }
+  const days = Math.floor(diffInSeconds / 86400);
+  return `${days} hari yang lalu`;
+};
+
 const ScanHistoryCard = ({ scan, onDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -36,7 +56,7 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
       <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] overflow-hidden border border-gray-100/50">
         <div className="p-4">
           <div className="flex flex-col md:flex-row gap-4">
-            {/* Image Container - Ukuran dikecilkan */}
+            {/* Image Container */}
             <div className="relative w-full md:w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 border border-highlight/30 shadow-sm group">
               <div className="absolute inset-0 bg-gradient-to-br from-main/20 to-transparent group-hover:from-main/30 transition-all duration-300"></div>
               <img
@@ -50,81 +70,105 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
             <div className="flex-1 min-w-0">
               <div className="flex flex-col md:flex-row justify-between items-start gap-4">
                 <div className="w-full md:w-auto">
-                  {/* Timestamp */}
-                  <h3 className="text-lg md:text-xl font-bold text-main mb-2 flex items-center gap-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-main/70"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <span className="truncate">
-                      {new Date(scan.timestamp).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </span>
-                  </h3>{" "}
-                  {/* Nutrition Info - Style yang lebih subtle */}
-                  <div className="flex flex-wrap gap-2">
-                    {scan.kandungan_gizi && (
-                      <>
-                        <div className="flex items-center gap-1.5 bg-blue-50/80 text-blue-600 px-2.5 py-1 rounded-lg text-xs">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-3.5 w-3.5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
-                            />
-                          </svg>
-                          <span className="font-medium">
-                            Karbohidrat:{" "}
-                            {scan.kandungan_gizi.karbohidrat || "0"}g
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1.5 bg-green-50/80 text-green-600 px-2.5 py-1 rounded-lg text-xs">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-3.5 w-3.5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M13 10V3L4 14h7v7l9-11h-7z"
-                            />
-                          </svg>
-                          <span className="font-medium">
-                            Protein: {scan.kandungan_gizi.protein || "0"}g
-                          </span>
-                        </div>
-                      </>
-                    )}
+                  {/* Timestamp and TimeAgo Section */}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-main/70"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <h3 className="text-lg font-bold text-main truncate">
+                        {new Date(scan.timestamp).toLocaleDateString("id-ID", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </h3>
+                      <span className="text-sm text-gray-500 bg-gray-50 px-2 py-0.5 rounded-md">
+                        {calculateTimeAgo(scan.timestamp)}
+                      </span>
+                    </div>{" "}
+                    {/* Nutrition Info Section */}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex items-center gap-1.5 bg-amber-50/80 text-amber-600 px-2.5 py-1 rounded-lg text-xs">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-3.5 w-3.5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13 10V3L4 14h7v7l9-11h-7z"
+                          />
+                        </svg>
+                        <span className="font-medium">
+                          Energi: {scan.kandungan_gizi.energi || 0} kkal
+                        </span>
+                      </div>
+                      {scan.kandungan_gizi && (
+                        <>
+                          <div className="flex items-center gap-1.5 bg-blue-50/80 text-blue-600 px-2.5 py-1 rounded-lg text-xs">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-3.5 w-3.5"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
+                              />
+                            </svg>
+                            <span className="font-medium">
+                              Karbohidrat:{" "}
+                              {scan.kandungan_gizi.karbohidrat || "0"}g
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5 bg-green-50/80 text-green-600 px-2.5 py-1 rounded-lg text-xs">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-3.5 w-3.5"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13 10V3L4 14h7v7l9-11h-7z"
+                              />
+                            </svg>
+                            <span className="font-medium">
+                              Protein: {scan.kandungan_gizi.protein || "0"}g
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                {/* Action Buttons - Style yang lebih subtle */}
+                {/* Action Buttons - Preserved Layout */}
                 <div className="flex gap-2 w-full md:w-auto">
                   <button
                     onClick={() => setIsModalOpen(true)}
