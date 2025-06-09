@@ -4,6 +4,7 @@ import Footer from "../components/layouts/Footer";
 import TotalNutritionSummary from "../components/daily-summary/TotalNutritionSummary";
 import DailyScanHistory from "../components/daily-summary/DailyScanHistory";
 import NutritionProgress from "../components/daily-summary/NutritionProgress";
+import NutritionRecommendation from "../components/daily-summary/NutritionRecommendation";
 
 const DailySummaryPage = () => {
   return (
@@ -18,6 +19,7 @@ const DailySummaryPage = () => {
             <NutritionProgress />
             <TotalNutritionSummary />
             <DailyScanHistory />
+            <NutritionRecommendation />
           </div>
         </div>
       </main>
