@@ -5,6 +5,7 @@ import NutritionPage from "../pages/NutritionPage.jsx";
 import DailySummaryPage from "../pages/DailySummaryPage.jsx";
 import LoginPage from "../pages/LoginPage.jsx";
 import RegisterPage from "../pages/RegisterPage.jsx";
+import ProtectedRoute from "../components/auth/ProtectedRoute.jsx";
 
 // Routes yang membutuhkan autentikasi
 export const privateRoutes = [
@@ -15,22 +16,38 @@ export const privateRoutes = [
   },
   {
     path: "/scan",
-    element: <ScanPage />,
+    element: (
+      <ProtectedRoute>
+        <ScanPage />
+      </ProtectedRoute>
+    ),
     title: "Pindai Makanan",
   },
   {
     path: "/history",
-    element: <HistoryPage />,
+    element: (
+      <ProtectedRoute>
+        <HistoryPage />
+      </ProtectedRoute>
+    ),
     title: "Riwayat",
   },
   {
     path: "/nutrition",
-    element: <NutritionPage />,
+    element: (
+      <ProtectedRoute>
+        <NutritionPage />
+      </ProtectedRoute>
+    ),
     title: "Nutrisi",
   },
   {
     path: "/daily-summary",
-    element: <DailySummaryPage />,
+    element: (
+      <ProtectedRoute>
+        <DailySummaryPage />
+      </ProtectedRoute>
+    ),
     title: "Ringkasan Harian",
   },
 ];
