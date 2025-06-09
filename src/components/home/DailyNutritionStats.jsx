@@ -1,7 +1,75 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import api from "../../utils/api";
 
 const DailyNutritionStats = () => {
+  const { token } = useSelector((state) => state.auth);
+  const [dailyTarget, setDailyTarget] = useState({
+    energi: 0,
+    protein: 0,
+    "lemak total": 0,
+    karbohidrat: 0,
+  });
+  const [totalNutrition, setTotalNutrition] = useState({
+    energi: 0,
+    protein: 0,
+    "lemak total": 0,
+    karbohidrat: 0,
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Get daily nutrition targets
+        const dailyNutrition = await api.getDailyNutrition(token);
+        if (dailyNutrition?.kebutuhan_harian) {
+          setDailyTarget({
+            energi: dailyNutrition.kebutuhan_harian.energi,
+            protein: dailyNutrition.kebutuhan_harian.protein,
+            "lemak total": dailyNutrition.kebutuhan_harian["lemak total"],
+            karbohidrat: dailyNutrition.kebutuhan_harian.karbohidrat,
+          });
+        }
+
+        // Get today's scan history
+        const data = await api.getTodayScanHistory(token);
+        const history = data.history || [];
+
+        const total = {
+          energi: 0,
+          protein: 0,
+          "lemak total": 0,
+          karbohidrat: 0,
+        };
+
+        history.forEach((item) => {
+          if (item.kandungan_gizi) {
+            total.energi += Number(item.kandungan_gizi.energi || 0);
+            total.protein += Number(item.kandungan_gizi.protein || 0);
+            total["lemak total"] += Number(
+              item.kandungan_gizi["lemak total"] || 0
+            );
+            total.karbohidrat += Number(item.kandungan_gizi.karbohidrat || 0);
+          }
+        });
+
+        setTotalNutrition(total);
+      } catch (error) {
+        console.error("Error fetching nutrition data:", error);
+      }
+    };
+
+    if (token) {
+      fetchData();
+    }
+  }, [token]);
+
+  const calculatePercentage = (current, target) => {
+    if (!target || target === 0) return 0;
+    const percentage = (current / target) * 100;
+    return Math.round(percentage);
+  };
+
   return (
     <section className="py-16 bg-gradient-to-b from-highlight/5 to-white">
       <div className="container mx-auto px-6">
@@ -42,11 +110,16 @@ const DailyNutritionStats = () => {
                 </svg>
               </div>
               <span className="text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                80%
+                {calculatePercentage(totalNutrition.energi, dailyTarget.energi)}
+                %
               </span>
-            </div>
-            <h3 className="font-semibold text-gray-800 text-lg mb-1">1,600</h3>
-            <p className="text-gray-600 text-sm">Kalori dari 2,000 target</p>
+            </div>{" "}
+            <h3 className="font-semibold text-gray-800 text-lg mb-1">
+              {Number(totalNutrition.energi).toFixed(1)}kkal
+            </h3>
+            <p className="text-gray-600 text-sm">
+              Energi dari {Number(dailyTarget.energi).toFixed(1)}kkal target
+            </p>
           </div>
           <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
             <div className="flex items-center justify-between mb-4">
@@ -67,11 +140,19 @@ const DailyNutritionStats = () => {
                 </svg>
               </div>
               <span className="text-sm font-medium text-green-600 bg-green-50 px-3 py-1 rounded-full">
-                65%
+                {calculatePercentage(
+                  totalNutrition.protein,
+                  dailyTarget.protein
+                )}
+                %
               </span>
-            </div>
-            <h3 className="font-semibold text-gray-800 text-lg mb-1">42g</h3>
-            <p className="text-gray-600 text-sm">Protein dari 65g target</p>
+            </div>{" "}
+            <h3 className="font-semibold text-gray-800 text-lg mb-1">
+              {Number(totalNutrition.protein).toFixed(1)}g
+            </h3>
+            <p className="text-gray-600 text-sm">
+              Protein dari {Number(dailyTarget.protein).toFixed(1)}g target
+            </p>
           </div>
           <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
             <div className="flex items-center justify-between mb-4">
@@ -92,11 +173,19 @@ const DailyNutritionStats = () => {
                 </svg>
               </div>
               <span className="text-sm font-medium text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">
-                45%
+                {calculatePercentage(
+                  totalNutrition["lemak total"],
+                  dailyTarget["lemak total"]
+                )}
+                %
               </span>
-            </div>
-            <h3 className="font-semibold text-gray-800 text-lg mb-1">25g</h3>
-            <p className="text-gray-600 text-sm">Lemak dari 55g target</p>
+            </div>{" "}
+            <h3 className="font-semibold text-gray-800 text-lg mb-1">
+              {Number(totalNutrition["lemak total"]).toFixed(1)}g
+            </h3>
+            <p className="text-gray-600 text-sm">
+              Lemak dari {Number(dailyTarget["lemak total"]).toFixed(1)}g target
+            </p>
           </div>
           <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
             <div className="flex items-center justify-between mb-4">
@@ -117,12 +206,19 @@ const DailyNutritionStats = () => {
                 </svg>
               </div>
               <span className="text-sm font-medium text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
-                70%
+                {calculatePercentage(
+                  totalNutrition.karbohidrat,
+                  dailyTarget.karbohidrat
+                )}
+                %
               </span>
-            </div>
-            <h3 className="font-semibold text-gray-800 text-lg mb-1">180g</h3>
+            </div>{" "}
+            <h3 className="font-semibold text-gray-800 text-lg mb-1">
+              {Number(totalNutrition.karbohidrat).toFixed(1)}g
+            </h3>
             <p className="text-gray-600 text-sm">
-              Karbohidrat dari 250g target
+              Karbohidrat dari {Number(dailyTarget.karbohidrat).toFixed(1)}g
+              target
             </p>
           </div>
         </div>
