@@ -8,12 +8,12 @@ const ComingSoonModal = ({ isOpen, onClose, planName }) => {
       <div className="flex min-h-screen items-center justify-center p-4">
         {/* Overlay */}
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity animate-fade-in"
           onClick={onClose}
         ></div>
 
         {/* Modal Content */}
-        <div className="relative transform overflow-hidden rounded-2xl bg-white px-8 py-12 text-center shadow-xl transition-all sm:w-full sm:max-w-md">
+        <div className="relative transform overflow-hidden rounded-2xl bg-white px-8 py-12 text-center shadow-xl transition-all sm:w-full sm:max-w-md animate-scale-in">
           {/* Decorative elements */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-highlight/10 rounded-full"></div>

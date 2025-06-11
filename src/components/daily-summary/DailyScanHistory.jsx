@@ -200,14 +200,13 @@ const DailyScanHistory = () => {
                                 )}
                               </div>
                             </div>
-
-                            {/* View Detail Button */}
+                            {/* View Detail Button */}{" "}
                             <div className="flex gap-2 w-full md:w-auto">
-                              <button className="flex-1 md:flex-none px-4 py-2 bg-main/90 hover:bg-main text-white rounded-lg transition-colors duration-300 flex items-center justify-center gap-1.5 text-sm font-medium">
+                              <button className="flex-1 md:flex-none px-4 py-2 bg-main/90 hover:bg-main text-white rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 text-sm font-medium hover:scale-105 hover:shadow-lg group">
                                 <span>Detail</span>
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
-                                  className="h-3.5 w-3.5 transform transition-transform duration-300 group-hover:translate-x-0.5"
+                                  className="h-3.5 w-3.5 transform transition-all duration-300 group-hover:translate-x-1"
                                   fill="none"
                                   viewBox="0 0 24 24"
                                   stroke="currentColor"

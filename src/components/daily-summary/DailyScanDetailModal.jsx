@@ -34,17 +34,16 @@ const DailyScanDetailModal = ({ isOpen, onClose, scan }) => {
   // Render modal dalam Portal
   return createPortal(
     <>
-      {/* Overlay */}
+      {/* Overlay */}{" "}
       <div
-        className="fixed inset-0 bg-black/70 backdrop-blur-[2px] z-[9998]"
+        className="fixed inset-0 bg-black/70 backdrop-blur-[2px] z-[9998] animate-fade-in"
         onClick={onClose}
         style={{ position: "fixed", top: 0, right: 0, bottom: 0, left: 0 }}
       />
-
       {/* Modal */}
       <div className="fixed inset-0 z-[9999] overflow-y-auto">
         <div className="min-h-screen flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl w-full max-w-5xl overflow-hidden max-h-[95vh] flex flex-col shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] border border-gray-100">
+          <div className="bg-white rounded-2xl w-full max-w-5xl overflow-hidden max-h-[95vh] flex flex-col shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] border border-gray-100 animate-scale-in">
             {/* Header */}
             <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white sticky top-0 z-10">
               <div className="flex items-center justify-between">

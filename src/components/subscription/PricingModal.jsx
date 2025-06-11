@@ -76,12 +76,12 @@ const PricingModal = ({ isOpen, onClose }) => {
       <div className="flex min-h-screen items-center justify-center p-4">
         {/* Overlay */}
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity animate-fade-in"
           onClick={onClose}
         ></div>
 
         {/* Modal Content */}
-        <div className="relative max-w-6xl w-full bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+        <div className="relative max-w-6xl w-full bg-white rounded-2xl shadow-xl p-6 sm:p-8 animate-scale-in">
           {/* Close Button */}
           <button
             onClick={onClose}
@@ -103,7 +103,7 @@ const PricingModal = ({ isOpen, onClose }) => {
           </button>
 
           {/* Header */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-8 animate-fade-in-down">
             <h2 className="text-3xl font-bold text-gray-900">
               Pilih Paket yang Sesuai
             </h2>
@@ -115,32 +115,35 @@ const PricingModal = ({ isOpen, onClose }) => {
 
           {/* Pricing Cards */}
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-            {plans.map((plan) => (
+            {plans.map((plan, planIndex) => (
               <div
                 key={plan.name}
-                className={`relative rounded-2xl border ${
+                className={`relative rounded-2xl border transform hover:scale-[1.02] hover:shadow-xl transition-all duration-300 ${
                   plan.isPopular
                     ? "border-main shadow-xl scale-105"
                     : "border-gray-200"
-                } bg-white p-6 sm:p-8 shadow-sm flex flex-col`}
+                } bg-white p-6 sm:p-8 shadow-sm flex flex-col animate-fade-in`}
+                style={{
+                  animationDelay: `${planIndex * 200}ms`,
+                }}
               >
                 {plan.isPopular && (
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2">
-                    <span className="inline-flex rounded-full bg-main px-4 py-1 text-sm font-semibold text-white">
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 animate-float">
+                    <span className="inline-flex rounded-full bg-main px-4 py-1 text-sm font-semibold text-white shadow-lg">
                       Paling Populer
                     </span>
                   </div>
                 )}
                 {plan.saving && (
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2">
-                    <span className="inline-flex rounded-full bg-rose-500 px-4 py-1 text-sm font-semibold text-white">
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 animate-float">
+                    <span className="inline-flex rounded-full bg-rose-500 px-4 py-1 text-sm font-semibold text-white shadow-lg">
                       {plan.saving}
                     </span>
                   </div>
                 )}
 
                 <div className="mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900">
+                  <h3 className="text-2xl font-bold text-gray-900 group-hover:text-main transition-colors duration-300">
                     {plan.name}
                   </h3>
                   <div className="mt-4 flex items-baseline">
@@ -156,10 +159,17 @@ const PricingModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <ul className="mb-6 space-y-4 flex-grow">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start">
+                  {plan.features.map((feature, idx) => (
+                    <li
+                      key={feature}
+                      className="flex items-start opacity-0 animate-fade-in"
+                      style={{
+                        animationDelay: `${planIndex * 200 + idx * 100}ms`,
+                        animationFillMode: "forwards",
+                      }}
+                    >
                       <svg
-                        className="h-6 w-6 text-green-500 flex-shrink-0"
+                        className="h-6 w-6 text-green-500 flex-shrink-0 transform transition-transform duration-300 hover:scale-110"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -180,25 +190,50 @@ const PricingModal = ({ isOpen, onClose }) => {
 
                 <button
                   onClick={() => handlePlanClick(plan.name)}
-                  className={`w-full rounded-lg px-4 py-3 text-center text-sm font-semibold transition-all duration-200 ${
+                  className={`w-full rounded-lg px-4 py-3 text-center text-sm font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg group ${
                     plan.buttonVariant === "primary"
                       ? "bg-main text-white hover:bg-main/90"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
-                  {plan.buttonText}
+                  <span className="inline-flex items-center group-hover:translate-x-1 transition-transform duration-300">
+                    {plan.buttonText}
+                    <svg
+                      className="w-4 h-4 ml-2 transform transition-transform group-hover:translate-x-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 7l5 5m0 0l-5 5m5-5H6"
+                      />
+                    </svg>
+                  </span>
                 </button>
               </div>
             ))}
           </div>
 
           {/* FAQ Section */}
-          <div className="mt-12">
+          <div
+            className="mt-12 opacity-0 animate-fade-in"
+            style={{ animationDelay: "800ms", animationFillMode: "forwards" }}
+          >
             <h3 className="text-xl font-bold text-center mb-6">
               Pertanyaan yang Sering Diajukan
             </h3>
             <div className="grid gap-6 sm:grid-cols-3">
-              <div>
+              {/* FAQ items with staggered animations */}
+              <div
+                className="opacity-0 animate-fade-in"
+                style={{
+                  animationDelay: "900ms",
+                  animationFillMode: "forwards",
+                }}
+              >
                 <h4 className="text-base font-semibold text-gray-900">
                   Apa perbedaan Basic dan Premium?
                 </h4>
@@ -208,7 +243,13 @@ const PricingModal = ({ isOpen, onClose }) => {
                   dan kemampuan untuk mengekspor data.
                 </p>
               </div>
-              <div>
+              <div
+                className="opacity-0 animate-fade-in"
+                style={{
+                  animationDelay: "1000ms",
+                  animationFillMode: "forwards",
+                }}
+              >
                 <h4 className="text-base font-semibold text-gray-900">
                   Bagaimana cara berlangganan Premium?
                 </h4>
@@ -218,7 +259,13 @@ const PricingModal = ({ isOpen, onClose }) => {
                   ke Premium.
                 </p>
               </div>
-              <div>
+              <div
+                className="opacity-0 animate-fade-in"
+                style={{
+                  animationDelay: "1100ms",
+                  animationFillMode: "forwards",
+                }}
+              >
                 <h4 className="text-base font-semibold text-gray-900">
                   Apa keuntungan berlangganan tahunan?
                 </h4>
