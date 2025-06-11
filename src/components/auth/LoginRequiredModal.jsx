@@ -11,22 +11,21 @@ const LoginRequiredModal = ({ isOpen, onClose }) => {
       <div className="flex min-h-screen items-center justify-center p-4">
         {/* Overlay */}
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity animate-fade-in"
           onClick={onClose}
         ></div>
 
         {/* Modal Content */}
-        <div className="relative transform overflow-hidden rounded-2xl bg-white px-8 py-12 text-center shadow-xl transition-all sm:w-full sm:max-w-md">
+        <div className="relative transform overflow-hidden rounded-2xl bg-white px-8 py-12 text-center shadow-xl transition-all sm:w-full sm:max-w-md animate-scale-in">
           {/* Decorative elements */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-highlight/10 rounded-full"></div>
             <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-highlight/10 rounded-full"></div>
-          </div>
-
+          </div>{" "}
           {/* Icon */}
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-highlight/20">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-highlight/20 animate-fade-in-down">
             <svg
-              className="h-8 w-8 text-highlight"
+              className="h-8 w-8 text-highlight animate-bounce-slow"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -38,19 +37,23 @@ const LoginRequiredModal = ({ isOpen, onClose }) => {
                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
               />
             </svg>
-          </div>
-
+          </div>{" "}
           {/* Content */}
           <div className="mt-6">
-            <h3 className="text-2xl font-bold text-gray-900">
+            <h3
+              className="text-2xl font-bold text-gray-900 animate-fade-in"
+              style={{ animationDelay: "200ms" }}
+            >
               Login Diperlukan
             </h3>
-            <p className="mt-4 text-gray-500">
+            <p
+              className="mt-4 text-gray-500 animate-fade-in"
+              style={{ animationDelay: "400ms" }}
+            >
               Untuk mengakses fitur ini, Anda perlu login terlebih dahulu. Login
               sekarang untuk menikmati semua fitur yang tersedia!
             </p>
           </div>
-
           {/* Buttons */}
           <div className="mt-8 space-y-3">
             <button
@@ -58,13 +61,31 @@ const LoginRequiredModal = ({ isOpen, onClose }) => {
                 navigate("/login");
                 onClose();
               }}
-              className="w-full rounded-lg bg-main px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-main/90 focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2"
+              className="w-full rounded-lg bg-main px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-main/90 focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group animate-fade-in"
+              style={{ animationDelay: "600ms" }}
             >
-              Login Sekarang
+              <span className="inline-flex items-center justify-center group-hover:translate-x-1 transition-transform duration-300">
+                Login Sekarang
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 ml-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
+                </svg>
+              </span>
             </button>
             <button
               onClick={onClose}
-              className="w-full rounded-lg border border-main px-4 py-2.5 text-sm font-semibold text-main hover:bg-main/5 focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2"
+              className="w-full rounded-lg border border-main px-4 py-2.5 text-sm font-semibold text-main hover:bg-main/5 focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 transition-all duration-300 hover:scale-105 animate-fade-in"
+              style={{ animationDelay: "700ms" }}
             >
               Kembali
             </button>
