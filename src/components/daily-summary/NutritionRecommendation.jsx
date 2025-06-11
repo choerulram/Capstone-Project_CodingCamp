@@ -8,46 +8,6 @@ const NutritionRecommendation = () => {
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
-  // Helper function to parse JWT token
-  const parseJwt = (token) => {
-    if (!token) {
-      throw new Error("Token tidak valid");
-    }
-
-    try {
-      const base64Url = token.split(".")[1];
-      if (!base64Url) {
-        throw new Error("Format token tidak valid");
-      }
-
-      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split("")
-          .map(function (c) {
-            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-          })
-          .join("")
-      );
-
-      const parsed = JSON.parse(jsonPayload);
-      if (!parsed || typeof parsed !== "object") {
-        throw new Error("Data user tidak valid");
-      }
-
-      if (!parsed.umur || !parsed.gender) {
-        throw new Error(
-          "Data profil tidak lengkap. Pastikan Anda sudah mengisi data profil dengan lengkap."
-        );
-      }
-
-      return parsed;
-    } catch (error) {
-      console.error("Error parsing JWT:", error);
-      throw new Error("Gagal memproses data pengguna: " + error.message);
-    }
-  };
-
   useEffect(() => {
     const getRecommendation = async () => {
       setLoading(true);
@@ -57,7 +17,7 @@ const NutritionRecommendation = () => {
           throw new Error("Anda harus login terlebih dahulu.");
         }
 
-        // Get today's scan history
+        // Mengambil riwayat pemindaian hari ini
         const historyData = await api.getTodayScanHistory(token);
         const todayHistory = historyData.history || [];
 
@@ -67,52 +27,23 @@ const NutritionRecommendation = () => {
           );
         }
 
-        // Calculate total nutrition
-        const giziUtama = [
-          "energi",
-          "protein",
-          "lemak total",
-          "karbohidrat",
-          "serat",
-          "gula",
-          "garam",
-        ];
-        const totalGizi = {
-          energi: 0,
-          protein: 0,
-          "lemak total": 0,
-          karbohidrat: 0,
-          serat: 0,
-          gula: 0,
-          garam: 0,
-        };
+        // Menghitung total nutrisi
+        const totalGizi = todayHistory.reduce((acc, item) => {
+          const gizi = item.kandungan_gizi || {};
+          return {
+            energy_kal: (acc.energy_kal || 0) + Number(gizi.energi || 0),
+            protein_g: (acc.protein_g || 0) + Number(gizi.protein || 0),
+            fat_g: (acc.fat_g || 0) + Number(gizi["lemak total"] || 0),
+            carbohydrate_g: (acc.carbohydrate_g || 0) + Number(gizi.karbohidrat || 0),
+            fiber_g: (acc.fiber_g || 0) + Number(gizi.serat || 0),
+            sugar_g: (acc.sugar_g || 0) + Number(gizi.gula || 0),
+            sodium_mg: (acc.sodium_mg || 0) + Number(gizi.garam || 0),
+          };
+        }, {});
 
-        todayHistory.forEach((item) => {
-          giziUtama.forEach((k) => {
-            totalGizi[k] += Number(item.kandungan_gizi?.[k] || 0);
-          });
-        });
-
-        // Get and validate user data
-        const userData = parseJwt(token);
-
-        // Prepare payload
+        // Menyiapkan payload sesuai format API
         const inputData = {
-          umur: userData.umur,
-          jenis_kelamin: userData.gender || userData.jenis_kelamin,
-          hamil: userData.hamil || false,
-          usia_kandungan: userData.usia_kandungan || null,
-          menyusui: userData.menyusui || false,
-          umur_anak: userData.umur_anak || null,
-          konsumsi: {
-            energy_kal: totalGizi["energi"],
-            protein_g: totalGizi["protein"],
-            fat_g: totalGizi["lemak total"],
-            carbohydrate_g: totalGizi["karbohidrat"],
-            fiber_g: totalGizi["serat"],
-            sodium_mg: totalGizi["garam"],
-            sugar_g: totalGizi["gula"],
-          },
+          konsumsi: totalGizi,
           target_harian: {
             energy_kal: 2100,
             protein_g: 60,
@@ -124,7 +55,7 @@ const NutritionRecommendation = () => {
           },
         };
 
-        // Get recommendation
+        // Mengambil rekomendasi
         const response = await fetch(`${BASE_URL}/recommendation`, {
           method: "POST",
           headers: {
@@ -180,14 +111,16 @@ const NutritionRecommendation = () => {
           </svg>
         </span>
         Rekomendasi Gizi
-      </h2>{" "}
+      </h2>
+
       <div className="mb-6 animate-fade-in animate-delay-100">
         <p className="text-sm text-gray-600">
           {loading
             ? "Memuat rekomendasi nutrisi..."
             : "Rekomendasi nutrisi berdasarkan konsumsi harian Anda"}
         </p>
-      </div>{" "}
+      </div>
+
       {error && (
         <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-6 border border-red-100 animate-fade-in-down">
           <div className="flex items-center gap-3">
@@ -209,113 +142,71 @@ const NutritionRecommendation = () => {
           </div>
         </div>
       )}
+
       {loading && (
         <div className="flex justify-center items-center p-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-main"></div>
         </div>
       )}
-      {recommendation && !loading && (
-        <div className="space-y-4">
-          {" "}
-          {recommendation.message ? (
-            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-gray-100/50 text-gray-800 animate-fade-in animate-delay-100">
-              {recommendation.message}
-            </div>
-          ) : (
-            <div className="grid gap-4">
-              {Object.entries(recommendation).map(([key, value], index) => (
-                <div
-                  key={key}
-                  className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100/50 overflow-hidden hover:shadow-md transition-all duration-300 hover:scale-[1.01] animate-fade-in-right"
-                  style={{ animationDelay: `${index * 150}ms` }}
-                >
-                  {" "}
-                  <div className="p-4">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="bg-highlight/20 p-2 rounded-lg transform transition-transform duration-300 hover:scale-110">
-                        {key.includes("energi") || key.includes("energy") ? (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-highlight"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M13 10V3L4 14h7v7l9-11h-7z"
-                            />
-                          </svg>
-                        ) : key.includes("protein") ? (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-highlight"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
-                            />
-                          </svg>
-                        ) : (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-highlight"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                            />
-                          </svg>
-                        )}
-                      </div>
-                      <h3 className="text-lg font-semibold text-main capitalize">
-                        {key.split("_").join(" ")}
-                      </h3>
-                    </div>
 
-                    {typeof value === "object" && Array.isArray(value) ? (
-                      <div className="space-y-3">
-                        <p className="text-sm text-gray-600 font-medium">
-                          Rekomendasi Produk:
-                        </p>
-                        <div className="space-y-2">
-                          {value.map((item, index) => (
-                            <div
-                              key={index}
-                              className="flex items-center justify-between p-3 bg-gray-50/80 rounded-lg hover:bg-gray-100/80 transition-colors hover:scale-[1.02] transform duration-300 animate-fade-in"
-                              style={{ animationDelay: `${index * 150}ms` }}
-                            >
-                              <span className="text-gray-700">
-                                {item.product_name}
-                              </span>
-                              <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                                Skor: {item.skor_gizi}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex justify-between items-center p-3 bg-gray-50/80 rounded-lg">
-                        <span className="text-gray-600">Nilai rekomendasi</span>
-                        <span className="text-main font-semibold">{value}</span>
-                      </div>
-                    )}
+      {recommendation && !loading && (
+        <div className="space-y-6">
+          {/* Area Fokus Gizi */}
+          {recommendation.gizi_fokus && recommendation.gizi_fokus.length > 0 && (
+            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-gray-100/50">
+              <h3 className="text-lg font-semibold text-main mb-4">Area Fokus Gizi</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                {recommendation.gizi_fokus.map((nutrient, index) => (
+                  <div
+                    key={nutrient}
+                    className="bg-highlight/10 p-3 rounded-lg text-sm font-medium text-highlight animate-fade-in"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    {nutrient.split('_')[0].charAt(0).toUpperCase() + nutrient.split('_')[0].slice(1)}
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Rekomendasi Produk */}
+          {recommendation.rekomendasi && recommendation.rekomendasi.length > 0 && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-main">Rekomendasi Produk</h3>
+              <div className="grid gap-4">
+                {recommendation.rekomendasi.map((product, index) => (
+                  <div
+                    key={index}
+                    className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100/50 overflow-hidden hover:shadow-md transition-all duration-300 animate-fade-in-right"
+                    style={{ animationDelay: `${index * 150}ms` }}
+                  >
+                    <div className="p-4">
+                      <div className="flex justify-between items-center mb-4">
+                        <h4 className="text-lg font-semibold text-main">
+                          {product.product_name}
+                        </h4>
+                        <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                          Skor: {product.skor_gizi.toFixed(1)}
+                        </span>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {["Energi", "Protein", "Lemak total", "Karbohidrat", "Serat", "Gula", "Garam"].map((key) => (
+                          product[key] && (
+                            <div
+                              key={key}
+                              className="bg-gray-50/80 p-3 rounded-lg"
+                            >
+                              <div className="text-sm text-gray-600">{key}</div>
+                              <div className="font-medium text-main">{product[key]}</div>
+                            </div>
+                          )
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
