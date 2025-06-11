@@ -1,9 +1,57 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import api from "../../utils/api";
 
 const DailyNutritionStats = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.8,
+        duration: 0.5,
+      },
+    },
+    hover: {
+      scale: 1.05,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
   const { token } = useSelector((state) => state.auth);
   const [dailyTarget, setDailyTarget] = useState({
     energi: 0,
@@ -71,9 +119,18 @@ const DailyNutritionStats = () => {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-highlight/5 to-white">
+    <motion.section
+      className="py-16 bg-gradient-to-b from-highlight/5 to-white"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+      variants={containerVariants}
+    >
       <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-main mb-8 flex items-center">
+        <motion.h2
+          className="text-3xl font-bold text-main mb-8 flex items-center"
+          variants={cardVariants}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-8 w-8 text-highlight mr-3"
@@ -89,9 +146,13 @@ const DailyNutritionStats = () => {
             />
           </svg>
           Ringkasan Gizi Harian
-        </h2>
+        </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+          <motion.div
+            className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
+            variants={cardVariants}
+            whileHover={{ y: -5, scale: 1.02 }}
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="bg-blue-100 p-3 rounded-lg">
                 <svg
@@ -120,8 +181,12 @@ const DailyNutritionStats = () => {
             <p className="text-gray-600 text-sm">
               Energi dari {Number(dailyTarget.energi).toFixed(1)}kkal target
             </p>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+          </motion.div>
+          <motion.div
+            className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
+            variants={cardVariants}
+            whileHover={{ y: -5, scale: 1.02 }}
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="bg-green-100 p-3 rounded-lg">
                 <svg
@@ -153,8 +218,12 @@ const DailyNutritionStats = () => {
             <p className="text-gray-600 text-sm">
               Protein dari {Number(dailyTarget.protein).toFixed(1)}g target
             </p>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+          </motion.div>
+          <motion.div
+            className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
+            variants={cardVariants}
+            whileHover={{ y: -5, scale: 1.02 }}
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="bg-yellow-100 p-3 rounded-lg">
                 <svg
@@ -186,8 +255,12 @@ const DailyNutritionStats = () => {
             <p className="text-gray-600 text-sm">
               Lemak dari {Number(dailyTarget["lemak total"]).toFixed(1)}g target
             </p>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+          </motion.div>
+          <motion.div
+            className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
+            variants={cardVariants}
+            whileHover={{ y: -5, scale: 1.02 }}
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="bg-purple-100 p-3 rounded-lg">
                 <svg
@@ -220,10 +293,13 @@ const DailyNutritionStats = () => {
               Karbohidrat dari {Number(dailyTarget.karbohidrat).toFixed(1)}g
               target
             </p>
-          </div>
+          </motion.div>
         </div>
-        <div className="flex justify-center mt-8">
-          {" "}
+        <motion.div
+          className="flex justify-center mt-8"
+          variants={buttonVariants}
+          whileHover="hover"
+        >
           <Link
             to="/daily-summary"
             className="inline-flex items-center px-6 py-3 bg-highlight text-white font-medium rounded-lg hover:bg-highlight/90 transition-all duration-300 shadow-sm hover:shadow"
@@ -242,9 +318,9 @@ const DailyNutritionStats = () => {
               />
             </svg>
           </Link>
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

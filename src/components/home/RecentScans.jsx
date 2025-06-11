@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import api, { BASE_URL } from "../../utils/api";
 
 const TEMPLATE_DATA = [
@@ -127,11 +129,15 @@ const RecentScans = () => {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gradient-to-br from-white via-gray-50 to-highlight/5">
+      <motion.section
+        className="py-16 bg-gradient-to-br from-white via-gray-50 to-highlight/5"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-main mb-8">Memuat data...</h2>
         </div>
-      </section>
+      </motion.section>
     );
   }
 
@@ -139,7 +145,12 @@ const RecentScans = () => {
     <section className="py-16 bg-gradient-to-br from-white via-gray-50 to-highlight/5">
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold text-main flex items-center">
+          <motion.h2
+            className="text-3xl font-bold text-main flex items-center"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-8 w-8 text-highlight mr-3"
@@ -155,10 +166,14 @@ const RecentScans = () => {
               />
             </svg>
             Riwayat Scan Terakhir
-          </h2>{" "}
-          <button
+          </motion.h2>
+          <motion.button
             onClick={() => navigate("/history")}
             className="px-4 py-2 text-white bg-highlight hover:bg-highlight/90 transition-all duration-300 rounded-lg shadow-sm hover:shadow flex items-center gap-2 font-medium"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             Lihat Semua
             <svg
@@ -175,13 +190,24 @@ const RecentScans = () => {
                 d="M9 5l7 7-7 7"
               />
             </svg>
-          </button>
+          </motion.button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {recentScans.map((scan, index) => (
-            <div
+            <motion.div
               key={scan.id || index}
-              className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] border border-gray-100"
+              className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.1, // Memberikan delay berdasarkan index
+              }}
+              whileHover={{
+                y: -5,
+                scale: 1.02,
+                transition: { duration: 0.2 },
+              }}
             >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-main">
@@ -200,14 +226,16 @@ const RecentScans = () => {
                 </span>
               </div>
               <div className="flex items-start gap-4">
-                <img
+                <motion.img
                   src={
                     scan.isTemplate
                       ? scan.image
                       : `${BASE_URL}/images/${scan.filename}`
                   }
                   alt="Food Image"
-                  className="w-16 h-16 rounded-lg object-cover border-2 border-highlight/30 shadow-md transition-transform duration-300 hover:scale-105"
+                  className="w-16 h-16 rounded-lg object-cover border-2 border-highlight/30 shadow-md"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.2 }}
                 />
                 <div>
                   <p className="text-sm text-gray-600 mb-2">
@@ -223,7 +251,7 @@ const RecentScans = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

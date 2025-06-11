@@ -1,10 +1,46 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
+import { motion } from "framer-motion";
 
 const NutritionTips = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
     <section className="py-16 bg-gradient-to-tr from-highlight/5 via-white to-gray-50">
-      <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-main mb-8 flex items-center">
+      <motion.div
+        className="container mx-auto px-6"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={containerVariants}
+      >
+        <motion.h2
+          className="text-3xl font-bold text-main mb-8 flex items-center"
+          variants={cardVariants}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-8 w-8 text-highlight mr-3"
@@ -20,10 +56,15 @@ const NutritionTips = () => {
             />
           </svg>
           Tips & Fakta Gizi
-        </h2>
+        </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Protein Card */}
-          <div className="relative group">
+          <motion.div
+            className="relative group"
+            variants={cardVariants}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+          >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
             <div className="relative bg-white p-6 rounded-xl shadow-md">
               <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
@@ -53,10 +94,15 @@ const NutritionTips = () => {
                 makanan ringan berbahan kacang.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Lemak Card */}
-          <div className="relative group">
+          <motion.div
+            className="relative group"
+            variants={cardVariants}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+          >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
             <div className="relative bg-white p-6 rounded-xl shadow-md">
               <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
@@ -80,16 +126,21 @@ const NutritionTips = () => {
               </h3>{" "}
               <p className="text-gray-600 mb-4">
                 Periksa jenis lemak pada kemasan: total lemak, lemak jenuh, dan
-                lemak trans. Pilih produk dengan lemak jenuh kurang dari 10%
-                per sajian. Hindari produk dengan kandungan lemak trans pada
+                lemak trans. Pilih produk dengan lemak jenuh kurang dari 10% per
+                sajian. Hindari produk dengan kandungan lemak trans pada
                 ingredient list. Perhatikan minyak yang digunakan: pilih minyak
                 nabati seperti kanola atau zaitun.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Karbohidrat Card */}
-          <div className="relative group">
+          <motion.div
+            className="relative group"
+            variants={cardVariants}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+          >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
             <div className="relative bg-white p-6 rounded-xl shadow-md">
               <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
@@ -119,10 +170,15 @@ const NutritionTips = () => {
                 pada kemasan.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Serat Card */}
-          <div className="relative group">
+          <motion.div
+            className="relative group"
+            variants={cardVariants}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+          >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
             <div className="relative bg-white p-6 rounded-xl shadow-md">
               <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
@@ -153,10 +209,15 @@ const NutritionTips = () => {
                 pertama.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Gula Card */}
-          <div className="relative group">
+          <motion.div
+            className="relative group"
+            variants={cardVariants}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+          >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
             <div className="relative bg-white p-6 rounded-xl shadow-md">
               <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
@@ -187,10 +248,15 @@ const NutritionTips = () => {
                 "less sugar" bila tersedia.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Garam Card */}
-          <div className="relative group">
+          <motion.div
+            className="relative group"
+            variants={cardVariants}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+          >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
             <div className="relative bg-white p-6 rounded-xl shadow-md">
               <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
@@ -221,9 +287,9 @@ const NutritionTips = () => {
                 rendah sodium.
               </p>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

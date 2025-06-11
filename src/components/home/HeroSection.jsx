@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import LoginRequiredModal from "../auth/LoginRequiredModal";
 
 const HeroSection = () => {
@@ -17,31 +19,77 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="bg-gradient-to-r from-main via-main to-main/90 py-20">
+    <motion.section
+      className="bg-gradient-to-r from-main via-main to-main/90 py-20"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between">
-          <div className="md:w-1/2 mb-10 md:mb-0">
-            {" "}
-            <h1 className="text-5xl font-bold text-light mb-6 animate-fade-in">
+          <motion.div
+            className="md:w-1/2 mb-10 md:mb-0"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <motion.h1
+              className="text-5xl font-bold text-light mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
               {user ? `Welcome back, ${user.name}!` : "Welcome to"}
-              <span className="text-highlight block mt-2">NuTrack</span>
-            </h1>
-            <p className="text-xl text-gray-100 mb-8 animate-slide-up opacity-0 [animation-delay:0.3s] [animation-fill-mode:forwards]">
+              <motion.span
+                className="text-highlight block mt-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+              >
+                NuTrack
+              </motion.span>
+            </motion.h1>
+            <motion.p
+              className="text-xl text-gray-100 mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+            >
               Scan kemasan makanan Anda dan dapatkan informasi gizi secara
               instan
-            </p>
-            <button
+            </motion.p>
+            <motion.button
               onClick={handleScanClick}
-              className="bg-highlight text-main px-8 py-3 rounded-xl font-medium hover:bg-secondary transition-colors duration-300 animate-slide-up opacity-0 [animation-delay:0.5s] [animation-fill-mode:forwards]"
+              className="bg-highlight text-main px-8 py-3 rounded-xl font-medium hover:bg-secondary transition-colors duration-300"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.4, delay: 1 }}
             >
               Mulai Scan
-            </button>
-          </div>
-          <div className="md:w-1/2">
-            <div className="bg-white p-8 rounded-3xl shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300">
+            </motion.button>
+          </motion.div>
+          <motion.div
+            className="md:w-1/2"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <motion.div
+              className="bg-white p-8 rounded-3xl shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300"
+              whileHover={{ y: -10 }}
+            >
               <h2 className="text-2xl font-bold text-main mb-6">Fitur Utama</h2>
               <div className="space-y-6">
-                <div className="flex items-center space-x-4">
+                {/* Fitur Items */}
+                <motion.div
+                  className="flex items-center space-x-4"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                  whileHover={{ x: 10 }}
+                >
                   <div className="bg-highlight/20 p-3 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -64,8 +112,14 @@ const HeroSection = () => {
                       Informasi gizi dalam hitungan detik
                     </p>
                   </div>
-                </div>
-                <div className="flex items-center space-x-4">
+                </motion.div>
+                <motion.div
+                  className="flex items-center space-x-4"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                  whileHover={{ x: 10 }}
+                >
                   <div className="bg-highlight/20 p-3 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -90,8 +144,14 @@ const HeroSection = () => {
                       Saran makanan sehat sesuai kebutuhan
                     </p>
                   </div>
-                </div>
-                <div className="flex items-center space-x-4">
+                </motion.div>
+                <motion.div
+                  className="flex items-center space-x-4"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                  whileHover={{ x: 10 }}
+                >
                   <div className="bg-highlight/20 p-3 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -114,19 +174,18 @@ const HeroSection = () => {
                     </h3>
                     <p className="text-gray-600">Pantau pola makan Anda</p>
                   </div>
-                </div>
-              </div>{" "}
-            </div>
-          </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 
-      {/* Login Required Modal */}
       <LoginRequiredModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
       />
-    </section>
+    </motion.section>
   );
 };
 

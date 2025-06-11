@@ -1,10 +1,49 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
+import { motion } from "framer-motion";
 
 const ProductRecommendations = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <section className="py-16 bg-gradient-to-bl from-gray-50 via-white to-highlight/5">
+    <motion.section
+      className="py-16 bg-gradient-to-bl from-gray-50 via-white to-highlight/5"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+      variants={containerVariants}
+    >
       <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-main mb-8 flex items-center">
+        <motion.h2
+          className="text-3xl font-bold text-main mb-8 flex items-center"
+          variants={cardVariants}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-8 w-8 text-highlight mr-3"
@@ -20,9 +59,13 @@ const ProductRecommendations = () => {
             />
           </svg>
           Produk Rekomendasi untuk Anda
-        </h2>
+        </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group">
+          <motion.div
+            className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
+            variants={cardVariants}
+            whileHover={{ y: -5, scale: 1.02 }}
+          >
             <div className="relative mb-4">
               <img
                 src="https://images.unsplash.com/photo-1576186726115-4d51596775d1"
@@ -50,9 +93,13 @@ const ProductRecommendations = () => {
             <button className="w-full py-2 text-highlight border border-highlight/20 rounded-lg hover:bg-highlight/5 transition-colors">
               Lihat Detail
             </button>
-          </div>
+          </motion.div>
 
-          <div className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group">
+          <motion.div
+            className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
+            variants={cardVariants}
+            whileHover={{ y: -5, scale: 1.02 }}
+          >
             <div className="relative mb-4">
               <img
                 src="https://images.unsplash.com/photo-1563636619-e9143da7973b"
@@ -80,9 +127,13 @@ const ProductRecommendations = () => {
             <button className="w-full py-2 text-highlight border border-highlight/20 rounded-lg hover:bg-highlight/5 transition-colors">
               Lihat Detail
             </button>
-          </div>
+          </motion.div>
 
-          <div className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group">
+          <motion.div
+            className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
+            variants={cardVariants}
+            whileHover={{ y: -5, scale: 1.02 }}
+          >
             <div className="relative mb-4">
               <img
                 src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
@@ -110,9 +161,13 @@ const ProductRecommendations = () => {
             <button className="w-full py-2 text-highlight border border-highlight/20 rounded-lg hover:bg-highlight/5 transition-colors">
               Lihat Detail
             </button>
-          </div>
+          </motion.div>
 
-          <div className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group">
+          <motion.div
+            className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
+            variants={cardVariants}
+            whileHover={{ y: -5, scale: 1.02 }}
+          >
             <div className="relative mb-4">
               <img
                 src="https://images.unsplash.com/photo-1604431696980-094b6012d1b3"
@@ -138,10 +193,10 @@ const ProductRecommendations = () => {
             <button className="w-full py-2 text-highlight border border-highlight/20 rounded-lg hover:bg-highlight/5 transition-colors">
               Lihat Detail
             </button>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
