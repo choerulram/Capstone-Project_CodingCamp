@@ -1,48 +1,36 @@
-/* eslint-disable no-unused-vars */
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
 
 const ProductRecommendations = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
-    },
-  };
+  const [isVisible, setIsVisible] = useState(false);
 
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 20,
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+        }
       },
-    },
-  };
+      { threshold: 0.1 }
+    );
+
+    const section = document.getElementById("product-recommendations");
+    if (section) observer.observe(section);
+
+    return () => {
+      if (section) observer.unobserve(section);
+    };
+  }, []);
 
   return (
-    <motion.section
+    <section
+      id="product-recommendations"
       className="py-16 bg-gradient-to-bl from-gray-50 via-white to-highlight/5"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
-      variants={containerVariants}
     >
       <div className="container mx-auto px-6">
-        <motion.h2
-          className="text-3xl font-bold text-main mb-8 flex items-center"
-          variants={cardVariants}
+        <h2
+          className={`text-3xl font-bold text-main mb-8 flex items-center transition-all duration-500 transform ${
+            isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+          }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -59,12 +47,16 @@ const ProductRecommendations = () => {
             />
           </svg>
           Produk Rekomendasi untuk Anda
-        </motion.h2>
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <motion.div
-            className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
-            variants={cardVariants}
-            whileHover={{ y: -5, scale: 1.02 }}
+          {/* Product Cards */}
+          <div
+            className={`bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group transform hover:-translate-y-1 hover:scale-[1.02] ${
+              isVisible
+                ? "translate-y-0 opacity-100"
+                : "translate-y-4 opacity-0"
+            }`}
+            style={{ transitionDelay: "200ms" }}
           >
             <div className="relative mb-4">
               <img
@@ -93,12 +85,15 @@ const ProductRecommendations = () => {
             <button className="w-full py-2 text-highlight border border-highlight/20 rounded-lg hover:bg-highlight/5 transition-colors">
               Lihat Detail
             </button>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
-            variants={cardVariants}
-            whileHover={{ y: -5, scale: 1.02 }}
+          <div
+            className={`bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group transform hover:-translate-y-1 hover:scale-[1.02] ${
+              isVisible
+                ? "translate-y-0 opacity-100"
+                : "translate-y-4 opacity-0"
+            }`}
+            style={{ transitionDelay: "300ms" }}
           >
             <div className="relative mb-4">
               <img
@@ -127,12 +122,15 @@ const ProductRecommendations = () => {
             <button className="w-full py-2 text-highlight border border-highlight/20 rounded-lg hover:bg-highlight/5 transition-colors">
               Lihat Detail
             </button>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
-            variants={cardVariants}
-            whileHover={{ y: -5, scale: 1.02 }}
+          <div
+            className={`bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group transform hover:-translate-y-1 hover:scale-[1.02] ${
+              isVisible
+                ? "translate-y-0 opacity-100"
+                : "translate-y-4 opacity-0"
+            }`}
+            style={{ transitionDelay: "400ms" }}
           >
             <div className="relative mb-4">
               <img
@@ -161,12 +159,15 @@ const ProductRecommendations = () => {
             <button className="w-full py-2 text-highlight border border-highlight/20 rounded-lg hover:bg-highlight/5 transition-colors">
               Lihat Detail
             </button>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
-            variants={cardVariants}
-            whileHover={{ y: -5, scale: 1.02 }}
+          <div
+            className={`bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group transform hover:-translate-y-1 hover:scale-[1.02] ${
+              isVisible
+                ? "translate-y-0 opacity-100"
+                : "translate-y-4 opacity-0"
+            }`}
+            style={{ transitionDelay: "500ms" }}
           >
             <div className="relative mb-4">
               <img
@@ -193,10 +194,10 @@ const ProductRecommendations = () => {
             <button className="w-full py-2 text-highlight border border-highlight/20 rounded-lg hover:bg-highlight/5 transition-colors">
               Lihat Detail
             </button>
-          </motion.div>
+          </div>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 
