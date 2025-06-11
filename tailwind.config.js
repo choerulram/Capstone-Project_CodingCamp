@@ -22,6 +22,11 @@ export default {
         "fade-in-left": "fadeInLeft 0.5s ease-out",
         "fade-in-right": "fadeInRight 0.5s ease-out",
         "scale-in": "scaleIn 0.3s ease-out",
+        "progress-width": "progressWidth 1s ease-out forwards",
+        "slide-right": "slideRight 0.5s ease-out",
+        "progress-grow": "progressGrow 1s ease-out forwards",
+        "slide-in-bottom": "slideInBottom 0.6s ease-out",
+        float: "float 3s ease-in-out infinite",
       },
       keyframes: {
         fadeIn: {
@@ -48,9 +53,33 @@ export default {
           "0%": { transform: "scale(0.9)", opacity: "0" },
           "100%": { transform: "scale(1)", opacity: "1" },
         },
+        progressWidth: {
+          "0%": { width: "0%" },
+          "100%": { width: "var(--progress-width)" },
+        },
+        slideRight: {
+          "0%": { transform: "translateX(-20px)", opacity: "0" },
+          "100%": { transform: "translateX(0)", opacity: "1" },
+        },
+        progressGrow: {
+          "0%": { height: "0%" },
+          "100%": { height: "var(--target-height)" },
+        },
+        slideInBottom: {
+          "0%": { transform: "translateY(20px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-5px)" },
+        },
       },
-      scale: {
-        102: "1.02",
+      transitionDelay: {
+        100: "100ms",
+        200: "200ms",
+        300: "300ms",
+        400: "400ms",
+        500: "500ms",
       },
     },
   },

@@ -47,9 +47,10 @@ const DailyScanHistory = () => {
 
   return (
     <>
-      <div className="bg-gray-50 p-6 rounded-xl border border-gray-100">
-        <h2 className="text-xl font-semibold text-main mb-6 flex items-center">
-          <span className="bg-highlight/20 p-2 rounded-lg mr-2">
+      {" "}
+      <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 animate-fade-in">
+        <h2 className="text-xl font-semibold text-main mb-6 flex items-center animate-fade-in-down">
+          <span className="bg-highlight/20 p-2 rounded-lg mr-2 animate-bounce-slow">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 text-highlight"
@@ -91,10 +92,13 @@ const DailyScanHistory = () => {
                   (currentPage - 1) * itemsPerPage,
                   currentPage * itemsPerPage
                 )
-                .map((scan) => (
+                .map((scan, index) => (
                   <div
                     key={scan.id || scan.filename}
-                    className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] overflow-hidden border border-gray-100/50"
+                    className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] overflow-hidden border border-gray-100/50 animate-fade-in-right"
+                    style={{
+                      animationDelay: `${index * 150}ms`,
+                    }}
                     onClick={() => handleOpenModal(scan)}
                   >
                     <div className="p-4">
@@ -147,7 +151,7 @@ const DailyScanHistory = () => {
                                 {scan.kandungan_gizi && (
                                   <>
                                     {/* Baris pertama */}
-                                    <div className="flex items-center gap-1.5 bg-blue-50/80 text-blue-600 px-2.5 py-1 rounded-lg text-xs">
+                                    <div className="flex items-center gap-1.5 bg-blue-50/80 text-blue-600 px-2.5 py-1 rounded-lg text-xs hover:bg-blue-100/80 transition-colors duration-300">
                                       <span className="font-medium">
                                         Energi:{" "}
                                         {scan.kandungan_gizi.energi || "0"} kkal

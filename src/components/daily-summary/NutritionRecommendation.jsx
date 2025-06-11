@@ -149,12 +149,12 @@ const NutritionRecommendation = () => {
   // Panggil getRecommendation saat komponen dimount
   useEffect(() => {
     getRecommendation();
-  }, [token]); // Akan dijalankan ulang jika token berubah
+  }, [token, getRecommendation]); // Update when token or getRecommendation changes
 
   return (
-    <div className="bg-gray-50 p-6 rounded-xl border border-gray-100">
-      <h2 className="text-xl font-semibold text-main mb-6 flex items-center">
-        <span className="bg-highlight/20 p-2 rounded-lg mr-2">
+    <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 animate-fade-in">
+      <h2 className="text-xl font-semibold text-main mb-6 flex items-center animate-fade-in-down">
+        <span className="bg-highlight/20 p-2 rounded-lg mr-2 animate-bounce-slow">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 text-highlight"
@@ -171,18 +171,16 @@ const NutritionRecommendation = () => {
           </svg>
         </span>
         Rekomendasi Gizi
-      </h2>
-
-      <div className="mb-6">
+      </h2>{" "}
+      <div className="mb-6 animate-fade-in animate-delay-100">
         <p className="text-sm text-gray-600">
           {loading
             ? "Memuat rekomendasi nutrisi..."
             : "Rekomendasi nutrisi berdasarkan konsumsi harian Anda"}
         </p>
-      </div>
-
+      </div>{" "}
       {error && (
-        <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-6 border border-red-100">
+        <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-6 border border-red-100 animate-fade-in-down">
           <div className="flex items-center gap-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -202,29 +200,30 @@ const NutritionRecommendation = () => {
           </div>
         </div>
       )}
-
       {loading && (
         <div className="flex justify-center items-center p-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-main"></div>
         </div>
       )}
-
       {recommendation && !loading && (
         <div className="space-y-4">
+          {" "}
           {recommendation.message ? (
-            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-gray-100/50 text-gray-800">
+            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-gray-100/50 text-gray-800 animate-fade-in animate-delay-100">
               {recommendation.message}
             </div>
           ) : (
             <div className="grid gap-4">
-              {Object.entries(recommendation).map(([key, value]) => (
+              {Object.entries(recommendation).map(([key, value], index) => (
                 <div
                   key={key}
-                  className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100/50 overflow-hidden hover:shadow-sm transition-all duration-300"
+                  className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100/50 overflow-hidden hover:shadow-md transition-all duration-300 hover:scale-[1.01] animate-fade-in-right"
+                  style={{ animationDelay: `${index * 150}ms` }}
                 >
+                  {" "}
                   <div className="p-4">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="bg-highlight/20 p-2 rounded-lg">
+                      <div className="bg-highlight/20 p-2 rounded-lg transform transition-transform duration-300 hover:scale-110">
                         {key.includes("energi") || key.includes("energy") ? (
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -286,7 +285,8 @@ const NutritionRecommendation = () => {
                           {value.map((item, index) => (
                             <div
                               key={index}
-                              className="flex items-center justify-between p-3 bg-gray-50/80 rounded-lg hover:bg-gray-100/80 transition-colors"
+                              className="flex items-center justify-between p-3 bg-gray-50/80 rounded-lg hover:bg-gray-100/80 transition-colors hover:scale-[1.02] transform duration-300 animate-fade-in"
+                              style={{ animationDelay: `${index * 150}ms` }}
                             >
                               <span className="text-gray-700">
                                 {item.product_name}

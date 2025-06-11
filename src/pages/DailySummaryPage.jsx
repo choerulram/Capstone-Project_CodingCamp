@@ -9,17 +9,43 @@ import NutritionRecommendation from "../components/daily-summary/NutritionRecomm
 const DailySummaryPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h1 className="text-2xl font-bold text-main mb-6">
+      <Header />{" "}
+      <main className="flex-grow container mx-auto px-4 py-8 animate-fadeIn">
+        <div className="bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl animate-slideUp">
+          <h1 className="text-2xl font-bold text-main mb-6 animate-fadeInDown">
             Ringkasan Nutrisi Harian
           </h1>
           <div className="space-y-8">
-            <NutritionProgress />
-            <TotalNutritionSummary />
-            <DailyScanHistory />
-            <NutritionRecommendation />
+            <div
+              className="opacity-0 animate-fade-in"
+              style={{ animationDelay: "200ms", animationFillMode: "forwards" }}
+            >
+              <NutritionProgress />
+            </div>
+            <div
+              className="opacity-0 animate-fade-in"
+              style={{ animationDelay: "600ms", animationFillMode: "forwards" }}
+            >
+              <TotalNutritionSummary />
+            </div>
+            <div
+              className="opacity-0 animate-fade-in"
+              style={{
+                animationDelay: "1000ms",
+                animationFillMode: "forwards",
+              }}
+            >
+              <DailyScanHistory />
+            </div>
+            <div
+              className="opacity-0 animate-fade-in"
+              style={{
+                animationDelay: "1400ms",
+                animationFillMode: "forwards",
+              }}
+            >
+              <NutritionRecommendation />
+            </div>
           </div>
         </div>
       </main>

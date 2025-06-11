@@ -133,8 +133,8 @@ const NutritionProgress = () => {
   ];
 
   return (
-    <div className="bg-gray-50 p-4 sm:p-6 rounded-xl border border-gray-100 relative">
-      <h2 className="text-lg sm:text-xl font-semibold text-main mb-4 sm:mb-6 flex items-center">
+    <div className="bg-gray-50 p-4 sm:p-6 rounded-xl border border-gray-100 relative animate-slide-in-bottom">
+      <h2 className="text-lg sm:text-xl font-semibold text-main mb-4 sm:mb-6 flex items-center animate-float">
         <span className="bg-highlight/20 p-1.5 sm:p-2 rounded-lg mr-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -219,7 +219,7 @@ const NutritionProgress = () => {
                   <div className="absolute inset-0 rounded-lg bg-gray-200/50 border border-gray-300/30 backdrop-blur-sm"></div>{" "}
                   {/* Progress Bar */}{" "}
                   <div
-                    className={`absolute bottom-0 w-full rounded-t-lg transition-all duration-500 ease-in-out ${
+                    className={`absolute bottom-0 w-full rounded-t-lg transition-all duration-500 ease-in-out animate-progress-grow ${
                       percentage > 100
                         ? "bg-red-500"
                         : percentage >= 80
@@ -227,7 +227,7 @@ const NutritionProgress = () => {
                         : "bg-yellow-500"
                     } border-2 border-transparent hover:border-blue-400/80 hover:shadow-[0_0_8px_rgba(59,130,246,0.3)]`}
                     style={{
-                      height: `${Math.min(percentage, 100)}%`,
+                      "--target-height": `${Math.min(percentage, 100)}%`,
                     }}
                   >
                     {/* Shine effect */}

@@ -59,9 +59,9 @@ const TotalNutritionSummary = () => {
     }
   }, [token]);
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-gray-100 shadow-sm">
-      <h2 className="text-xl font-semibold text-main mb-6 flex items-center">
-        <span className="bg-highlight/20 p-2 rounded-lg mr-2">
+    <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg animate-fade-in">
+      <h2 className="text-xl font-semibold text-main mb-6 flex items-center animate-fade-in-down">
+        <span className="bg-highlight/20 p-2 rounded-lg mr-2 animate-bounce-slow">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 text-highlight"
@@ -81,7 +81,7 @@ const TotalNutritionSummary = () => {
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {/* Kalori */}
-        <div className="group bg-gradient-to-br from-orange-50 to-white p-4 rounded-xl border border-orange-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+        <div className="group bg-gradient-to-br from-orange-50 to-white p-4 rounded-xl border border-orange-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-100">
           <div className="flex items-center gap-2 mb-2">
             <span className="p-1.5 rounded-lg bg-orange-100 text-orange-600 group-hover:bg-orange-200 transition-colors">
               <svg
@@ -98,19 +98,19 @@ const TotalNutritionSummary = () => {
                   d="M13 10V3L4 14h7v7l9-11h-7z"
                 />
               </svg>
-            </span>
-            <div className="text-sm font-medium text-gray-600 group-hover:text-orange-700">
+            </span>{" "}
+            <div className="text-sm font-medium text-gray-600 group-hover:text-orange-700 transition-colors duration-300">
               Total Energi
             </div>
           </div>
-          <div className="text-2xl font-bold text-orange-600 group-hover:text-orange-700">
+          <div className="text-2xl font-bold text-orange-600 group-hover:text-orange-700 transition-all duration-300 group-hover:scale-105">
             {totalNutrition.energi.toFixed(1)}{" "}
             <span className="text-base font-medium">kkal</span>
           </div>
         </div>
 
         {/* Protein */}
-        <div className="group bg-gradient-to-br from-blue-50 to-white p-4 rounded-xl border border-blue-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+        <div className="group bg-gradient-to-br from-blue-50 to-white p-4 rounded-xl border border-blue-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-200">
           <div className="flex items-center gap-2 mb-2">
             <span className="p-1.5 rounded-lg bg-blue-100 text-blue-600 group-hover:bg-blue-200 transition-colors">
               <svg
@@ -139,7 +139,7 @@ const TotalNutritionSummary = () => {
         </div>
 
         {/* Lemak total */}
-        <div className="group bg-gradient-to-br from-yellow-50 to-white p-4 rounded-xl border border-yellow-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+        <div className="group bg-gradient-to-br from-yellow-50 to-white p-4 rounded-xl border border-yellow-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-300">
           <div className="flex items-center gap-2 mb-2">
             <span className="p-1.5 rounded-lg bg-yellow-100 text-yellow-600 group-hover:bg-yellow-200 transition-colors">
               <svg
@@ -168,7 +168,7 @@ const TotalNutritionSummary = () => {
         </div>
 
         {/* Karbohidrat */}
-        <div className="group bg-gradient-to-br from-purple-50 to-white p-4 rounded-xl border border-purple-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+        <div className="group bg-gradient-to-br from-purple-50 to-white p-4 rounded-xl border border-purple-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-400">
           <div className="flex items-center gap-2 mb-2">
             <span className="p-1.5 rounded-lg bg-purple-100 text-purple-600 group-hover:bg-purple-200 transition-colors">
               <svg
@@ -197,7 +197,7 @@ const TotalNutritionSummary = () => {
         </div>
 
         {/* Serat */}
-        <div className="group bg-gradient-to-br from-green-50 to-white p-4 rounded-xl border border-green-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+        <div className="group bg-gradient-to-br from-green-50 to-white p-4 rounded-xl border border-green-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-500">
           <div className="flex items-center gap-2 mb-2">
             <span className="p-1.5 rounded-lg bg-green-100 text-green-600 group-hover:bg-green-200 transition-colors">
               <svg
@@ -226,7 +226,7 @@ const TotalNutritionSummary = () => {
         </div>
 
         {/* Gula */}
-        <div className="group bg-gradient-to-br from-pink-50 to-white p-4 rounded-xl border border-pink-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+        <div className="group bg-gradient-to-br from-pink-50 to-white p-4 rounded-xl border border-pink-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-600">
           <div className="flex items-center gap-2 mb-2">
             <span className="p-1.5 rounded-lg bg-pink-100 text-pink-600 group-hover:bg-pink-200 transition-colors">
               <svg
@@ -255,7 +255,7 @@ const TotalNutritionSummary = () => {
         </div>
 
         {/* Garam */}
-        <div className="group bg-gradient-to-br from-cyan-50 to-white p-4 rounded-xl border border-cyan-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+        <div className="group bg-gradient-to-br from-cyan-50 to-white p-4 rounded-xl border border-cyan-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-700">
           <div className="flex items-center gap-2 mb-2">
             <span className="p-1.5 rounded-lg bg-cyan-100 text-cyan-600 group-hover:bg-cyan-200 transition-colors">
               <svg
