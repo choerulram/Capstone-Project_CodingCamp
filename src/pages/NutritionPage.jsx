@@ -60,12 +60,14 @@ const NutritionPage = () => {
       <main className="flex-grow bg-gray-50">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto">
-            <NutritionHeader />
+            <div className="animate-fade-in-down">
+              <NutritionHeader />
+            </div>
             <div className="grid md:grid-cols-12 gap-8">
-              <div className="md:col-span-5">
+              <div className="md:col-span-5 animate-fade-in-left">
                 <NutritionDataCard nutritionData={nutritionData} />
               </div>
-              <div className="md:col-span-7 space-y-8">
+              <div className="md:col-span-7 space-y-8 animate-fade-in-right">
                 <CalculationInfoCard />
                 <NutritionTipsCard />
                 <AdditionalRecommendations />

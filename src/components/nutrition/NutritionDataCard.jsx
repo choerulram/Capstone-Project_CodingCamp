@@ -12,16 +12,20 @@ const nutritionUnits = {
 
 const NutritionDataCard = ({ nutritionData }) => {
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl">
       <div className="bg-main text-white p-4">
         <h2 className="text-xl font-semibold">Kebutuhan Nutrisi</h2>
       </div>
       <div className="p-6">
         <div className="space-y-4">
-          {Object.entries(nutritionData || {}).map(([key, value]) => (
+          {Object.entries(nutritionData || {}).map(([key, value], index) => (
             <div
               key={key}
-              className="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-main/5 transition-colors"
+              className="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-main/5 transition-all duration-300 transform hover:scale-102 hover:shadow-md"
+              style={{
+                animationDelay: `${index * 100}ms`,
+                animation: "fadeInUp 0.5s ease-out forwards",
+              }}
             >
               <span className="text-gray-700 font-medium">
                 {key
@@ -31,7 +35,9 @@ const NutritionDataCard = ({ nutritionData }) => {
               </span>
               <span className="text-main font-bold">
                 {typeof value === "number"
-                  ? `${value.toFixed(1)} ${nutritionUnits[key.toLowerCase()] || ""}`
+                  ? `${value.toFixed(1)} ${
+                      nutritionUnits[key.toLowerCase()] || ""
+                    }`
                   : value}
               </span>
             </div>

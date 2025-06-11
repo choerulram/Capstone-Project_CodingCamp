@@ -216,8 +216,7 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
             </div>
           </div>
         </div>
-      </div>
-
+      </div>{" "}
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm &&
         createPortal(
@@ -226,10 +225,9 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
             style={{ zIndex: 999999 }}
           >
             {/* Backdrop */}
-            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
-
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm animate-fade-in transition-opacity duration-300" />{" "}
             {/* Modal Content */}
-            <div className="relative z-10 bg-white rounded-xl p-6 max-w-sm w-full shadow-xl animate-fade-in-up mx-4">
+            <div className="relative z-10 bg-white rounded-xl p-6 max-w-sm w-full shadow-xl animate-scale-in transition-all duration-300 mx-4">
               <div className="text-center">
                 <div className="w-16 h-16 rounded-full bg-red-100 mx-auto flex items-center justify-center mb-4">
                   <svg
@@ -287,7 +285,6 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
           </div>,
           document.body
         )}
-
       <ScanDetailModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
