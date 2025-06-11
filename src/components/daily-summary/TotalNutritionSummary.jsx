@@ -19,7 +19,6 @@ const TotalNutritionSummary = () => {
       try {
         const data = await api.getTodayScanHistory(token);
         const todayScans = data?.history || [];
-        console.log("Data from getTodayScanHistory:", todayScans);
 
         // Menghitung total nutrisi
         const totals = todayScans.reduce(

@@ -5,6 +5,8 @@ import TotalNutritionSummary from "../components/daily-summary/TotalNutritionSum
 import DailyScanHistory from "../components/daily-summary/DailyScanHistory";
 import NutritionProgress from "../components/daily-summary/NutritionProgress";
 import NutritionRecommendation from "../components/daily-summary/NutritionRecommendation";
+import NutritionScore from "../components/daily-summary/NutritionScore";
+import NutritionStatus from "../components/daily-summary/NutritionStatus";
 
 const DailySummaryPage = () => {
   return (
@@ -24,23 +26,29 @@ const DailySummaryPage = () => {
             </div>
             <div
               className="opacity-0 animate-fade-in"
+              style={{ animationDelay: "400ms", animationFillMode: "forwards" }}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <NutritionScore />
+                <NutritionStatus />
+              </div>
+            </div>
+            <div
+              className="opacity-0 animate-fade-in"
               style={{ animationDelay: "600ms", animationFillMode: "forwards" }}
             >
               <TotalNutritionSummary />
             </div>
             <div
               className="opacity-0 animate-fade-in"
-              style={{
-                animationDelay: "1000ms",
-                animationFillMode: "forwards",
-              }}
+              style={{ animationDelay: "800ms", animationFillMode: "forwards" }}
             >
               <DailyScanHistory />
             </div>
             <div
               className="opacity-0 animate-fade-in"
               style={{
-                animationDelay: "1400ms",
+                animationDelay: "1000ms",
                 animationFillMode: "forwards",
               }}
             >

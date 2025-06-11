@@ -34,7 +34,8 @@ const NutritionRecommendation = () => {
             energy_kal: (acc.energy_kal || 0) + Number(gizi.energi || 0),
             protein_g: (acc.protein_g || 0) + Number(gizi.protein || 0),
             fat_g: (acc.fat_g || 0) + Number(gizi["lemak total"] || 0),
-            carbohydrate_g: (acc.carbohydrate_g || 0) + Number(gizi.karbohidrat || 0),
+            carbohydrate_g:
+              (acc.carbohydrate_g || 0) + Number(gizi.karbohidrat || 0),
             fiber_g: (acc.fiber_g || 0) + Number(gizi.serat || 0),
             sugar_g: (acc.sugar_g || 0) + Number(gizi.gula || 0),
             sodium_mg: (acc.sodium_mg || 0) + Number(gizi.garam || 0),
@@ -152,63 +153,83 @@ const NutritionRecommendation = () => {
       {recommendation && !loading && (
         <div className="space-y-6">
           {/* Area Fokus Gizi */}
-          {recommendation.gizi_fokus && recommendation.gizi_fokus.length > 0 && (
-            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-gray-100/50">
-              <h3 className="text-lg font-semibold text-main mb-4">Area Fokus Gizi</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                {recommendation.gizi_fokus.map((nutrient, index) => (
-                  <div
-                    key={nutrient}
-                    className="bg-highlight/10 p-3 rounded-lg text-sm font-medium text-highlight animate-fade-in"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    {nutrient.split('_')[0].charAt(0).toUpperCase() + nutrient.split('_')[0].slice(1)}
-                  </div>
-                ))}
+          {recommendation.gizi_fokus &&
+            recommendation.gizi_fokus.length > 0 && (
+              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-gray-100/50">
+                <h3 className="text-lg font-semibold text-main mb-4">
+                  Area Fokus Gizi
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  {recommendation.gizi_fokus.map((nutrient, index) => (
+                    <div
+                      key={nutrient}
+                      className="bg-highlight/10 p-3 rounded-lg text-sm font-medium text-highlight animate-fade-in"
+                      style={{ animationDelay: `${index * 100}ms` }}
+                    >
+                      {nutrient.split("_")[0].charAt(0).toUpperCase() +
+                        nutrient.split("_")[0].slice(1)}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           {/* Rekomendasi Produk */}
-          {recommendation.rekomendasi && recommendation.rekomendasi.length > 0 && (
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-main">Rekomendasi Produk</h3>
-              <div className="grid gap-4">
-                {recommendation.rekomendasi.map((product, index) => (
-                  <div
-                    key={index}
-                    className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100/50 overflow-hidden hover:shadow-md transition-all duration-300 animate-fade-in-right"
-                    style={{ animationDelay: `${index * 150}ms` }}
-                  >
-                    <div className="p-4">
-                      <div className="flex justify-between items-center mb-4">
-                        <h4 className="text-lg font-semibold text-main">
-                          {product.product_name}
-                        </h4>
-                        <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                          Skor: {product.skor_gizi.toFixed(1)}
-                        </span>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {["Energi", "Protein", "Lemak total", "Karbohidrat", "Serat", "Gula", "Garam"].map((key) => (
-                          product[key] && (
-                            <div
-                              key={key}
-                              className="bg-gray-50/80 p-3 rounded-lg"
-                            >
-                              <div className="text-sm text-gray-600">{key}</div>
-                              <div className="font-medium text-main">{product[key]}</div>
-                            </div>
-                          )
-                        ))}
+          {recommendation.rekomendasi &&
+            recommendation.rekomendasi.length > 0 && (
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-main">
+                  Rekomendasi Produk
+                </h3>
+                <div className="grid gap-4">
+                  {recommendation.rekomendasi.map((product, index) => (
+                    <div
+                      key={index}
+                      className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100/50 overflow-hidden hover:shadow-md transition-all duration-300 animate-fade-in-right"
+                      style={{ animationDelay: `${index * 150}ms` }}
+                    >
+                      <div className="p-4">
+                        <div className="flex justify-between items-center mb-4">
+                          <h4 className="text-lg font-semibold text-main">
+                            {product.product_name}
+                          </h4>
+                          <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                            Skor: {product.skor_gizi.toFixed(1)}
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                          {[
+                            "Energi",
+                            "Protein",
+                            "Lemak total",
+                            "Karbohidrat",
+                            "Serat",
+                            "Gula",
+                            "Garam",
+                          ].map(
+                            (key) =>
+                              product[key] && (
+                                <div
+                                  key={key}
+                                  className="bg-gray-50/80 p-3 rounded-lg"
+                                >
+                                  <div className="text-sm text-gray-600">
+                                    {key}
+                                  </div>
+                                  <div className="font-medium text-main">
+                                    {product[key]}
+                                  </div>
+                                </div>
+                              )
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       )}
     </div>

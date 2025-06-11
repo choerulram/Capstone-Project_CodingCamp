@@ -31,12 +31,10 @@ const NutritionProgress = () => {
         if (dailyData?.kebutuhan_harian) {
           setDailyTarget(dailyData.kebutuhan_harian);
         }
-        console.log("Daily target:", dailyData?.kebutuhan_harian);
 
         // Ambil dan hitung total nutrisi hari ini
         const scanData = await api.getTodayScanHistory(token);
         const todayScans = scanData?.history || [];
-        console.log("Today scans:", todayScans);
 
         const totals = todayScans.reduce(
           (acc, scan) => {
