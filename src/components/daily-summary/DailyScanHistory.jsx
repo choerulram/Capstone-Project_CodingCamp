@@ -19,17 +19,25 @@ const DailyScanHistory = () => {
       try {
         setLoading(true);
         const data = await api.getTodayScanHistory(token);
-
-        // Filter untuk data hari ini saja
-        const today = new Date().toISOString().slice(0, 10);
-        const todayData = (data?.history || []).filter(
-          (item) => (item.uploaded_at || "").slice(0, 10) === today
-        );
-
+        const todayData = data?.history || [];
         setTodayScans(todayData);
       } catch (err) {
         setError(err.message);
-        console.error("Error fetching today's scans:", err);
+
+        // Fallback to getAllScanHistory if getTodayScanHistory fails
+        try {
+          const allData = await api.getAllScanHistory(token);
+          const today = new Date().toISOString().slice(0, 10);
+          const todayData = (allData?.history || []).filter(
+            (item) => (item.uploaded_at || "").slice(0, 10) === today
+          );
+
+          setTodayScans(todayData);
+          setError(null); // Clear error if fallback succeeds
+        } catch (fallbackErr) {
+          console.error("Fallback error:", fallbackErr);
+          setError(fallbackErr.message);
+        }
       } finally {
         setLoading(false);
       }

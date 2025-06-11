@@ -18,10 +18,8 @@ const TotalNutritionSummary = () => {
     const fetchAndCalculateTotal = async () => {
       try {
         const data = await api.getTodayScanHistory(token);
-        const today = new Date().toISOString().slice(0, 10);
-        const todayScans = (data?.history || []).filter(
-          (item) => (item.uploaded_at || "").slice(0, 10) === today
-        );
+        const todayScans = data?.history || [];
+        console.log("Data from getTodayScanHistory:", todayScans);
 
         // Menghitung total nutrisi
         const totals = todayScans.reduce(

@@ -48,108 +48,117 @@ const NutritionRecommendation = () => {
     }
   };
 
-  const getRecommendation = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      if (!token) {
-        throw new Error("Anda harus login terlebih dahulu.");
-      }
-
-      // Get today's scan history
-      const historyData = await api.getTodayScanHistory(token);
-      const todayHistory = historyData.history || [];
-
-      if (todayHistory.length === 0) {
-        throw new Error(
-          "Anda belum memiliki riwayat pemindaian hari ini. Silakan lakukan pemindaian makanan terlebih dahulu."
-        );
-      }
-
-      // Calculate total nutrition
-      const giziUtama = [
-        "energi",
-        "protein",
-        "lemak total",
-        "karbohidrat",
-        "serat",
-        "gula",
-        "garam",
-      ];
-      const totalGizi = {
-        energi: 0,
-        protein: 0,
-        "lemak total": 0,
-        karbohidrat: 0,
-        serat: 0,
-        gula: 0,
-        garam: 0,
-      };
-
-      todayHistory.forEach((item) => {
-        giziUtama.forEach((k) => {
-          totalGizi[k] += Number(item.kandungan_gizi?.[k] || 0);
-        });
-      });
-
-      // Get and validate user data
-      const userData = parseJwt(token);
-
-      // Prepare payload
-      const inputData = {
-        umur: userData.umur,
-        jenis_kelamin: userData.gender || userData.jenis_kelamin,
-        hamil: userData.hamil || false,
-        usia_kandungan: userData.usia_kandungan || null,
-        menyusui: userData.menyusui || false,
-        umur_anak: userData.umur_anak || null,
-        konsumsi: {
-          energy_kal: totalGizi["energi"],
-          protein_g: totalGizi["protein"],
-          fat_g: totalGizi["lemak total"],
-          carbohydrate_g: totalGizi["karbohidrat"],
-          sodium_mg: totalGizi["garam"],
-          sugar_g: totalGizi["gula"],
-        },
-      };
-
-      // Get recommendation
-      const response = await fetch(`${BASE_URL}/recommendation`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(inputData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data?.error ||
-            data?.message ||
-            "Terjadi kesalahan saat memuat rekomendasi"
-        );
-      }
-
-      if (!data) {
-        throw new Error("Tidak dapat memuat rekomendasi. Silakan coba lagi.");
-      }
-
-      setRecommendation(data);
-    } catch (err) {
-      console.error("Recommendation Error:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Panggil getRecommendation saat komponen dimount
   useEffect(() => {
+    const getRecommendation = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        if (!token) {
+          throw new Error("Anda harus login terlebih dahulu.");
+        }
+
+        // Get today's scan history
+        const historyData = await api.getTodayScanHistory(token);
+        const todayHistory = historyData.history || [];
+
+        if (todayHistory.length === 0) {
+          throw new Error(
+            "Anda belum memiliki riwayat pemindaian hari ini. Silakan lakukan pemindaian makanan terlebih dahulu."
+          );
+        }
+
+        // Calculate total nutrition
+        const giziUtama = [
+          "energi",
+          "protein",
+          "lemak total",
+          "karbohidrat",
+          "serat",
+          "gula",
+          "garam",
+        ];
+        const totalGizi = {
+          energi: 0,
+          protein: 0,
+          "lemak total": 0,
+          karbohidrat: 0,
+          serat: 0,
+          gula: 0,
+          garam: 0,
+        };
+
+        todayHistory.forEach((item) => {
+          giziUtama.forEach((k) => {
+            totalGizi[k] += Number(item.kandungan_gizi?.[k] || 0);
+          });
+        });
+
+        // Get and validate user data
+        const userData = parseJwt(token);
+
+        // Prepare payload
+        const inputData = {
+          umur: userData.umur,
+          jenis_kelamin: userData.gender || userData.jenis_kelamin,
+          hamil: userData.hamil || false,
+          usia_kandungan: userData.usia_kandungan || null,
+          menyusui: userData.menyusui || false,
+          umur_anak: userData.umur_anak || null,
+          konsumsi: {
+            energy_kal: totalGizi["energi"],
+            protein_g: totalGizi["protein"],
+            fat_g: totalGizi["lemak total"],
+            carbohydrate_g: totalGizi["karbohidrat"],
+            fiber_g: totalGizi["serat"],
+            sodium_mg: totalGizi["garam"],
+            sugar_g: totalGizi["gula"],
+          },
+          target_harian: {
+            energy_kal: 2100,
+            protein_g: 60,
+            fat_g: 70,
+            carbohydrate_g: 300,
+            fiber_g: 30,
+            sugar_g: 50,
+            sodium_mg: 2000,
+          },
+        };
+
+        // Get recommendation
+        const response = await fetch(`${BASE_URL}/recommendation`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(inputData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data?.error ||
+              data?.message ||
+              "Terjadi kesalahan saat memuat rekomendasi"
+          );
+        }
+
+        if (!data) {
+          throw new Error("Tidak dapat memuat rekomendasi. Silakan coba lagi.");
+        }
+
+        setRecommendation(data);
+      } catch (err) {
+        console.error("Recommendation Error:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     getRecommendation();
-  }, [token, getRecommendation]); // Update when token or getRecommendation changes
+  }, [token]);
 
   return (
     <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 animate-fade-in">
