@@ -22,10 +22,13 @@ const ProfileModal = ({ isOpen, onClose }) => {
       />
 
       {/* Card Container with 3D perspective */}
-      <div className="relative" style={{ perspective: "2000px" }}>
+      <div
+        className="relative px-4 sm:px-0 w-full"
+        style={{ perspective: "2000px" }}
+      >
         {/* Flippable Card */}
         <div
-          className={`w-full max-w-[800px] transform-gpu transition-all duration-700 cursor-pointer ${
+          className={`w-full max-w-[800px] mx-auto transform-gpu transition-all duration-700 cursor-pointer ${
             isFlipped ? "rotate-y-180" : ""
           }`}
           onClick={handleFlip}
@@ -36,10 +39,10 @@ const ProfileModal = ({ isOpen, onClose }) => {
             className="relative w-full bg-white/10 rounded-3xl shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] overflow-hidden backdrop-blur-xl border border-white/20 transition-all duration-300 hover:shadow-teal-500/20"
             style={{ backfaceVisibility: "hidden" }}
           >
-            {/* Top Curved Design with Gradient */}{" "}
+            {/* Top Curved Design with Gradient */}
             <div className="relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-main via-[#0A5F45] to-highlight opacity-90" />
-              <div className="relative p-8">
+              <div className="relative p-4 sm:p-8">
                 {/* Close Button */}
                 <button
                   onClick={(e) => {
@@ -63,10 +66,9 @@ const ProfileModal = ({ isOpen, onClose }) => {
                 </button>
 
                 {/* Profile Header */}
-                <div className="flex items-center gap-6">
+                <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
                   <div className="relative group">
-                    {" "}
-                    <div className="w-24 h-24 bg-white/20 backdrop-blur-xl text-white rounded-2xl flex items-center justify-center text-4xl font-bold shadow-lg transform group-hover:scale-105 transition-all duration-300 animate-fade-in border border-white/30">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white/20 backdrop-blur-xl text-white rounded-2xl flex items-center justify-center text-3xl sm:text-4xl font-bold shadow-lg transform group-hover:scale-105 transition-all duration-300 animate-fade-in border border-white/30">
                       {(userData?.name || userData?.nama)?.[0] || "?"}
                     </div>
                     <div className="absolute -bottom-1 -right-1 bg-gradient-to-r from-main to-highlight w-6 h-6 rounded-full border-2 border-white flex items-center justify-center">
@@ -75,8 +77,8 @@ const ProfileModal = ({ isOpen, onClose }) => {
                       </span>
                     </div>
                   </div>
-                  <div className="text-white">
-                    <h2 className="text-2xl font-bold mb-1 animate-fade-in-right">
+                  <div className="text-white text-center sm:text-left">
+                    <h2 className="text-xl sm:text-2xl font-bold mb-1 animate-fade-in-right">
                       {userData?.name || userData?.nama || "-"}
                     </h2>
                     <p className="text-teal-100 animate-fade-in-right delay-100">
@@ -92,11 +94,11 @@ const ProfileModal = ({ isOpen, onClose }) => {
               </div>
             </div>
             {/* Content Grid with Glassmorphism Cards */}
-            <div className="p-8 grid grid-cols-4 gap-4 max-h-[calc(100vh-400px)] overflow-y-auto">
+            <div className="p-4 sm:p-8 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-h-[calc(100vh-400px)] overflow-y-auto">
               {/* Gender */}
               {(userData?.gender || userData?.jenisKelamin) && (
-                <div className="p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300">
-                  <div className="flex items-center gap-3 mb-2">
+                <div className="p-3 sm:p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
                     <span className="p-2 bg-teal-500/20 backdrop-blur-sm rounded-lg">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -113,17 +115,19 @@ const ProfileModal = ({ isOpen, onClose }) => {
                         />
                       </svg>
                     </span>
-                    <p className="text-sm text-white/70">Jenis Kelamin</p>
+                    <p className="text-xs sm:text-sm text-white/70">
+                      Jenis Kelamin
+                    </p>
                   </div>
-                  <p className="font-medium text-white pl-11">
+                  <p className="font-medium text-white text-sm sm:text-base pl-9 sm:pl-11">
                     {userData.gender || userData.jenisKelamin}
                   </p>
                 </div>
               )}
               {/* Age */}
               {(userData?.age || userData?.umur) && (
-                <div className="p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300">
-                  <div className="flex items-center gap-3 mb-2">
+                <div className="p-3 sm:p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
                     <span className="p-2 bg-purple-500/20 backdrop-blur-sm rounded-lg">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -140,17 +144,17 @@ const ProfileModal = ({ isOpen, onClose }) => {
                         />
                       </svg>
                     </span>
-                    <p className="text-sm text-white/70">Umur</p>
+                    <p className="text-xs sm:text-sm text-white/70">Umur</p>
                   </div>
-                  <p className="font-medium text-white pl-11">
+                  <p className="font-medium text-white text-sm sm:text-base pl-9 sm:pl-11">
                     {userData.age || userData.umur} tahun
                   </p>
                 </div>
               )}
               {/* Weight */}
               {(userData?.weight || userData?.berat) && (
-                <div className="p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300">
-                  <div className="flex items-center gap-3 mb-2">
+                <div className="p-3 sm:p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
                     <span className="p-2 bg-blue-500/20 backdrop-blur-sm rounded-lg">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -167,17 +171,19 @@ const ProfileModal = ({ isOpen, onClose }) => {
                         />
                       </svg>
                     </span>
-                    <p className="text-sm text-white/70">Berat Badan</p>
+                    <p className="text-xs sm:text-sm text-white/70">
+                      Berat Badan
+                    </p>
                   </div>
-                  <p className="font-medium text-white pl-11">
+                  <p className="font-medium text-white text-sm sm:text-base pl-9 sm:pl-11">
                     {userData.weight || userData.berat} kg
                   </p>
                 </div>
               )}
               {/* Height */}
               {(userData?.height || userData?.tinggi) && (
-                <div className="p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300">
-                  <div className="flex items-center gap-3 mb-2">
+                <div className="p-3 sm:p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
                     <span className="p-2 bg-green-500/20 backdrop-blur-sm rounded-lg">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -194,24 +200,26 @@ const ProfileModal = ({ isOpen, onClose }) => {
                         />
                       </svg>
                     </span>
-                    <p className="text-sm text-white/70">Tinggi Badan</p>
+                    <p className="text-xs sm:text-sm text-white/70">
+                      Tinggi Badan
+                    </p>
                   </div>
-                  <p className="font-medium text-white pl-11">
+                  <p className="font-medium text-white text-sm sm:text-base pl-9 sm:pl-11">
                     {userData.height || userData.tinggi} cm
                   </p>
                 </div>
-              )}{" "}
+              )}
               {/* Membership Status */}
-              <div className="col-span-4 mt-2">
+              <div className="col-span-2 sm:col-span-4 mt-2">
                 <div
-                  className={`p-6 rounded-xl backdrop-blur-md border border-white/20 transition-all duration-300 ${
+                  className={`p-4 sm:p-6 rounded-xl backdrop-blur-md border border-white/20 transition-all duration-300 ${
                     userData?.isPremium
                       ? "bg-gradient-to-r from-amber-500/20 to-yellow-500/20"
                       : "bg-white/10"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                       <span
                         className={`p-2 rounded-lg backdrop-blur-sm ${
                           userData?.isPremium
@@ -235,10 +243,10 @@ const ProfileModal = ({ isOpen, onClose }) => {
                         </svg>
                       </span>
                       <div>
-                        <p className="text-sm text-white/70">
+                        <p className="text-xs sm:text-sm text-white/70">
                           Status Membership
                         </p>
-                        <p className="font-medium text-white">
+                        <p className="font-medium text-white text-sm sm:text-base">
                           {userData?.isPremium
                             ? "Premium Member"
                             : "Free Member"}
@@ -277,22 +285,30 @@ const ProfileModal = ({ isOpen, onClose }) => {
               transform: "rotateY(180deg)",
             }}
           >
-            <div className="h-full flex flex-col items-center justify-center p-8 text-center">
-              <div className="w-24 h-24 bg-white/20 backdrop-blur-xl text-white rounded-full flex items-center justify-center text-6xl font-bold mb-6 animate-bounce-slow">
+            <div className="h-full flex flex-col items-center justify-center p-4 sm:p-8 text-center">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white/20 backdrop-blur-xl text-white rounded-full flex items-center justify-center text-4xl sm:text-6xl font-bold mb-4 sm:mb-6 animate-bounce-slow">
                 🌟
               </div>
-              <h3 className="text-2xl font-bold text-white mb-4">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">
                 Click to Flip Back!
               </h3>
-              <p className="text-white/70">Your health journey starts here.</p>
-              <div className="mt-8 grid grid-cols-2 gap-4 w-full max-w-md">
-                <div className="p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
-                  <p className="text-white/70 text-sm">Total Scans</p>
-                  <p className="text-white text-2xl font-bold">24</p>
+              <p className="text-sm sm:text-base text-white/70">
+                Your health journey starts here.
+              </p>
+              <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-md px-4 sm:px-0">
+                <div className="p-3 sm:p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
+                  <p className="text-xs sm:text-sm text-white/70">
+                    Total Scans
+                  </p>
+                  <p className="text-xl sm:text-2xl text-white font-bold">24</p>
                 </div>
-                <div className="p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
-                  <p className="text-white/70 text-sm">Health Score</p>
-                  <p className="text-white text-2xl font-bold">85%</p>
+                <div className="p-3 sm:p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
+                  <p className="text-xs sm:text-sm text-white/70">
+                    Health Score
+                  </p>
+                  <p className="text-xl sm:text-2xl text-white font-bold">
+                    85%
+                  </p>
                 </div>
               </div>
             </div>
