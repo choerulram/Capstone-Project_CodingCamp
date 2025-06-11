@@ -1,12 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
 import api from "../../utils/api.js"; // Add .js extension
 
+const parseJwt = (token) => {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  } catch {
+    return null;
+  }
+};
+
+const savedToken = localStorage.getItem("token");
+const userData = savedToken ? parseJwt(savedToken) : null;
+
 const initialState = {
   loading: false,
   error: null,
-  isAuthenticated: !!localStorage.getItem("token"),
-  token: localStorage.getItem("token") || null,
-  user: null,
+  isAuthenticated: !!savedToken,
+  token: savedToken || null,
+  user: userData
+    ? {
+        id: userData.id || userData.sub,
+        name: userData.name || userData.nama,
+        email: userData.email,
+      }
+    : null,
 };
 
 const authSlice = createSlice({
