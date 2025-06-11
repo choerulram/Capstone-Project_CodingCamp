@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import HistoryHeader from "../components/history/HistoryHeader";
@@ -16,6 +18,38 @@ const HistoryPage = () => {
   const [timeFilter, setTimeFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+
+  const containerVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+        when: "beforeChildren",
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
 
   const fetchScanHistory = useCallback(async () => {
     if (!token) {
@@ -83,33 +117,46 @@ const HistoryPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-main/5 via-gray-50 to-highlight/10">
-      <Header />{" "}
-      <main className="flex-grow py-8">
+      <Header />
+      <motion.main
+        className="flex-grow py-8"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
         <div className="container mx-auto px-4">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100/50 overflow-hidden">
-            {" "}
-            <HistoryHeader />
-            <HistoryFilter
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              timeFilter={timeFilter}
-              setTimeFilter={setTimeFilter}
-            />{" "}
-            <HistoryList
-              loading={loading}
-              error={error}
-              history={history}
-              searchQuery={searchQuery}
-              timeFilter={timeFilter}
-              fetchScanHistory={fetchScanHistory}
-              handleDelete={handleDelete}
-              currentPage={currentPage}
-              itemsPerPage={itemsPerPage}
-              setCurrentPage={setCurrentPage}
-            />
-          </div>
+          <motion.div
+            className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100/50 overflow-hidden"
+            variants={itemVariants}
+          >
+            <motion.div variants={itemVariants}>
+              <HistoryHeader />
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <HistoryFilter
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                timeFilter={timeFilter}
+                setTimeFilter={setTimeFilter}
+              />
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <HistoryList
+                loading={loading}
+                error={error}
+                history={history}
+                searchQuery={searchQuery}
+                timeFilter={timeFilter}
+                fetchScanHistory={fetchScanHistory}
+                handleDelete={handleDelete}
+                currentPage={currentPage}
+                itemsPerPage={itemsPerPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </motion.div>
+          </motion.div>
         </div>
-      </main>
+      </motion.main>
       <Footer />
     </div>
   );
