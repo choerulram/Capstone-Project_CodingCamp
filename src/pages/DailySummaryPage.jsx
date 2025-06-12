@@ -4,7 +4,7 @@ import Footer from "../components/layouts/Footer";
 import TotalNutritionSummary from "../components/daily-summary/TotalNutritionSummary";
 import DailyScanHistory from "../components/daily-summary/DailyScanHistory";
 import NutritionProgress from "../components/daily-summary/NutritionProgress";
-import NutritionRecommendation from "../components/daily-summary/NutritionRecommendation";
+import ProductRecommendation from "../components/daily-summary/ProductRecommendation";
 import NutritionScore from "../components/daily-summary/NutritionScore";
 import DiseasePrediction from "../components/daily-summary/DiseasePrediction";
 
@@ -52,7 +52,7 @@ const DailySummaryPage = () => {
                 animationFillMode: "forwards",
               }}
             >
-              <NutritionRecommendation />
+              <ProductRecommendation />
             </div>
           </div>
         </div>
