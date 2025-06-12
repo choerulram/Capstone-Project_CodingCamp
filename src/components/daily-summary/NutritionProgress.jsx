@@ -149,47 +149,42 @@ const NutritionProgress = () => {
             />
           </svg>
         </span>
-        Progress Kebutuhan Harian
+        Progress Kebutuhan Harian      
       </h2>
-      <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mb-4 sm:mb-6">
-        <div className="flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-red-50 to-red-50/30 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-red-100 shadow-sm">
-          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-gradient-to-r from-red-600 to-red-400 shadow-inner"></div>
-          <div className="text-xs sm:text-sm font-medium text-red-700">
-            Berlebih &gt;100%
+      <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm mb-8">
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-gradient-to-br from-red-50 to-white border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
+            <div className="w-4 h-4 rounded-full bg-gradient-to-r from-red-500 to-red-600 ring-2 ring-red-200 ring-offset-1"></div>
+            <div className="text-sm font-medium text-main">Berlebih &gt;100%</div>
+          </div>
+          <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-200/50 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
+            <div className="w-4 h-4 rounded-full bg-gradient-to-r from-green-500 to-green-600 ring-2 ring-green-200 ring-offset-1"></div>
+            <div className="text-sm font-medium text-main">Ideal 80-100%</div>
+          </div>
+          <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-gradient-to-br from-yellow-50 to-white border border-yellow-200/50 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
+            <div className="w-4 h-4 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 ring-2 ring-yellow-200 ring-offset-1"></div>
+            <div className="text-sm font-medium text-main">Kurang &lt;80%</div>
           </div>
         </div>
-        <div className="flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-green-50 to-green-50/30 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-green-100 shadow-sm">
-          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-gradient-to-r from-green-600 to-green-400 shadow-inner"></div>
-          <div className="text-xs sm:text-sm font-medium text-green-700">
-            Ideal 80-100%
-          </div>
-        </div>
-        <div className="flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-yellow-50 to-yellow-50/30 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-yellow-100 shadow-sm">
-          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-gradient-to-r from-yellow-600 to-yellow-400 shadow-inner"></div>
-          <div className="text-xs sm:text-sm font-medium text-yellow-700">
-            Kurang &lt;80%
-          </div>
-        </div>
-      </div>{" "}
+      </div>
       {/* Bar Chart Container */}
-      <div className="relative h-[280px] sm:h-[360px] w-full pt-[30px]">
-        {/* Chart Area with Y-axis and Grid */}
-        <div className="absolute inset-0 flex pt-[30px]">
-          {" "}
-          {/* Y-axis labels (percentages) */}
-          <div className="w-12 sm:w-16 flex flex-col justify-between h-[220px] sm:h-[300px]">
-            {[100, 80, 60, 40, 20, 0].map((percent) => (
-              <div key={percent} className="relative h-0">
-                <div className="absolute -top-2 right-0 flex items-center">
-                  <span className="text-[10px] sm:text-xs text-gray-600 mr-1 sm:mr-2">
-                    {percent}%
-                  </span>
-                  <div className="h-[1px] w-2 bg-gray-300"></div>
+      <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm">
+        <div className="relative h-[280px] sm:h-[360px] w-full pt-[30px]">
+          {/* Chart Area with Y-axis and Grid */}
+          <div className="absolute inset-0 flex pt-[30px]">
+            {/* Y-axis labels (percentages) */}
+            <div className="w-12 sm:w-16 flex flex-col justify-between h-[220px] sm:h-[300px]">
+              {[100, 80, 60, 40, 20, 0].map((percent) => (
+                <div key={percent} className="relative h-0">
+                  <div className="absolute -top-2 right-0 flex items-center">
+                    <span className="text-[10px] sm:text-xs text-main/70 mr-1 sm:mr-2 font-medium">
+                      {percent}%
+                    </span>
+                    <div className="h-[1px] w-2 bg-main/30"></div>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>{" "}
-          {/* Grid lines */}
+              ))}
+            </div>{" "}          {/* Grid lines */}
           <div className="flex-1 flex flex-col justify-between h-[220px] sm:h-[300px]">
             {[100, 80, 60, 40, 20, 0].map((percent) => (
               <div key={percent} className="relative">
@@ -197,7 +192,7 @@ const NutritionProgress = () => {
               </div>
             ))}
           </div>
-        </div>{" "}
+        </div>
         {/* Bars Container */}
         <div className="absolute left-12 sm:left-16 right-0 top-[30px] h-[220px] sm:h-[300px] flex items-stretch justify-between px-2 sm:px-8">
           {nutrients.map((nutrient) => {
@@ -295,6 +290,7 @@ const NutritionProgress = () => {
           })}
         </div>
       </div>
+    </div>
     </div>
   );
 };
