@@ -56,7 +56,7 @@ const DailyScanHistory = () => {
   return (
     <>
       {" "}
-      <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 animate-fade-in">
+      <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 animate-fade-in shadow-sm hover:shadow-md transition-all duration-300">
         <h2 className="text-xl font-semibold text-main mb-6 flex items-center animate-fade-in-down">
           <span className="bg-highlight/20 p-2 rounded-lg mr-2 animate-bounce-slow">
             <svg

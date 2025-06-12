@@ -93,9 +93,9 @@ const NutritionScore = () => {
     return "text-red-600";
   };
   return (
-    <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-      <h2 className="text-xl font-semibold text-main mb-6 flex items-center">
-        <span className="bg-blue-100 p-2 rounded-lg mr-3 transform transition-transform hover:scale-110">
+    <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 animate-fade-in shadow-sm hover:shadow-md transition-all duration-300">
+      <h2 className="text-xl font-semibold text-main mb-6 flex items-center animate-fade-in-down">
+        <span className="bg-blue-100 p-2 rounded-lg mr-3 transform transition-transform hover:scale-110 animate-bounce-slow">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 text-blue-600"

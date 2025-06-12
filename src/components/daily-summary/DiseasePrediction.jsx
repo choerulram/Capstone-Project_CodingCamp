@@ -6,6 +6,8 @@ const DiseasePrediction = () => {
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [totalGizi, setTotalGizi] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
@@ -19,12 +21,13 @@ const DiseasePrediction = () => {
 
         // Mendapatkan data user dari token
         const tokenData = JSON.parse(atob(token.split(".")[1]));
-        const userData = {
+        const userDataFromToken = {
           umur: parseFloat(tokenData.age || tokenData.umur) || 0,
           gender: tokenData.gender?.toLowerCase() || "female",
           tinggi: parseFloat(tokenData.height || tokenData.tinggi) || 0,
           berat: parseFloat(tokenData.weight || tokenData.berat) || 0,
         };
+        setUserData(userDataFromToken);
 
         // Mengambil riwayat pemindaian hari ini
         const historyData = await api.getTodayScanHistory(token);
@@ -37,7 +40,7 @@ const DiseasePrediction = () => {
         }
 
         // Menghitung total nutrisi dengan explicit type conversion
-        const totalGizi = todayHistory.reduce((acc, item) => {
+        const totalNutrisi = todayHistory.reduce((acc, item) => {
           const gizi = item.kandungan_gizi || {};
           return {
             Calories: (acc.Calories || 0) + parseFloat(gizi.energi || 0),
@@ -50,20 +53,21 @@ const DiseasePrediction = () => {
             Sodium: (acc.Sodium || 0) + parseFloat(gizi.garam || 0),
           };
         }, {});
+        setTotalGizi(totalNutrisi);
 
         // Menyiapkan payload sesuai format API dengan explicit arrays dan default values
         const inputData = {
-          Ages: [Math.max(1, userData.umur)],
-          Gender: [userData.gender === "male" ? "Male" : "Female"],
-          Height: [Math.max(1, userData.tinggi)],
-          Weight: [Math.max(1, userData.berat)],
-          Calories: [Math.max(0, totalGizi.Calories || 0)],
-          Protein: [Math.max(0, totalGizi.Protein || 0)],
-          Fat: [Math.max(0, totalGizi.Fat || 0)],
-          Carbohydrates: [Math.max(0, totalGizi.Carbohydrates || 0)],
-          Fiber: [Math.max(0, totalGizi.Fiber || 0)],
-          Sugar: [Math.max(0, totalGizi.Sugar || 0)],
-          Sodium: [Math.max(0, totalGizi.Sodium || 0)],
+          Ages: [Math.max(1, userDataFromToken.umur)],
+          Gender: [userDataFromToken.gender === "male" ? "Male" : "Female"],
+          Height: [Math.max(1, userDataFromToken.tinggi)],
+          Weight: [Math.max(1, userDataFromToken.berat)],
+          Calories: [Math.max(0, totalNutrisi.Calories || 0)],
+          Protein: [Math.max(0, totalNutrisi.Protein || 0)],
+          Fat: [Math.max(0, totalNutrisi.Fat || 0)],
+          Carbohydrates: [Math.max(0, totalNutrisi.Carbohydrates || 0)],
+          Fiber: [Math.max(0, totalNutrisi.Fiber || 0)],
+          Sugar: [Math.max(0, totalNutrisi.Sugar || 0)],
+          Sodium: [Math.max(0, totalNutrisi.Sodium || 0)],
         };
 
         // Melakukan prediksi risiko penyakit
@@ -170,13 +174,14 @@ const DiseasePrediction = () => {
         };
     }
   };
+
   return (
-    <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+    <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
       <h2 className="text-xl font-semibold text-main mb-6 flex items-center">
-        <span className="bg-purple-100 p-2 rounded-lg mr-3 transform transition-transform hover:scale-110">
+        <span className="bg-red-50 p-2 rounded-lg mr-3 transform transition-transform hover:scale-110">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-purple-600"
+            className="h-6 w-6 text-red-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -228,32 +233,53 @@ const DiseasePrediction = () => {
         </div>
       ) : (
         status &&
-        !error && (
-          <div className="animate-fade-in">
-            <div
-              className={`${
-                getStatusInfo(status).bgColor
-              } p-6 rounded-lg mb-4 transition-all duration-300 hover:shadow-inner`}
-            >
-              <div className="flex items-center gap-4">
-                <div
-                  className={`${
-                    getStatusInfo(status).color
-                  } transform transition-transform hover:scale-110`}
-                >
-                  {getStatusInfo(status).icon}
-                </div>
-                <div className="flex-1">
-                  <div
-                    className={`text-2xl font-bold ${
-                      getStatusInfo(status).color
-                    } mb-2`}
-                  >
-                    {status}
+        !error &&
+        userData &&
+        totalGizi && (
+          <div className="animate-fade-in space-y-6">
+            {" "}
+            {/* Disease Risk Display */}{" "}
+            <div className="p-6 bg-gradient-to-br from-red-50 to-white rounded-lg animate-fade-in h-56 flex items-center justify-center">
+              <div className="flex flex-col items-center text-center justify-between py-2 h-full w-full">
+                <div className="relative w-full">
+                  <div className="flex flex-col items-center space-y-4">
+                    <div
+                      className={`${
+                        getStatusInfo(status).color
+                      } transform transition hover:scale-105 duration-300 p-4 rounded-2xl ${
+                        getStatusInfo(status).bgColor
+                      } bg-opacity-20`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-12 w-12"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={1.5}
+                      >
+                        {getStatusInfo(status).icon.props.children}
+                      </svg>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div
+                        className={`${
+                          getStatusInfo(status).color
+                        } text-4xl font-bold mb-1`}
+                      >
+                        {status}
+                      </div>
+                      <div
+                        className={`${
+                          getStatusInfo(status).color
+                        } text-sm font-medium px-4 py-1 rounded-full ${
+                          getStatusInfo(status).bgColor
+                        } bg-opacity-20`}
+                      >
+                        {getStatusInfo(status).message}
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-gray-700">
-                    {getStatusInfo(status).message}
-                  </p>
                 </div>
               </div>
             </div>
@@ -261,7 +287,7 @@ const DiseasePrediction = () => {
               <div className="flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
+                  className="h-4 w-4 text-red-500"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
