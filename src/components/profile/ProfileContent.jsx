@@ -48,7 +48,11 @@ const ProfileContent = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-main"></div>
+        <div className="animate-fade-in flex items-center gap-2">
+          <div className="w-3 h-3 bg-main/60 rounded-full"></div>
+          <div className="w-3 h-3 bg-main/60 rounded-full"></div>
+          <div className="w-3 h-3 bg-main/60 rounded-full"></div>
+        </div>
       </div>
     );
   }

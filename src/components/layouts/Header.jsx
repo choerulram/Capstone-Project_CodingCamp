@@ -147,10 +147,14 @@ const Header = () => {
                 >
                   Sign Out
                 </button>{" "}
-                <div className="border-l border-gray-200 h-6 mx-2"></div>
+                <div className="border-l border-gray-200 h-6 mx-2"></div>{" "}
                 <button
                   onClick={() => handleProtectedLink(null, "/profile")}
-                  className="p-2 text-main hover:text-highlight transition-colors duration-300 rounded-full hover:bg-gray-100"
+                  className={`p-2 transition-all duration-300 rounded-full ${
+                    isActive("/profile")
+                      ? "bg-highlight text-gray-900 shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                      : "text-main hover:text-highlight hover:bg-gray-100"
+                  }`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -278,7 +282,11 @@ const Header = () => {
                         setIsMobileMenuOpen(false);
                         handleProtectedLink(null, "/profile");
                       }}
-                      className="p-2 text-main hover:text-highlight transition-colors duration-300 rounded-full hover:bg-gray-100"
+                      className={`p-2 transition-all duration-300 rounded-full ${
+                        isActive("/profile")
+                          ? "bg-highlight text-gray-900 shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                          : "text-main hover:text-highlight hover:bg-gray-100"
+                      }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
