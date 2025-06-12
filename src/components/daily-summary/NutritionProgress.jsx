@@ -149,13 +149,15 @@ const NutritionProgress = () => {
             />
           </svg>
         </span>
-        Progress Kebutuhan Harian      
+        Progress Kebutuhan Harian
       </h2>
       <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm mb-8">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-gradient-to-br from-red-50 to-white border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
             <div className="w-4 h-4 rounded-full bg-gradient-to-r from-red-500 to-red-600 ring-2 ring-red-200 ring-offset-1"></div>
-            <div className="text-sm font-medium text-main">Berlebih &gt;100%</div>
+            <div className="text-sm font-medium text-main">
+              Berlebih &gt;100%
+            </div>
           </div>
           <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-200/50 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
             <div className="w-4 h-4 rounded-full bg-gradient-to-r from-green-500 to-green-600 ring-2 ring-green-200 ring-offset-1"></div>
@@ -183,114 +185,115 @@ const NutritionProgress = () => {
                     <div className="h-[1px] w-2 bg-main/30"></div>
                   </div>
                 </div>
+              ))}{" "}
+            </div>
+            {/* Grid lines */}
+            <div className="flex-1 flex flex-col justify-between h-[220px] sm:h-[300px]">
+              {[100, 80, 60, 40, 20, 0].map((percent) => (
+                <div key={percent} className="relative">
+                  <div className="absolute top-0 w-full h-[1px] bg-gray-200"></div>
+                </div>
               ))}
-            </div>{" "}          {/* Grid lines */}
-          <div className="flex-1 flex flex-col justify-between h-[220px] sm:h-[300px]">
-            {[100, 80, 60, 40, 20, 0].map((percent) => (
-              <div key={percent} className="relative">
-                <div className="absolute top-0 w-full h-[1px] bg-gray-200"></div>
-              </div>
-            ))}
+            </div>
           </div>
-        </div>
-        {/* Bars Container */}
-        <div className="absolute left-12 sm:left-16 right-0 top-[30px] h-[220px] sm:h-[300px] flex items-stretch justify-between px-2 sm:px-8">
-          {nutrients.map((nutrient) => {
-            const percentage = calculatePercentage(
-              nutrient.current,
-              nutrient.target
-            );
-            return (
-              <div
-                key={nutrient.id}
-                className="relative flex flex-col items-center group"
-                style={{ width: `${100 / nutrients.length}%` }}
-              >
-                {/* Bar Container - Aligns with grid */}{" "}
-                <div className="relative w-8 sm:w-14 md:w-20 h-full">
-                  {/* Target Bar (Background) */}
-                  <div className="absolute inset-0 rounded-lg bg-gray-200/50 border border-gray-300/30 backdrop-blur-sm"></div>{" "}
-                  {/* Progress Bar */}{" "}
+          {/* Bars Container */}
+          <div className="absolute left-12 sm:left-16 right-0 top-[30px] h-[220px] sm:h-[300px] flex items-stretch justify-between px-2 sm:px-8">
+            {nutrients.map((nutrient) => {
+              const percentage = calculatePercentage(
+                nutrient.current,
+                nutrient.target
+              );
+              return (
+                <div
+                  key={nutrient.id}
+                  className="relative flex flex-col items-center group"
+                  style={{ width: `${100 / nutrients.length}%` }}
+                >
+                  {/* Bar Container - Aligns with grid */}{" "}
+                  <div className="relative w-8 sm:w-14 md:w-20 h-full">
+                    {/* Target Bar (Background) */}
+                    <div className="absolute inset-0 rounded-lg bg-gray-200/50 border border-gray-300/30 backdrop-blur-sm"></div>{" "}
+                    {/* Progress Bar */}{" "}
+                    <div
+                      className={`absolute bottom-0 w-full rounded-t-lg transition-all duration-500 ease-in-out animate-progress-grow ${
+                        percentage > 100
+                          ? "bg-red-500"
+                          : percentage >= 80
+                          ? "bg-green-500"
+                          : "bg-yellow-500"
+                      } border-2 border-transparent hover:border-blue-400/80 hover:shadow-[0_0_8px_rgba(59,130,246,0.3)]`}
+                      style={{
+                        "--target-height": `${Math.min(percentage, 100)}%`,
+                      }}
+                    >
+                      {/* Shine effect */}
+                      <div className="absolute inset-0 rounded-t-lg bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out"></div>
+                    </div>
+                  </div>{" "}
+                  {/* X-axis label (nutrient name) */}
+                  <div className="absolute bottom-[-2.5rem] sm:bottom-[-2.5rem] left-1/2 transform -translate-x-1/2 sm:translate-x-[-50%] rotate-[-25deg] sm:rotate-0 origin-left sm:origin-center text-[10px] sm:text-sm font-semibold text-gray-700 whitespace-nowrap text-start sm:text-center">
+                    {nutrient.label.length > 6 && window.innerWidth < 640 ? (
+                      <>
+                        {nutrient.label.split(" ").map((word, i, arr) => (
+                          <React.Fragment key={i}>
+                            {word}
+                            {i < arr.length - 1 && <br />}
+                          </React.Fragment>
+                        ))}
+                      </>
+                    ) : (
+                      nutrient.label
+                    )}
+                  </div>{" "}
+                  {/* Tooltip */}
                   <div
-                    className={`absolute bottom-0 w-full rounded-t-lg transition-all duration-500 ease-in-out animate-progress-grow ${
-                      percentage > 100
-                        ? "bg-red-500"
-                        : percentage >= 80
-                        ? "bg-green-500"
-                        : "bg-yellow-500"
-                    } border-2 border-transparent hover:border-blue-400/80 hover:shadow-[0_0_8px_rgba(59,130,246,0.3)]`}
+                    className="absolute left-1/2 transform -translate-x-1/2 bg-gray-800/95 backdrop-blur-sm text-white px-4 py-2 rounded-xl text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 shadow-lg border border-gray-700/50"
                     style={{
-                      "--target-height": `${Math.min(percentage, 100)}%`,
+                      bottom: `${Math.min(percentage, 100)}%`,
+                      marginBottom: "8px",
                     }}
                   >
-                    {/* Shine effect */}
-                    <div className="absolute inset-0 rounded-t-lg bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out"></div>
-                  </div>
-                </div>{" "}
-                {/* X-axis label (nutrient name) */}
-                <div className="absolute bottom-[-2.5rem] sm:bottom-[-2.5rem] left-1/2 transform -translate-x-1/2 sm:translate-x-[-50%] rotate-[-25deg] sm:rotate-0 origin-left sm:origin-center text-[10px] sm:text-sm font-semibold text-gray-700 whitespace-nowrap text-start sm:text-center">
-                  {nutrient.label.length > 6 && window.innerWidth < 640 ? (
-                    <>
-                      {nutrient.label.split(" ").map((word, i, arr) => (
-                        <React.Fragment key={i}>
-                          {word}
-                          {i < arr.length - 1 && <br />}
-                        </React.Fragment>
-                      ))}
-                    </>
-                  ) : (
-                    nutrient.label
-                  )}
-                </div>{" "}
-                {/* Tooltip */}
-                <div
-                  className="absolute left-1/2 transform -translate-x-1/2 bg-gray-800/95 backdrop-blur-sm text-white px-4 py-2 rounded-xl text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 shadow-lg border border-gray-700/50"
-                  style={{
-                    bottom: `${Math.min(percentage, 100)}%`,
-                    marginBottom: "8px",
-                  }}
-                >
-                  {/* Status Badge */}
-                  <div
-                    className={`text-[10px] font-medium rounded-full px-2 py-0.5 mb-1 inline-block ${
-                      percentage > 100
-                        ? "bg-red-500/20 text-red-300"
+                    {/* Status Badge */}
+                    <div
+                      className={`text-[10px] font-medium rounded-full px-2 py-0.5 mb-1 inline-block ${
+                        percentage > 100
+                          ? "bg-red-500/20 text-red-300"
+                          : percentage >= 80
+                          ? "bg-green-500/20 text-green-300"
+                          : "bg-yellow-500/20 text-yellow-300"
+                      }`}
+                    >
+                      {percentage > 100
+                        ? "Berlebihan"
                         : percentage >= 80
-                        ? "bg-green-500/20 text-green-300"
-                        : "bg-yellow-500/20 text-yellow-300"
-                    }`}
-                  >
-                    {percentage > 100
-                      ? "Berlebihan"
-                      : percentage >= 80
-                      ? "Ideal"
-                      : "Kurang"}
-                  </div>
+                        ? "Ideal"
+                        : "Kurang"}
+                    </div>
 
-                  {/* Percentage */}
-                  <div className="font-bold text-sm mb-0.5">
-                    {percentage.toFixed(1)}%
-                  </div>
+                    {/* Percentage */}
+                    <div className="font-bold text-sm mb-0.5">
+                      {percentage.toFixed(1)}%
+                    </div>
 
-                  {/* Values */}
-                  <div className="text-gray-300 text-[10px] flex items-center gap-1">
-                    <span className="font-medium">
-                      {nutrient.current.toFixed(1)}
-                    </span>
-                    <span className="opacity-50">/</span>
-                    <span>{nutrient.target.toFixed(1)}</span>
-                    <span className="text-gray-400">{nutrient.unit}</span>
-                  </div>
+                    {/* Values */}
+                    <div className="text-gray-300 text-[10px] flex items-center gap-1">
+                      <span className="font-medium">
+                        {nutrient.current.toFixed(1)}
+                      </span>
+                      <span className="opacity-50">/</span>
+                      <span>{nutrient.target.toFixed(1)}</span>
+                      <span className="text-gray-400">{nutrient.unit}</span>
+                    </div>
 
-                  {/* Arrow */}
-                  <div className="absolute -bottom-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-gray-800/95 rotate-45 border-b border-r border-gray-700/50"></div>
+                    {/* Arrow */}
+                    <div className="absolute -bottom-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-gray-800/95 rotate-45 border-b border-r border-gray-700/50"></div>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };

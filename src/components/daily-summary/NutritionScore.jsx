@@ -150,16 +150,16 @@ const NutritionScore = () => {
       ) : (
         score !== null &&
         !error && (
-          <div className="p-6 bg-gradient-to-br from-blue-50 to-white rounded-lg animate-fade-in">
+          <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm">
             <div className="flex flex-col items-center">
-              {" "}
-              <div className="relative mb-4">
-                <svg className="w-32 h-32" viewBox="0 0 36 36">
+              <div className="relative mb-6">
+                <svg className="w-40 h-40" viewBox="0 0 36 36">
                   <path
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     fill="none"
                     stroke="#E5E7EB"
-                    strokeWidth="3"
+                    strokeWidth="2.5"
+                    className="opacity-20"
                   />
                   <path
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -171,21 +171,28 @@ const NutritionScore = () => {
                         ? "#D97706"
                         : "#DC2626"
                     }
-                    strokeWidth="3"
+                    strokeWidth="2.5"
                     strokeDasharray={`${score * 10}, 100`}
+                    className="transition-all duration-1000 ease-out"
                   />
                 </svg>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <div className={`text-4xl font-bold ${getScoreColor(score)}`}>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                  <div
+                    className={`text-5xl font-bold ${getScoreColor(
+                      score
+                    )} mb-1 animate-fade-in`}
+                  >
                     {score.toFixed(1)}
                   </div>
-                  <div className="text-gray-400 text-sm text-center">
+                  <div className="text-gray-400 text-sm font-medium">
                     dari 10
                   </div>
                 </div>
               </div>
               <div
-                className={`text-lg font-semibold mb-2 ${getScoreColor(score)}`}
+                className={`text-xl font-bold mb-3 ${getScoreColor(
+                  score
+                )} animate-fade-in`}
               >
                 {score >= 8
                   ? "Excellent!"
@@ -193,7 +200,7 @@ const NutritionScore = () => {
                   ? "Baik"
                   : "Perlu Perhatian"}
               </div>
-              <p className="text-gray-600 text-center max-w-xs">
+              <p className="text-gray-600 text-center max-w-sm font-medium">
                 {score >= 8
                   ? "Asupan gizi Anda sangat seimbang dan ideal"
                   : score >= 6
@@ -213,11 +220,11 @@ const NutritionScore = () => {
                       });
                     }
                   }}
-                  className="mt-4 text-blue-600 text-sm hover:text-blue-700 focus:outline-none flex items-center gap-1 transition-all duration-300 hover:translate-y-[-2px]"
+                  className="mt-6 px-4 py-2 bg-main/10 hover:bg-main/15 text-main rounded-xl font-medium text-sm focus:outline-none flex items-center gap-2 transition-all duration-300 hover:-translate-y-1 group"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
+                    className="h-5 w-5 transition-transform duration-300 group-hover:translate-y-1"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
