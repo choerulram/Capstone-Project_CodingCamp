@@ -16,16 +16,12 @@ const ProfileContent = () => {
     const bmi = weight / (heightInMeters * heightInMeters);
     return bmi.toFixed(1);
   };
-
   const getBMICategory = (bmi) => {
     if (!bmi) return null;
-    if (bmi < 18.5)
-      return { category: "Berat Badan Kurang", color: "text-blue-600" };
-    if (bmi < 25)
-      return { category: "Berat Badan Normal", color: "text-green-600" };
-    if (bmi < 30)
-      return { category: "Berat Badan Berlebih", color: "text-yellow-600" };
-    return { category: "Obesitas", color: "text-red-600" };
+    if (bmi < 18.5) return { category: "Underweight", color: "text-blue-600" };
+    if (bmi < 25) return { category: "Normal", color: "text-green-600" };
+    if (bmi < 30) return { category: "Overweight", color: "text-yellow-600" };
+    return { category: "Obese", color: "text-red-600" };
   };
 
   useEffect(() => {
@@ -109,8 +105,8 @@ const ProfileContent = () => {
                         fill="currentColor"
                       >
                         <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-2.207 2.207L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                      </svg>
-                      Edit Profil
+                      </svg>{" "}
+                      Edit Profile
                     </button>
                   </div>
                 </div>
@@ -124,7 +120,7 @@ const ProfileContent = () => {
           {/* Basic Information Section */}
           <div className="mb-8">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Informasi Dasar
+              Basic Information
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Gender */}
@@ -147,9 +143,8 @@ const ProfileContent = () => {
                     </svg>
                   </span>
                   <div>
-                    <h3 className="text-gray-700 font-medium mb-1">
-                      Jenis Kelamin
-                    </h3>
+                    {" "}
+                    <h3 className="text-gray-700 font-medium mb-1">Gender</h3>
                     <p className="text-gray-600">{userData.gender}</p>
                   </div>
                 </div>
@@ -175,20 +170,19 @@ const ProfileContent = () => {
                     </svg>
                   </span>
                   <div>
-                    <h3 className="text-gray-700 font-medium mb-1">Usia</h3>
-                    <p className="text-gray-600">
-                      {userData.umur} {userData.umur_satuan}
-                    </p>
+                    {" "}
+                    <h3 className="text-gray-700 font-medium mb-1">Age</h3>
+                    <p className="text-gray-600">{userData.umur} years</p>
                   </div>
                 </div>
               )}
             </div>
-          </div>
+          </div>{" "}
           {/* Body Measurements Section */}
           {(userData?.tinggi || userData?.bb) && (
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                Pengukuran Tubuh
+                Body Measurements
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Height */}
@@ -211,9 +205,8 @@ const ProfileContent = () => {
                       </svg>
                     </span>
                     <div>
-                      <h3 className="text-gray-700 font-medium mb-1">
-                        Tinggi Badan
-                      </h3>
+                      {" "}
+                      <h3 className="text-gray-700 font-medium mb-1">Height</h3>
                       <p className="text-gray-600">{userData.tinggi} cm</p>
                     </div>
                   </div>
@@ -239,9 +232,7 @@ const ProfileContent = () => {
                       </svg>
                     </span>
                     <div>
-                      <h3 className="text-gray-700 font-medium mb-1">
-                        Berat Badan
-                      </h3>
+                      <h3 className="text-gray-700 font-medium mb-1">Weight</h3>
                       <p className="text-gray-600">{userData.bb} kg</p>
                     </div>
                   </div>
@@ -263,7 +254,8 @@ const ProfileContent = () => {
                     </div>
                     <div className="mt-4">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-gray-600">Nilai BMI</span>
+                        {" "}
+                        <span className="text-gray-600">BMI Value</span>
                         <span className="text-2xl font-bold text-gray-800">
                           {bmi}
                         </span>
@@ -278,23 +270,23 @@ const ProfileContent = () => {
                             width: `${Math.min((bmi / 40) * 100, 100)}%`,
                           }}
                         ></div>
-                      </div>
+                      </div>{" "}
                       <div className="flex justify-between mt-2 text-xs text-gray-500">
-                        <span>{"Kurang (<18.5)"}</span>
+                        <span>{"Underweight (<18.5)"}</span>
                         <span>{"Normal (18.5-24.9)"}</span>
-                        <span>{"Berlebih (>25)"}</span>
+                        <span>{"Overweight (>25)"}</span>
                       </div>
                     </div>
                   </div>
                 )}
               </div>
             </div>
-          )}
+          )}{" "}
           {/* Health Status Section */}
           {(userData?.hamil || userData?.menyusui) && (
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                Status Kesehatan
+                Health Status
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Pregnancy Status */}
@@ -318,12 +310,12 @@ const ProfileContent = () => {
                     </span>
                     <div>
                       <h3 className="text-gray-700 font-medium mb-1">
-                        Status Kehamilan
+                        Pregnancy Status
                       </h3>
                       <p className="text-gray-600">
                         {userData.usia_kandungan
-                          ? `${userData.usia_kandungan} minggu`
-                          : "Sedang hamil"}
+                          ? `${userData.usia_kandungan} months`
+                          : "Pregnant"}
                       </p>
                     </div>
                   </div>
@@ -350,12 +342,12 @@ const ProfileContent = () => {
                     </span>
                     <div>
                       <h3 className="text-gray-700 font-medium mb-1">
-                        Status Menyusui
+                        Nursing Status
                       </h3>
                       <p className="text-gray-600">
                         {userData.umur_anak
-                          ? `Usia anak: ${userData.umur_anak} bulan`
-                          : "Sedang menyusui"}
+                          ? `Child age: ${userData.umur_anak} months`
+                          : "Currently nursing"}
                       </p>
                     </div>
                   </div>

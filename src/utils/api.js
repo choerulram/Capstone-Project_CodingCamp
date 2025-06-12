@@ -201,6 +201,46 @@ const api = {
       handleApiError(error);
     }
   },
+  updateProfile: async (token, profileData) => {
+    try {
+      const response = await fetch(`${BASE_URL}/me`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          nama: profileData.nama,
+          bb: profileData.bb ? Number(profileData.bb) : null,
+          tinggi: profileData.tinggi ? Number(profileData.tinggi) : null,
+          gender: profileData.gender,
+          umur: profileData.umur ? Number(profileData.umur) : null,
+          hamil: profileData.hamil,
+          usia_kandungan: profileData.usia_kandungan
+            ? Number(profileData.usia_kandungan)
+            : null,
+          menyusui: profileData.menyusui,
+          umur_anak: profileData.umur_anak
+            ? Number(profileData.umur_anak)
+            : null,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          detail: "Failed to update profile",
+        }));
+        throw new Error(
+          errorData.detail || errorData.message || "Failed to update profile"
+        );
+      }
+
+      return response.json();
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
 };
 
 export default api;

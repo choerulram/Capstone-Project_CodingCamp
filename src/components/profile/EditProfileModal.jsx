@@ -8,7 +8,6 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
     nama: userData?.nama || "",
     gender: userData?.gender || "",
     umur: userData?.umur || "",
-    umur_satuan: userData?.umur_satuan || "tahun",
     tinggi: userData?.tinggi || "",
     bb: userData?.bb || "",
     hamil: userData?.hamil || false,
@@ -19,26 +18,118 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({});
 
+  const validateForm = () => {
+    const errors = {};
+
+    // Validate required fields
+    if (!formData.nama.trim()) errors.nama = "Full name is required";
+    if (!formData.gender) errors.gender = "Gender is required";
+    if (!formData.umur) errors.umur = "Age is required";
+    if (!formData.tinggi) errors.tinggi = "Height is required";
+    if (!formData.bb) errors.bb = "Weight is required";
+
+    // Validate specific conditions for female users
+    if (formData.gender === "Female") {
+      if (formData.hamil && !formData.usia_kandungan) {
+        errors.usia_kandungan = "Pregnancy age is required";
+      }
+      if (formData.menyusui && !formData.umur_anak) {
+        errors.umur_anak = "Child age is required";
+      }
+    }
+
+    // Validate numeric fields
+    if (formData.umur && (formData.umur < 0 || formData.umur > 150)) {
+      errors.umur = "Please enter a valid age (0-150 years)";
+    }
+    if (formData.tinggi && (formData.tinggi < 0 || formData.tinggi > 300)) {
+      errors.tinggi = "Please enter a valid height (0-300 cm)";
+    }
+    if (formData.bb && (formData.bb < 0 || formData.bb > 500)) {
+      errors.bb = "Please enter a valid weight (0-500 kg)";
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
 
+    if (type === "checkbox") {
+      if (name === "hamil") {
+        // When changing pregnancy status
+        setFormData((prev) => ({
+          ...prev,
+          hamil: checked,
+          // If checking pregnant, clear nursing
+          menyusui: false,
+          usia_kandungan: checked ? prev.usia_kandungan : "",
+          umur_anak: "",
+        }));
+      } else if (name === "menyusui") {
+        // When changing nursing status
+        setFormData((prev) => ({
+          ...prev,
+          menyusui: checked,
+          // If checking nursing, clear pregnant
+          hamil: false,
+          umur_anak: checked ? prev.umur_anak : "",
+          usia_kandungan: "",
+        }));
+      }
+    } else if (name === "gender") {
+      // Ketika gender berubah
+      setFormData((prev) => ({
+        ...prev,
+        gender: value,
+        // Reset status kesehatan jika gender berubah menjadi Male
+        ...(value === "Male" && {
+          hamil: false,
+          menyusui: false,
+          usia_kandungan: "",
+          umur_anak: "",
+        }),
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
     setError(null);
+    setValidationErrors({});
+
+    if (!validateForm()) {
+      setError("Please fill in all required fields correctly");
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
-      await api.updateProfile(token, formData);
-      onUpdate();
-      onClose();
+      const updatedProfile = await api.updateProfile(token, {
+        nama: formData.nama,
+        bb: formData.bb,
+        tinggi: formData.tinggi,
+        gender: formData.gender,
+        umur: formData.umur,
+        hamil: formData.hamil,
+        usia_kandungan: formData.hamil ? formData.usia_kandungan : null,
+        menyusui: formData.menyusui,
+        umur_anak: formData.menyusui ? formData.umur_anak : null,
+      });
+
+      if (updatedProfile) {
+        onUpdate(); // Refresh profile data
+        onClose(); // Close the modal
+      }
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Failed to update profile");
     } finally {
       setIsSubmitting(false);
     }
@@ -49,12 +140,18 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Edit Profil</h2>
+        <div className="relative p-6 sm:p-8">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              {" "}
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                Edit Profile
+              </h2>
+              <p className="text-gray-500">Update your profile information</p>
+            </div>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700"
+              className="text-gray-500 hover:text-gray-700 transition-colors"
             >
               <svg
                 className="w-6 h-6"
@@ -73,113 +170,174 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
           </div>
 
           {error && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-600">{error}</p>
+            <div className="p-4 mb-6 text-sm text-red-700 bg-red-50 rounded-xl border border-red-100">
+              {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-8">
             {/* Informasi Dasar */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                Informasi Dasar
+              {" "}
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Basic Information
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nama
-                  </label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Full Name
+                  </label>{" "}
                   <input
                     type="text"
                     name="nama"
                     value={formData.nama}
                     onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-main focus:border-transparent"
+                    placeholder="Enter your full name"
+                    className={`w-full border ${
+                      validationErrors.nama
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
                   />
+                  {validationErrors.nama && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {validationErrors.nama}
+                    </p>
+                  )}
+                  {validationErrors.nama && (
+                    <p className="text-sm text-red-600">
+                      {validationErrors.nama}
+                    </p>
+                  )}
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Jenis Kelamin
-                  </label>
+                <div className="space-y-2">
+                  {" "}
+                  <label className="block text-sm font-medium text-gray-700">
+                    Gender
+                  </label>{" "}
                   <select
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-main focus:border-transparent"
+                    className={`w-full border ${
+                      validationErrors.gender
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
                   >
-                    <option value="">Pilih Jenis Kelamin</option>
-                    <option value="Laki-laki">Laki-laki</option>
-                    <option value="Perempuan">Perempuan</option>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
                   </select>
+                  {validationErrors.gender && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {validationErrors.gender}
+                    </p>
+                  )}
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Usia
-                  </label>
-                  <div className="flex gap-2">
+                <div className="space-y-2">
+                  {" "}
+                  <label className="block text-sm font-medium text-gray-700">
+                    Age
+                  </label>{" "}
+                  <div className="relative">
                     <input
                       type="number"
                       name="umur"
                       value={formData.umur}
                       onChange={handleChange}
-                      className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-main focus:border-transparent"
+                      placeholder="Enter your age"
+                      className={`w-full border ${
+                        validationErrors.umur
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      } rounded-xl p-3 pr-16 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
                     />
-                    <select
-                      name="umur_satuan"
-                      value={formData.umur_satuan}
-                      onChange={handleChange}
-                      className="w-24 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-main focus:border-transparent"
-                    >
-                      <option value="tahun">Tahun</option>
-                      <option value="bulan">Bulan</option>
-                    </select>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                      years
+                    </span>
                   </div>
+                  {validationErrors.umur && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {validationErrors.umur}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
-
             {/* Pengukuran Tubuh */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                Pengukuran Tubuh
+              {" "}
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Body Measurements
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Tinggi Badan (cm)
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Height
                   </label>
-                  <input
-                    type="number"
-                    name="tinggi"
-                    value={formData.tinggi}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-main focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Berat Badan (kg)
+                  <div className="relative">
+                    <input
+                      type="number"
+                      name="tinggi"
+                      value={formData.tinggi}
+                      onChange={handleChange}
+                      placeholder="Enter your height"
+                      className={`w-full border ${
+                        validationErrors.tinggi
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      } rounded-xl p-3 pr-16 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                      cm
+                    </span>
+                  </div>
+                  {validationErrors.tinggi && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {validationErrors.tinggi}
+                    </p>
+                  )}
+                </div>{" "}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Weight
                   </label>
-                  <input
-                    type="number"
-                    name="bb"
-                    value={formData.bb}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-main focus:border-transparent"
-                  />
+                  <div className="relative">
+                    <input
+                      type="number"
+                      name="bb"
+                      value={formData.bb}
+                      onChange={handleChange}
+                      placeholder="Enter your weight"
+                      className={`w-full border ${
+                        validationErrors.bb
+                          ? "border-red-500"
+                          : "border-gray-300"
+                      } rounded-xl p-3 pr-16 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                      kg
+                    </span>
+                  </div>
+                  {validationErrors.bb && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {validationErrors.bb}
+                    </p>
+                  )}
                 </div>
               </div>
-            </div>
-
+            </div>{" "}
             {/* Status Kesehatan */}
-            {formData.gender === "Perempuan" && (
+            {formData.gender === "Female" && (
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                  Status Kesehatan
+                {" "}
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Health Status
                 </h3>
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex items-center mb-2">
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-6">
+                    <div className="flex items-center">
                       <input
                         type="checkbox"
                         id="hamil"
@@ -192,27 +350,10 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                         htmlFor="hamil"
                         className="ml-2 text-sm font-medium text-gray-700"
                       >
-                        Sedang Hamil
+                        Pregnant
                       </label>
                     </div>
-                    {formData.hamil && (
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Usia Kandungan (minggu)
-                        </label>
-                        <input
-                          type="number"
-                          name="usia_kandungan"
-                          value={formData.usia_kandungan}
-                          onChange={handleChange}
-                          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-main focus:border-transparent"
-                        />
-                      </div>
-                    )}
-                  </div>
-
-                  <div>
-                    <div className="flex items-center mb-2">
+                    <div className="flex items-center">
                       <input
                         type="checkbox"
                         id="menyusui"
@@ -225,42 +366,82 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                         htmlFor="menyusui"
                         className="ml-2 text-sm font-medium text-gray-700"
                       >
-                        Sedang Menyusui
+                        Nursing
                       </label>
                     </div>
-                    {formData.menyusui && (
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Usia Anak (bulan)
-                        </label>
-                        <input
-                          type="number"
-                          name="umur_anak"
-                          value={formData.umur_anak}
-                          onChange={handleChange}
-                          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-main focus:border-transparent"
-                        />
-                      </div>
-                    )}
                   </div>
+
+                  {formData.hamil && (
+                    <div className="pl-6">
+                      {" "}
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Pregnancy Age (months)
+                      </label>
+                      <input
+                        type="number"
+                        name="usia_kandungan"
+                        value={formData.usia_kandungan}
+                        onChange={handleChange}
+                        min="1"
+                        max="9"
+                        placeholder="1-9 months"
+                        className={`w-32 border ${
+                          validationErrors.usia_kandungan
+                            ? "border-red-500"
+                            : "border-gray-300"
+                        } rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
+                      />
+                      {validationErrors.usia_kandungan && (
+                        <p className="mt-1 text-sm text-red-500">
+                          {validationErrors.usia_kandungan}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {formData.menyusui && (
+                    <div className="pl-6">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Child Age (months)
+                      </label>
+                      <input
+                        type="number"
+                        name="umur_anak"
+                        value={formData.umur_anak}
+                        onChange={handleChange}
+                        min="0"
+                        max="60"
+                        placeholder="0-60 months"
+                        className={`w-32 border ${
+                          validationErrors.umur_anak
+                            ? "border-red-500"
+                            : "border-gray-300"
+                        } rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
+                      />
+                      {validationErrors.umur_anak && (
+                        <p className="mt-1 text-sm text-red-500">
+                          {validationErrors.umur_anak}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
-
-            <div className="flex justify-end gap-4 pt-4 border-t">
+            <div className="flex justify-end gap-4 pt-6 border-t">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                className="px-6 py-3 text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors font-medium"
               >
-                Batal
+                Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-4 py-2 text-white bg-main rounded-lg hover:bg-main/90 transition-colors disabled:opacity-50"
+                className="px-6 py-3 text-white bg-main rounded-xl hover:bg-main/90 transition-colors disabled:opacity-50 font-medium"
               >
-                {isSubmitting ? "Menyimpan..." : "Simpan"}
+                {isSubmitting ? "Saving..." : "Save Changes"}
               </button>
             </div>
           </form>
