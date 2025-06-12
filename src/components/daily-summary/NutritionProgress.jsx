@@ -130,8 +130,8 @@ const NutritionProgress = () => {
   ];
 
   return (
-    <div className="bg-gray-50 p-4 sm:p-6 rounded-xl border border-gray-100 relative animate-slide-in-bottom">
-      <h2 className="text-lg sm:text-xl font-semibold text-main mb-4 sm:mb-6 flex items-center animate-float">
+    <div className="bg-gray-50 p-4 sm:p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 relative animate-slide-in-bottom">
+      <h2 className="text-lg sm:text-xl font-bold text-main mb-4 sm:mb-6 flex items-center animate-float">
         <span className="bg-highlight/20 p-1.5 sm:p-2 rounded-lg mr-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"

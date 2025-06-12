@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../states/authUser/slice.js";
 import UpgradeButton from "../subscription/UpgradeButton";
 import LoginRequiredModal from "../auth/LoginRequiredModal";
-import ProfileModal from "../auth/ProfileModal";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -14,10 +13,8 @@ const Header = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showProfileModal, setShowProfileModal] = useState(false);
-
   const handleProtectedLink = (e, path) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!token) {
       setShowLoginModal(true);
     } else {
@@ -149,10 +146,10 @@ const Header = () => {
                   className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
                 >
                   Sign Out
-                </button>
+                </button>{" "}
                 <div className="border-l border-gray-200 h-6 mx-2"></div>
                 <button
-                  onClick={() => setShowProfileModal(true)}
+                  onClick={() => handleProtectedLink(null, "/profile")}
                   className="p-2 text-main hover:text-highlight transition-colors duration-300 rounded-full hover:bg-gray-100"
                 >
                   <svg
@@ -275,11 +272,11 @@ const Header = () => {
                     >
                       Sign Out
                     </button>
-                    <div className="border-l border-gray-200 h-6 mx-2"></div>
+                    <div className="border-l border-gray-200 h-6 mx-2"></div>{" "}
                     <button
                       onClick={() => {
                         setIsMobileMenuOpen(false);
-                        setShowProfileModal(true);
+                        handleProtectedLink(null, "/profile");
                       }}
                       className="p-2 text-main hover:text-highlight transition-colors duration-300 rounded-full hover:bg-gray-100"
                     >
@@ -361,15 +358,10 @@ const Header = () => {
           </div>
         </div>
       )}
-      {/* Login Required Modal */}
+      {/* Login Required Modal */}{" "}
       <LoginRequiredModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
-      />
-      {/* Profile Modal */}
-      <ProfileModal
-        isOpen={showProfileModal}
-        onClose={() => setShowProfileModal(false)}
       />
     </header>
   );

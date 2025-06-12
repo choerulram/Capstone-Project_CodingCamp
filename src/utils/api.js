@@ -179,6 +179,28 @@ const api = {
       handleApiError(error);
     }
   },
+  getProfile: async (token) => {
+    try {
+      const response = await fetch(`${BASE_URL}/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          detail: "Terjadi kesalahan pada server",
+        }));
+        throw new Error(errorData.detail || "Gagal mengambil data profil");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
 };
 
 export default api;

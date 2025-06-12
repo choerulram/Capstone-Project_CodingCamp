@@ -6,6 +6,7 @@ import DailySummaryPage from "../pages/DailySummaryPage.jsx";
 import LoginPage from "../pages/LoginPage.jsx";
 import RegisterPage from "../pages/RegisterPage.jsx";
 import ProtectedRoute from "../components/auth/ProtectedRoute.jsx";
+import ProfilePage from "../pages/ProfilePage.jsx";
 
 // Routes yang membutuhkan autentikasi
 export const privateRoutes = [
@@ -49,6 +50,15 @@ export const privateRoutes = [
       </ProtectedRoute>
     ),
     title: "Ringkasan Harian",
+  },
+  {
+    path: "/profile",
+    element: (
+      <ProtectedRoute>
+        <ProfilePage />
+      </ProtectedRoute>
+    ),
+    title: "Profil",
   },
 ];
 

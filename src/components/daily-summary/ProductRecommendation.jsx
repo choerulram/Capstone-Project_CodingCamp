@@ -91,17 +91,17 @@ const ProductRecommendation = () => {
 
     getRecommendation();
   }, [token]);
-
   return (
     <div
       id="nutrition-recommendation"
-      className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border border-secondary shadow-sm hover:shadow-md transition-shadow duration-300 animate-fade-in scroll-mt-24"
+      className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24"
     >
-      <h2 className="text-2xl font-bold text-main mb-6 flex items-center animate-fade-in-down">
-        <span className="bg-highlight/30 p-3 rounded-xl mr-3 animate-bounce-slow">
+      {" "}
+      <h2 className="text-xl font-bold text-main mb-6 flex items-center animate-float">
+        <span className="bg-main p-3 rounded-xl mr-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-highlight"
+            className="h-6 w-6 text-secondary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
