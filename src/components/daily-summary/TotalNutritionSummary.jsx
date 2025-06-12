@@ -77,14 +77,14 @@ const TotalNutritionSummary = () => {
         </span>
         Total Nutrisi Hari Ini
       </h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {/* Kalori */}
-        <div className="group bg-gradient-to-br from-orange-50 to-white p-4 rounded-xl border border-orange-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-100">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="p-1.5 rounded-lg bg-orange-100 text-orange-600 group-hover:bg-orange-200 transition-colors">
+        <div className="group bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-scaleIn animate-delay-100">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="p-2.5 rounded-xl bg-orange-100/80 text-orange-600 group-hover:bg-orange-200/80 transition-colors">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -96,24 +96,31 @@ const TotalNutritionSummary = () => {
                   d="M13 10V3L4 14h7v7l9-11h-7z"
                 />
               </svg>
-            </span>{" "}
-            <div className="text-sm font-medium text-gray-600 group-hover:text-orange-700 transition-colors duration-300">
+            </span>
+            <div className="text-sm font-semibold text-main/80 group-hover:text-orange-700 transition-colors duration-300">
               Total Energi
             </div>
           </div>
-          <div className="text-2xl font-bold text-orange-600 group-hover:text-orange-700 transition-all duration-300 group-hover:scale-105">
-            {totalNutrition.energi.toFixed(1)}{" "}
-            <span className="text-base font-medium">kkal</span>
+          <div className="flex flex-col">
+            {" "}
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-3xl font-bold text-orange-600 group-hover:text-orange-700 transition-all duration-300 group-hover:scale-105">
+                {totalNutrition.energi.toFixed(1)}
+              </span>
+              <span className="text-base font-medium text-orange-600/70 group-hover:text-orange-700/70">
+                kkal
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Protein */}
-        <div className="group bg-gradient-to-br from-blue-50 to-white p-4 rounded-xl border border-blue-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-200">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="p-1.5 rounded-lg bg-blue-100 text-blue-600 group-hover:bg-blue-200 transition-colors">
+        <div className="group bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-scaleIn animate-delay-200">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="p-2.5 rounded-xl bg-blue-100/80 text-blue-600 group-hover:bg-blue-200/80 transition-colors">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -126,23 +133,30 @@ const TotalNutritionSummary = () => {
                 />
               </svg>
             </span>
-            <div className="text-sm font-medium text-gray-600 group-hover:text-blue-700">
+            <div className="text-sm font-semibold text-main/80 group-hover:text-blue-700 transition-colors duration-300">
               Total Protein
             </div>
           </div>
-          <div className="text-2xl font-bold text-blue-600 group-hover:text-blue-700">
-            {totalNutrition.protein.toFixed(1)}{" "}
-            <span className="text-base font-medium">g</span>
+          <div className="flex flex-col">
+            {" "}
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-3xl font-bold text-blue-600 group-hover:text-blue-700 transition-all duration-300 group-hover:scale-105">
+                {totalNutrition.protein.toFixed(1)}
+              </span>
+              <span className="text-base font-medium text-blue-600/70 group-hover:text-blue-700/70">
+                g
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Lemak total */}
-        <div className="group bg-gradient-to-br from-yellow-50 to-white p-4 rounded-xl border border-yellow-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-300">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="p-1.5 rounded-lg bg-yellow-100 text-yellow-600 group-hover:bg-yellow-200 transition-colors">
+        <div className="group bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-scaleIn animate-delay-300">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="p-2.5 rounded-xl bg-yellow-100/80 text-yellow-600 group-hover:bg-yellow-200/80 transition-colors">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -155,23 +169,30 @@ const TotalNutritionSummary = () => {
                 />
               </svg>
             </span>
-            <div className="text-sm font-medium text-gray-600 group-hover:text-yellow-700">
+            <div className="text-sm font-semibold text-main/80 group-hover:text-yellow-700 transition-colors duration-300">
               Total Lemak
             </div>
           </div>
-          <div className="text-2xl font-bold text-yellow-600 group-hover:text-yellow-700">
-            {totalNutrition.lemak_total.toFixed(1)}{" "}
-            <span className="text-base font-medium">g</span>
+          <div className="flex flex-col">
+            {" "}
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-3xl font-bold text-yellow-600 group-hover:text-yellow-700 transition-all duration-300 group-hover:scale-105">
+                {totalNutrition.lemak_total.toFixed(1)}
+              </span>
+              <span className="text-base font-medium text-yellow-600/70 group-hover:text-yellow-700/70">
+                g
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Karbohidrat */}
-        <div className="group bg-gradient-to-br from-purple-50 to-white p-4 rounded-xl border border-purple-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-400">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="p-1.5 rounded-lg bg-purple-100 text-purple-600 group-hover:bg-purple-200 transition-colors">
+        <div className="group bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-scaleIn animate-delay-400">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="p-2.5 rounded-xl bg-purple-100/80 text-purple-600 group-hover:bg-purple-200/80 transition-colors">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -184,23 +205,30 @@ const TotalNutritionSummary = () => {
                 />
               </svg>
             </span>
-            <div className="text-sm font-medium text-gray-600 group-hover:text-purple-700">
+            <div className="text-sm font-semibold text-main/80 group-hover:text-purple-700 transition-colors duration-300">
               Total Karbohidrat
             </div>
           </div>
-          <div className="text-2xl font-bold text-purple-600 group-hover:text-purple-700">
-            {totalNutrition.karbohidrat.toFixed(1)}{" "}
-            <span className="text-base font-medium">g</span>
+          <div className="flex flex-col">
+            {" "}
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-3xl font-bold text-purple-600 group-hover:text-purple-700 transition-all duration-300 group-hover:scale-105">
+                {totalNutrition.karbohidrat.toFixed(1)}
+              </span>
+              <span className="text-base font-medium text-purple-600/70 group-hover:text-purple-700/70">
+                g
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Serat */}
-        <div className="group bg-gradient-to-br from-green-50 to-white p-4 rounded-xl border border-green-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-500">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="p-1.5 rounded-lg bg-green-100 text-green-600 group-hover:bg-green-200 transition-colors">
+        <div className="group bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-scaleIn animate-delay-500">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="p-2.5 rounded-xl bg-green-100/80 text-green-600 group-hover:bg-green-200/80 transition-colors">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -213,23 +241,30 @@ const TotalNutritionSummary = () => {
                 />
               </svg>
             </span>
-            <div className="text-sm font-medium text-gray-600 group-hover:text-green-700">
+            <div className="text-sm font-semibold text-main/80 group-hover:text-green-700 transition-colors duration-300">
               Total Serat
             </div>
           </div>
-          <div className="text-2xl font-bold text-green-600 group-hover:text-green-700">
-            {totalNutrition.serat.toFixed(1)}{" "}
-            <span className="text-base font-medium">g</span>
+          <div className="flex flex-col">
+            {" "}
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-3xl font-bold text-green-600 group-hover:text-green-700 transition-all duration-300 group-hover:scale-105">
+                {totalNutrition.serat.toFixed(1)}
+              </span>
+              <span className="text-base font-medium text-green-600/70 group-hover:text-green-700/70">
+                g
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Gula */}
-        <div className="group bg-gradient-to-br from-pink-50 to-white p-4 rounded-xl border border-pink-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-600">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="p-1.5 rounded-lg bg-pink-100 text-pink-600 group-hover:bg-pink-200 transition-colors">
+        <div className="group bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-scaleIn animate-delay-600">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="p-2.5 rounded-xl bg-pink-100/80 text-pink-600 group-hover:bg-pink-200/80 transition-colors">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -242,23 +277,30 @@ const TotalNutritionSummary = () => {
                 />
               </svg>
             </span>
-            <div className="text-sm font-medium text-gray-600 group-hover:text-pink-700">
+            <div className="text-sm font-semibold text-main/80 group-hover:text-pink-700 transition-colors duration-300">
               Total Gula
             </div>
           </div>
-          <div className="text-2xl font-bold text-pink-600 group-hover:text-pink-700">
-            {totalNutrition.gula.toFixed(1)}{" "}
-            <span className="text-base font-medium">g</span>
+          <div className="flex flex-col">
+            {" "}
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-3xl font-bold text-pink-600 group-hover:text-pink-700 transition-all duration-300 group-hover:scale-105">
+                {totalNutrition.gula.toFixed(1)}
+              </span>
+              <span className="text-base font-medium text-pink-600/70 group-hover:text-pink-700/70">
+                g
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Garam */}
-        <div className="group bg-gradient-to-br from-cyan-50 to-white p-4 rounded-xl border border-cyan-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-700">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="p-1.5 rounded-lg bg-cyan-100 text-cyan-600 group-hover:bg-cyan-200 transition-colors">
+        <div className="group bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-scaleIn animate-delay-700">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="p-2.5 rounded-xl bg-cyan-100/80 text-cyan-600 group-hover:bg-cyan-200/80 transition-colors">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -271,13 +313,20 @@ const TotalNutritionSummary = () => {
                 />
               </svg>
             </span>
-            <div className="text-sm font-medium text-gray-600 group-hover:text-cyan-700">
+            <div className="text-sm font-semibold text-main/80 group-hover:text-cyan-700 transition-colors duration-300">
               Total Garam
             </div>
           </div>
-          <div className="text-2xl font-bold text-cyan-600 group-hover:text-cyan-700">
-            {totalNutrition.garam.toFixed(1)}{" "}
-            <span className="text-base font-medium">mg</span>
+          <div className="flex flex-col">
+            {" "}
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-3xl font-bold text-cyan-600 group-hover:text-cyan-700 transition-all duration-300 group-hover:scale-105">
+                {totalNutrition.gula.toFixed(1)}
+              </span>
+              <span className="text-base font-medium text-cyan-600/70 group-hover:text-cyan-700/70">
+                mg
+              </span>
+            </div>
           </div>
         </div>
       </div>
