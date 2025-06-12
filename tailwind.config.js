@@ -81,6 +81,10 @@ export default {
         400: "400ms",
         500: "500ms",
       },
+      backgroundImage: {
+        "dots-white":
+          "radial-gradient(circle at center, white 2px, transparent 2px)",
+      },
     },
   },
   plugins: [],
