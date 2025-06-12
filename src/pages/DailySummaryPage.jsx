@@ -6,7 +6,7 @@ import DailyScanHistory from "../components/daily-summary/DailyScanHistory";
 import NutritionProgress from "../components/daily-summary/NutritionProgress";
 import NutritionRecommendation from "../components/daily-summary/NutritionRecommendation";
 import NutritionScore from "../components/daily-summary/NutritionScore";
-import NutritionStatus from "../components/daily-summary/NutritionStatus";
+import DiseasePrediction from "../components/daily-summary/DiseasePrediction";
 
 const DailySummaryPage = () => {
   return (
@@ -30,7 +30,7 @@ const DailySummaryPage = () => {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <NutritionScore />
-                <NutritionStatus />
+                <DiseasePrediction />
               </div>
             </div>
             <div

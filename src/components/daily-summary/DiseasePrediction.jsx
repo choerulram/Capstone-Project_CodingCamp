@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import api, { BASE_URL } from "../../utils/api";
 
-const NutritionStatus = () => {
+const DiseasePrediction = () => {
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
-    const predictStatus = async () => {
+    const predictDiseaseRisk = async () => {
       setLoading(true);
       setError(null);
       try {
@@ -17,8 +17,14 @@ const NutritionStatus = () => {
           throw new Error("Anda harus login terlebih dahulu.");
         }
 
-        // Mengambil data user (umur, tinggi, berat, dll)
-        const userData = await api.getUserProfile(token);
+        // Mendapatkan data user dari token
+        const tokenData = JSON.parse(atob(token.split(".")[1]));
+        const userData = {
+          umur: parseFloat(tokenData.age || tokenData.umur) || 0,
+          gender: tokenData.gender?.toLowerCase() || "female",
+          tinggi: parseFloat(tokenData.height || tokenData.tinggi) || 0,
+          berat: parseFloat(tokenData.weight || tokenData.berat) || 0,
+        };
 
         // Mengambil riwayat pemindaian hari ini
         const historyData = await api.getTodayScanHistory(token);
@@ -30,31 +36,37 @@ const NutritionStatus = () => {
           );
         }
 
-        // Menghitung total nutrisi
+        // Menghitung total nutrisi dengan explicit type conversion
         const totalGizi = todayHistory.reduce((acc, item) => {
           const gizi = item.kandungan_gizi || {};
           return {
-            Calories: (acc.Calories || 0) + Number(gizi.energi || 0),
-            Protein: (acc.Protein || 0) + Number(gizi.protein || 0),
-            Fat: (acc.Fat || 0) + Number(gizi["lemak total"] || 0),
+            Calories: (acc.Calories || 0) + parseFloat(gizi.energi || 0),
+            Protein: (acc.Protein || 0) + parseFloat(gizi.protein || 0),
+            Fat: (acc.Fat || 0) + parseFloat(gizi["lemak total"] || 0),
             Carbohydrates:
-              (acc.Carbohydrates || 0) + Number(gizi.karbohidrat || 0),
-            Fiber: (acc.Fiber || 0) + Number(gizi.serat || 0),
-            Sugar: (acc.Sugar || 0) + Number(gizi.gula || 0),
-            Sodium: (acc.Sodium || 0) + Number(gizi.garam || 0),
+              (acc.Carbohydrates || 0) + parseFloat(gizi.karbohidrat || 0),
+            Fiber: (acc.Fiber || 0) + parseFloat(gizi.serat || 0),
+            Sugar: (acc.Sugar || 0) + parseFloat(gizi.gula || 0),
+            Sodium: (acc.Sodium || 0) + parseFloat(gizi.garam || 0),
           };
         }, {});
 
-        // Menyiapkan payload sesuai format API
+        // Menyiapkan payload sesuai format API dengan explicit arrays dan default values
         const inputData = {
-          Ages: [userData.umur],
+          Ages: [Math.max(1, userData.umur)],
           Gender: [userData.gender === "male" ? "Male" : "Female"],
-          Height: [userData.tinggi],
-          Weight: [userData.berat],
-          ...totalGizi,
+          Height: [Math.max(1, userData.tinggi)],
+          Weight: [Math.max(1, userData.berat)],
+          Calories: [Math.max(0, totalGizi.Calories || 0)],
+          Protein: [Math.max(0, totalGizi.Protein || 0)],
+          Fat: [Math.max(0, totalGizi.Fat || 0)],
+          Carbohydrates: [Math.max(0, totalGizi.Carbohydrates || 0)],
+          Fiber: [Math.max(0, totalGizi.Fiber || 0)],
+          Sugar: [Math.max(0, totalGizi.Sugar || 0)],
+          Sodium: [Math.max(0, totalGizi.Sodium || 0)],
         };
 
-        // Memprediksi status gizi
+        // Melakukan prediksi risiko penyakit
         const response = await fetch(`${BASE_URL}/predict`, {
           method: "POST",
           headers: {
@@ -70,29 +82,29 @@ const NutritionStatus = () => {
           throw new Error(
             data?.error ||
               data?.message ||
-              "Terjadi kesalahan saat memprediksi status gizi"
+              "Terjadi kesalahan saat memprediksi risiko penyakit"
           );
         }
 
         setStatus(data.labels[0][0]);
       } catch (err) {
-        console.error("Status Prediction Error:", err);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    predictStatus();
+    predictDiseaseRisk();
   }, [token]);
 
-  // Fungsi untuk menentukan warna dan ikon berdasarkan status
+  // Fungsi untuk menentukan warna, ikon, dan pesan berdasarkan status
   const getStatusInfo = (status) => {
     switch (status) {
       case "Normal":
         return {
           color: "text-green-600",
           bgColor: "bg-green-100",
+          message: "Risiko penyakit rendah. Tetap jaga pola makan sehat Anda!",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -114,6 +126,8 @@ const NutritionStatus = () => {
         return {
           color: "text-yellow-600",
           bgColor: "bg-yellow-100",
+          message:
+            "Risiko penyakit moderat. Pertimbangkan untuk mengubah pola makan.",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -135,6 +149,8 @@ const NutritionStatus = () => {
         return {
           color: "text-red-600",
           bgColor: "bg-red-100",
+          message:
+            "Risiko penyakit tinggi. Segera konsultasikan dengan dokter.",
           icon: (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -170,13 +186,12 @@ const NutritionStatus = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
             />
           </svg>
         </span>
-        Status Gizi
+        Prediksi Risiko Penyakit
       </h2>
-
       {error && (
         <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-4">
           <div className="flex items-center gap-2">
@@ -198,7 +213,6 @@ const NutritionStatus = () => {
           </div>
         </div>
       )}
-
       {loading ? (
         <div className="flex justify-center items-center h-32">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-main"></div>
@@ -221,9 +235,7 @@ const NutritionStatus = () => {
                 {status}
               </div>
               <p className="text-gray-600 mt-1">
-                {status === "Normal"
-                  ? "Pertahankan pola makan sehat Anda!"
-                  : "Konsultasikan dengan ahli gizi untuk saran lebih lanjut"}
+                {getStatusInfo(status).message}
               </p>
             </div>
           </div>
@@ -233,4 +245,4 @@ const NutritionStatus = () => {
   );
 };
 
-export default NutritionStatus;
+export default DiseasePrediction;
