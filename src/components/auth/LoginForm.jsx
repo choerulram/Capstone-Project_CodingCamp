@@ -23,19 +23,30 @@ const LoginForm = () => {
     }));
     if (error) setError("");
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    if (!formData.email || !formData.password) {
+      setError("Email and password are required");
+      return;
+    }
 
     try {
       const response = await dispatch(loginUser(formData));
       if (response && response.token) {
         // Login successful
         navigate("/");
+      } else {
+        setError("Incorrect email or password");
       }
     } catch (err) {
-      setError(err.message || "An error occurred during login");
+      if (err.response?.status === 401) {
+        setError("Incorrect email or password");
+      } else if (err.response?.status === 404) {
+        setError("Email not found. Please register first");
+      } else {
+        setError("An error occurred. Please try again later");
+      }
     }
   };
 
@@ -49,11 +60,24 @@ const LoginForm = () => {
           </p>
 
           <form onSubmit={handleSubmit} className="w-full space-y-5">
+            {" "}
             {error && (
               <div
-                className="p-4 mb-4 text-sm text-red-700 bg-red-50 rounded-xl border border-red-100"
+                className="p-4 mb-4 text-sm text-red-700 bg-red-50 rounded-xl border border-red-100 flex items-center gap-2"
                 role="alert"
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
+                </svg>
                 {error}
               </div>
             )}
@@ -138,7 +162,6 @@ const LoginForm = () => {
                 </button>
               </div>
             </div>
-
             <button
               type="submit"
               disabled={loading}
