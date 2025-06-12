@@ -237,69 +237,65 @@ const DiseasePrediction = () => {
         userData &&
         totalGizi && (
           <div className="animate-fade-in space-y-6">
-            {" "}
-            {/* Disease Risk Display */}{" "}
-            <div className="p-6 bg-gradient-to-br from-red-50 to-white rounded-lg animate-fade-in h-56 flex items-center justify-center">
-              <div className="flex flex-col items-center text-center justify-between py-2 h-full w-full">
-                <div className="relative w-full">
-                  <div className="flex flex-col items-center space-y-4">
-                    <div
-                      className={`${
-                        getStatusInfo(status).color
-                      } transform transition hover:scale-105 duration-300 p-4 rounded-2xl ${
-                        getStatusInfo(status).bgColor
-                      } bg-opacity-20`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-12 w-12"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                      >
-                        {getStatusInfo(status).icon.props.children}
-                      </svg>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <div
-                        className={`${
-                          getStatusInfo(status).color
-                        } text-4xl font-bold mb-1`}
-                      >
-                        {status}
-                      </div>
-                      <div
-                        className={`${
-                          getStatusInfo(status).color
-                        } text-sm font-medium px-4 py-1 rounded-full ${
-                          getStatusInfo(status).bgColor
-                        } bg-opacity-20`}
-                      >
-                        {getStatusInfo(status).message}
-                      </div>
-                    </div>
+            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl border border-secondary/30 shadow-sm">
+              <div className="flex flex-col items-center">
+                <div
+                  className={`${
+                    getStatusInfo(status).color
+                  } transform transition-all duration-300 hover:scale-105 p-5 rounded-2xl ${
+                    getStatusInfo(status).bgColor
+                  } bg-opacity-20 mb-6`}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-16 w-16"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                  >
+                    {getStatusInfo(status).icon.props.children}
+                  </svg>
+                </div>
+                <div className="flex flex-col items-center space-y-4">
+                  <div
+                    className={`${
+                      getStatusInfo(status).color
+                    } text-5xl font-bold animate-fade-in`}
+                  >
+                    {status}
+                  </div>
+                  <div
+                    className={`${
+                      getStatusInfo(status).color
+                    } text-base font-medium px-6 py-2 rounded-xl ${
+                      getStatusInfo(status).bgColor
+                    } bg-opacity-20 max-w-md text-center`}
+                  >
+                    {getStatusInfo(status).message}
                   </div>
                 </div>
               </div>
             </div>
-            <div className="text-sm text-gray-500 mt-4 px-2">
-              <div className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-red-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span>
+            <div className="bg-white/90 backdrop-blur-sm p-4 rounded-xl border border-secondary/30 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="bg-red-100 p-2 rounded-lg">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-red-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <span className="text-sm font-medium text-gray-600">
                   Prediksi ini berdasarkan analisis nutrisi dari makanan yang
                   Anda konsumsi hari ini
                 </span>
