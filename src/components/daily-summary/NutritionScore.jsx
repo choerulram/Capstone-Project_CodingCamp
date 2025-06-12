@@ -92,11 +92,10 @@ const NutritionScore = () => {
     if (score >= 6) return "text-yellow-600";
     return "text-red-600";
   };
-
   return (
-    <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-      <h2 className="text-xl font-semibold text-main mb-4 flex items-center">
-        <span className="bg-blue-100 p-2 rounded-lg mr-2">
+    <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+      <h2 className="text-xl font-semibold text-main mb-6 flex items-center">
+        <span className="bg-blue-100 p-2 rounded-lg mr-3 transform transition-transform hover:scale-110">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 text-blue-600"
@@ -112,11 +111,17 @@ const NutritionScore = () => {
             />
           </svg>
         </span>
-        Skor Gizi Harian
+        <div>
+          <div className="text-xl font-semibold text-main">
+            Skor Gizi Harian
+          </div>
+          <div className="text-sm text-gray-500 mt-1">
+            Kualitas asupan nutrisi Anda
+          </div>
+        </div>
       </h2>
-
       {error && (
-        <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-4">
+        <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-4 animate-fade-in">
           <div className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -136,29 +141,102 @@ const NutritionScore = () => {
           </div>
         </div>
       )}
-
       {loading ? (
-        <div className="flex justify-center items-center h-32">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-main"></div>
+        <div className="flex justify-center items-center h-40">
+          <div className="flex flex-col items-center">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-main mb-3"></div>
+            <p className="text-gray-500 text-sm">Menghitung skor...</p>
+          </div>
         </div>
       ) : (
         score !== null &&
         !error && (
-          <div className="text-center p-6">
-            <div className="text-4xl font-bold mb-2 animate-fade-in">
-              <span className={getScoreColor(score)}>{score.toFixed(1)}</span>
-              <span className="text-gray-400 text-xl">/10</span>
+          <div className="p-6 bg-gradient-to-br from-blue-50 to-white rounded-lg animate-fade-in">
+            <div className="flex flex-col items-center">
+              {" "}
+              <div className="relative mb-4">
+                <svg className="w-32 h-32" viewBox="0 0 36 36">
+                  <path
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    fill="none"
+                    stroke="#E5E7EB"
+                    strokeWidth="3"
+                  />
+                  <path
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    fill="none"
+                    stroke={
+                      score >= 8
+                        ? "#059669"
+                        : score >= 6
+                        ? "#D97706"
+                        : "#DC2626"
+                    }
+                    strokeWidth="3"
+                    strokeDasharray={`${score * 10}, 100`}
+                  />
+                </svg>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <div className={`text-4xl font-bold ${getScoreColor(score)}`}>
+                    {score.toFixed(1)}
+                  </div>
+                  <div className="text-gray-400 text-sm text-center">
+                    dari 10
+                  </div>
+                </div>
+              </div>
+              <div
+                className={`text-lg font-semibold mb-2 ${getScoreColor(score)}`}
+              >
+                {score >= 8
+                  ? "Excellent!"
+                  : score >= 6
+                  ? "Baik"
+                  : "Perlu Perhatian"}
+              </div>
+              <p className="text-gray-600 text-center max-w-xs">
+                {score >= 8
+                  ? "Asupan gizi Anda sangat seimbang dan ideal"
+                  : score >= 6
+                  ? "Asupan gizi cukup baik, masih bisa ditingkatkan"
+                  : "Perlu perbaikan dalam pola makan Anda"}
+              </p>{" "}
+              {score < 8 && (
+                <button
+                  onClick={() => {
+                    const recommendationSection = document.getElementById(
+                      "nutrition-recommendation"
+                    );
+                    if (recommendationSection) {
+                      recommendationSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                    }
+                  }}
+                  className="mt-4 text-blue-600 text-sm hover:text-blue-700 focus:outline-none flex items-center gap-1 transition-all duration-300 hover:translate-y-[-2px]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
+                    />
+                  </svg>
+                  Lihat rekomendasi perbaikan
+                </button>
+              )}
             </div>
-            <p className="text-gray-600">
-              {score >= 8
-                ? "Excellent! Asupan gizi Anda sangat baik"
-                : score >= 6
-                ? "Baik! Masih ada ruang untuk peningkatan"
-                : "Perlu perhatian khusus pada asupan gizi Anda"}
-            </p>
           </div>
         )
-      )}
+      )}{" "}
     </div>
   );
 };

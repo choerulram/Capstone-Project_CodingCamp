@@ -170,11 +170,10 @@ const DiseasePrediction = () => {
         };
     }
   };
-
   return (
-    <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-      <h2 className="text-xl font-semibold text-main mb-4 flex items-center">
-        <span className="bg-purple-100 p-2 rounded-lg mr-2">
+    <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
+      <h2 className="text-xl font-semibold text-main mb-6 flex items-center">
+        <span className="bg-purple-100 p-2 rounded-lg mr-3 transform transition-transform hover:scale-110">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 text-purple-600"
@@ -190,10 +189,17 @@ const DiseasePrediction = () => {
             />
           </svg>
         </span>
-        Prediksi Risiko Penyakit
+        <div>
+          <div className="text-xl font-semibold text-main">
+            Prediksi Risiko Penyakit
+          </div>
+          <div className="text-sm text-gray-500 mt-1">
+            Berdasarkan pola makan hari ini
+          </div>
+        </div>
       </h2>
       {error && (
-        <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-4">
+        <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-4 animate-fade-in">
           <div className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -214,29 +220,64 @@ const DiseasePrediction = () => {
         </div>
       )}
       {loading ? (
-        <div className="flex justify-center items-center h-32">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-main"></div>
+        <div className="flex justify-center items-center h-40">
+          <div className="flex flex-col items-center">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-main mb-3"></div>
+            <p className="text-gray-500 text-sm">Menganalisis data...</p>
+          </div>
         </div>
       ) : (
         status &&
         !error && (
-          <div className="flex items-center justify-center gap-4 p-6 animate-fade-in">
+          <div className="animate-fade-in">
             <div
-              className={`${getStatusInfo(status).bgColor} p-3 rounded-full`}
+              className={`${
+                getStatusInfo(status).bgColor
+              } p-6 rounded-lg mb-4 transition-all duration-300 hover:shadow-inner`}
             >
-              <div className={getStatusInfo(status).color}>
-                {getStatusInfo(status).icon}
+              <div className="flex items-center gap-4">
+                <div
+                  className={`${
+                    getStatusInfo(status).color
+                  } transform transition-transform hover:scale-110`}
+                >
+                  {getStatusInfo(status).icon}
+                </div>
+                <div className="flex-1">
+                  <div
+                    className={`text-2xl font-bold ${
+                      getStatusInfo(status).color
+                    } mb-2`}
+                  >
+                    {status}
+                  </div>
+                  <p className="text-gray-700">
+                    {getStatusInfo(status).message}
+                  </p>
+                </div>
               </div>
             </div>
-            <div>
-              <div
-                className={`text-2xl font-bold ${getStatusInfo(status).color}`}
-              >
-                {status}
+            <div className="text-sm text-gray-500 mt-4 px-2">
+              <div className="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>
+                  Prediksi ini berdasarkan analisis nutrisi dari makanan yang
+                  Anda konsumsi hari ini
+                </span>
               </div>
-              <p className="text-gray-600 mt-1">
-                {getStatusInfo(status).message}
-              </p>
             </div>
           </div>
         )
