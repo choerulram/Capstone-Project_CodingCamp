@@ -55,7 +55,7 @@ const NutritionStatus = () => {
         };
 
         // Memprediksi status gizi
-        const response = await fetch(`${BASE_URL}/predict-status`, {
+        const response = await fetch(`${BASE_URL}/predict`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

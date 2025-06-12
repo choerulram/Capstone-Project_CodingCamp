@@ -55,7 +55,7 @@ const NutritionScore = () => {
         };
 
         // Menghitung skor gizi
-        const response = await fetch(`${BASE_URL}/calculate-score`, {
+        const response = await fetch(`${BASE_URL}/health-scoring`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
