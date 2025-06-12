@@ -176,12 +176,12 @@ const DiseasePrediction = () => {
   };
 
   return (
-    <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-      <h2 className="text-xl font-semibold text-main mb-6 flex items-center">
-        <span className="bg-red-50 p-2 rounded-lg mr-3 transform transition-transform hover:scale-110">
+    <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
+      <h2 className="text-xl font-bold text-main mb-6 flex items-center animate-float">
+        <span className="bg-main p-3 rounded-xl mr-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-red-600"
+            className="h-6 w-6 text-secondary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -195,7 +195,7 @@ const DiseasePrediction = () => {
           </svg>
         </span>
         <div>
-          <div className="text-xl font-semibold text-main">
+          <div className="text-xl font-bold text-main">
             Prediksi Risiko Penyakit
           </div>
           <div className="text-sm text-gray-500 mt-1">

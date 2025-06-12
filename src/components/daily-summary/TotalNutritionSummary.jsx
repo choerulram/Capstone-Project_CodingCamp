@@ -56,12 +56,13 @@ const TotalNutritionSummary = () => {
     }
   }, [token]);
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg animate-fade-in">
-      <h2 className="text-xl font-semibold text-main mb-6 flex items-center animate-fade-in-down">
-        <span className="bg-highlight/20 p-2 rounded-lg mr-2 animate-bounce-slow">
+    <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
+      <h2 className="text-xl font-bold text-main mb-6 flex items-center animate-float">
+        <span className="bg-main p-3 rounded-xl mr-3">
+          {" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-highlight"
+            className="h-6 w-6 text-secondary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -70,7 +71,7 @@ const TotalNutritionSummary = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
             />
           </svg>
         </span>

@@ -93,12 +93,13 @@ const NutritionScore = () => {
     return "text-red-600";
   };
   return (
-    <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 animate-fade-in shadow-sm hover:shadow-md transition-all duration-300">
-      <h2 className="text-xl font-semibold text-main mb-6 flex items-center animate-fade-in-down">
-        <span className="bg-blue-100 p-2 rounded-lg mr-3 transform transition-transform hover:scale-110 animate-bounce-slow">
+    <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
+      <h2 className="text-xl font-bold text-main mb-6 flex items-center animate-float">
+        <span className="bg-main p-3 rounded-xl mr-3">
+          {" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-blue-600"
+            className="h-6 w-6 text-secondary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -107,14 +108,12 @@ const NutritionScore = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
             />
           </svg>
         </span>
         <div>
-          <div className="text-xl font-semibold text-main">
-            Skor Gizi Harian
-          </div>
+          <div className="text-xl font-bold text-main">Skor Gizi Harian</div>
           <div className="text-sm text-gray-500 mt-1">
             Kualitas asupan nutrisi Anda
           </div>
