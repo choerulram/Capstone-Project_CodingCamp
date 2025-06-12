@@ -5,21 +5,85 @@ const ProductRecommendations = () => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
+      ([entry]) => {
+        if (entry.isIntersecting) {
           setIsVisible(true);
+          observer.unobserve(entry.target);
         }
       },
       { threshold: 0.1 }
     );
 
     const section = document.getElementById("product-recommendations");
-    if (section) observer.observe(section);
+    if (section) {
+      observer.observe(section);
+    }
 
     return () => {
-      if (section) observer.unobserve(section);
+      if (section) {
+        observer.unobserve(section);
+      }
     };
   }, []);
+
+  const products = [
+    {
+      name: "Safiya Muesli Berry Yogurt 1 Kg",
+      description: "Sereal With Almond Premium",
+      image:
+        "https://down-id.img.susercontent.com/file/id-11134207-7rasa-m3k1mwx3aimyc5.webp",
+      price: "Rp70.700",
+      link: "https://id.shp.ee/C8QEZYk",
+      nutrients: [
+        { label: "Energi", value: "130", unit: "kkal" },
+        { label: "Protein", value: "3", unit: "g" },
+        { label: "Karbohidrat", value: "19", unit: "g" },
+        { label: "Serat", value: "5", unit: "g" },
+      ],
+    },
+    {
+      name: "Hao Greek Yogurt",
+      description: "DARK CHOCOLATE (Live Active Probiotics Yoghurt)",
+      image:
+        "https://down-id.img.susercontent.com/file/9035ff89ad240cd5f1f42217478001fb.webp",
+      price: "Rp59.000",
+      link: "https://id.shp.ee/AA4HAqM",
+      nutrients: [
+        { label: "Kalori", value: "221", unit: "kkal" },
+        { label: "Protein", value: "13", unit: "g" },
+        { label: "Karbohidrat", value: "16", unit: "g" },
+        { label: "Lemak", value: "12", unit: "g" },
+      ],
+    },
+    {
+      name: "The Dairy Alternative Co Oat Milk",
+      description: "Susu Gandum Barista - 1 L",
+      image:
+        "https://down-id.img.susercontent.com/file/id-11134207-7rbk1-m9bg2grnrsb197.webp",
+      price: "Rp47.000",
+      link: "https://id.shp.ee/thX2EbS",
+      nutrients: [
+        { label: "Energi", value: "580", unit: "kl" },
+        { label: "Protein", value: "2", unit: "g" },
+        { label: "Karbohidrat", value: "15.3", unit: "g" },
+        { label: "Lemak", value: "2.5", unit: "g" },
+      ],
+    },
+    {
+      name: "Safiya Trail Mix Original",
+      description: "500 Gram Dried Fruit Roasted Premium",
+      image:
+        "https://down-id.img.susercontent.com/file/id-11134207-7rasf-m4ssiooln4480f.webp",
+      price: "Rp66.899",
+      link: "https://id.shp.ee/LQPR54J",
+      nutrients: [
+        { label: "Energi", value: "90", unit: "kkal" },
+        { label: "Protein", value: "2", unit: "g" },
+        { label: "Karbohidrat", value: "11", unit: "g" },
+        { label: "Lemak", value: "4", unit: "g" },
+      ],
+    },
+  ];
 
   return (
     <section
@@ -27,174 +91,78 @@ const ProductRecommendations = () => {
       className="py-16 bg-gradient-to-bl from-gray-50 via-white to-highlight/5"
     >
       <div className="container mx-auto px-6">
-        <h2
-          className={`text-3xl font-bold text-main mb-8 flex items-center transition-all duration-500 transform ${
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-          }`}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8 text-highlight mr-3"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
+        <div className="flex items-center gap-3 mb-8">
+          <h2 className="text-3xl font-bold text-main mb-8 flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
               strokeWidth={2}
-              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-            />
-          </svg>
-          Produk Rekomendasi untuk Anda
-        </h2>
+              stroke="currentColor"
+              className="w-8 h-8 text-highlight mr-3"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"
+              />
+            </svg>
+              Rekomendasi Produk Untukmu
+          </h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* Product Cards */}
-          <div
-            className={`bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group transform hover:-translate-y-1 hover:scale-[1.02] ${
-              isVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-4 opacity-0"
-            }`}
-            style={{ transitionDelay: "200ms" }}
-          >
-            <div className="relative mb-4">
-              <img
-                src="https://images.unsplash.com/photo-1576186726115-4d51596775d1"
-                alt="Granola Bar"
-                className="w-full h-48 object-cover rounded-lg"
-              />
-              <span className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs">
-                Sehat
-              </span>
+          {products.map((product, index) => (
+            <div
+              key={index}
+              className={`bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 group transform hover:-translate-y-1 hover:scale-[1.02] border border-secondary/30 ${
+                isVisible
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-4 opacity-0"
+              }`}
+              style={{ transitionDelay: `${(index + 2) * 100}ms` }}
+            >
+              <div className="relative mb-4">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-48 object-cover rounded-xl"
+                />
+                <div className="absolute bottom-2 left-2 bg-green-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium">
+                  {product.price}
+                </div>
+              </div>
+              <h3 className="font-semibold text-main text-lg mb-1">
+                {product.name}
+              </h3>
+              <p className="text-sm text-gray-600 mb-3">
+                {product.description}
+              </p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {product.nutrients.map((nutrient, i) => (
+                  <span
+                    key={i}
+                    className="text-xs bg-main/10 text-main px-2 py-1 rounded-full font-medium"
+                  >
+                    {nutrient.value}
+                    {nutrient.unit} {nutrient.label}
+                  </span>
+                ))}
+              </div>
+              <a
+                href={product.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full py-2.5 text-center text-white bg-main/90 border border-main/20 rounded-lg hover:bg-main transition-colors font-medium shadow-sm hover:shadow-md"
+              >
+                Beli Sekarang
+              </a>
             </div>
-            <h3 className="font-semibold text-main mb-2">
-              Granola Bar Oatmeal
-            </h3>
-            <p className="text-sm text-gray-600 mb-3">
-              Camilan sehat kaya serat dan protein
-            </p>
-            <div className="flex gap-2 mb-4">
-              <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
-                180 kkal
-              </span>
-              <span className="text-xs bg-green-50 text-green-600 px-2 py-1 rounded-full">
-                5g protein
-              </span>
-            </div>
-            <button className="w-full py-2 text-highlight border border-highlight/20 rounded-lg hover:bg-highlight/5 transition-colors">
-              Lihat Detail
-            </button>
-          </div>
-
-          <div
-            className={`bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group transform hover:-translate-y-1 hover:scale-[1.02] ${
-              isVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-4 opacity-0"
-            }`}
-            style={{ transitionDelay: "300ms" }}
-          >
-            <div className="relative mb-4">
-              <img
-                src="https://images.unsplash.com/photo-1563636619-e9143da7973b"
-                alt="Greek Yogurt"
-                className="w-full h-48 object-cover rounded-lg"
-              />
-              <span className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs">
-                Protein Tinggi
-              </span>
-            </div>
-            <h3 className="font-semibold text-main mb-2">
-              Greek Yogurt Original
-            </h3>
-            <p className="text-sm text-gray-600 mb-3">
-              Yogurt tinggi protein rendah lemak
-            </p>
-            <div className="flex gap-2 mb-4">
-              <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
-                120 kkal
-              </span>
-              <span className="text-xs bg-green-50 text-green-600 px-2 py-1 rounded-full">
-                15g protein
-              </span>
-            </div>
-            <button className="w-full py-2 text-highlight border border-highlight/20 rounded-lg hover:bg-highlight/5 transition-colors">
-              Lihat Detail
-            </button>
-          </div>
-
-          <div
-            className={`bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group transform hover:-translate-y-1 hover:scale-[1.02] ${
-              isVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-4 opacity-0"
-            }`}
-            style={{ transitionDelay: "400ms" }}
-          >
-            <div className="relative mb-4">
-              <img
-                src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f"
-                alt="Almond Milk"
-                className="w-full h-48 object-cover rounded-lg"
-              />
-              <span className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs">
-                Rendah Kalori
-              </span>
-            </div>
-            <h3 className="font-semibold text-main mb-2">
-              Susu Almond Original
-            </h3>
-            <p className="text-sm text-gray-600 mb-3">
-              Alternatif susu rendah kalori
-            </p>
-            <div className="flex gap-2 mb-4">
-              <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
-                30 kkal
-              </span>
-              <span className="text-xs bg-green-50 text-green-600 px-2 py-1 rounded-full">
-                1g protein
-              </span>
-            </div>
-            <button className="w-full py-2 text-highlight border border-highlight/20 rounded-lg hover:bg-highlight/5 transition-colors">
-              Lihat Detail
-            </button>
-          </div>
-
-          <div
-            className={`bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group transform hover:-translate-y-1 hover:scale-[1.02] ${
-              isVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-4 opacity-0"
-            }`}
-            style={{ transitionDelay: "500ms" }}
-          >
-            <div className="relative mb-4">
-              <img
-                src="https://images.unsplash.com/photo-1604431696980-094b6012d1b3"
-                alt="Mixed Nuts"
-                className="w-full h-48 object-cover rounded-lg"
-              />
-              <span className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs">
-                Omega 3
-              </span>
-            </div>
-            <h3 className="font-semibold text-main mb-2">Mix Nuts Premium</h3>
-            <p className="text-sm text-gray-600 mb-3">
-              Camilan sehat kaya nutrisi
-            </p>
-            <div className="flex gap-2 mb-4">
-              <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
-                160 kkal
-              </span>
-              <span className="text-xs bg-green-50 text-green-600 px-2 py-1 rounded-full">
-                6g protein
-              </span>
-            </div>
-            <button className="w-full py-2 text-highlight border border-highlight/20 rounded-lg hover:bg-highlight/5 transition-colors">
-              Lihat Detail
-            </button>
-          </div>
+          ))}
         </div>
       </div>
     </section>
