@@ -3,3 +3,9 @@
   to = "http://54.151.129.129:8000/:splat"
   status = 200
   force = true
+
+# Menangani routing SPA - HARUS ditempatkan setelah redirects API
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
