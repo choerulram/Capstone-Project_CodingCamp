@@ -29,10 +29,9 @@ const Header = () => {
   const handleLogout = () => {
     setShowConfirm(true);
   };
-
   const confirmLogout = () => {
     dispatch(logout());
-    navigate("/login");
+    navigate("/");
     setShowConfirm(false);
   };
 
