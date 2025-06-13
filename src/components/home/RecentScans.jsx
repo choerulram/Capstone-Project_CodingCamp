@@ -33,7 +33,7 @@ const TEMPLATE_DATA = [
 
 const RecentScans = () => {
   const navigate = useNavigate();
-  const [recentScans, setRecentScans] = useState(TEMPLATE_DATA);
+  const [recentScans, setRecentScans] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
 
@@ -41,7 +41,12 @@ const RecentScans = () => {
     const fetchRecentScans = async () => {
       if (!token) {
         console.log("No token found, using template data");
-        setRecentScans(TEMPLATE_DATA);
+        // Menambahkan isTemplate ke setiap item template data
+        const templateDataWithFlag = TEMPLATE_DATA.map((item) => ({
+          ...item,
+          isTemplate: true,
+        }));
+        setRecentScans(templateDataWithFlag);
         setLoading(false);
         return;
       }
@@ -51,7 +56,7 @@ const RecentScans = () => {
 
         if (!Array.isArray(scans)) {
           console.error("Invalid response format:", response);
-          setRecentScans(TEMPLATE_DATA);
+          setRecentScans([]);
           return;
         }
 
@@ -72,20 +77,10 @@ const RecentScans = () => {
 
         // Get only first 3 items
         const latestScans = sortedData.slice(0, 3);
-
-        // If we have less than 3 scans, fill with template data
-        const filledScans = [...latestScans];
-        while (filledScans.length < 3) {
-          filledScans.push({
-            ...TEMPLATE_DATA[filledScans.length],
-            isTemplate: true,
-          });
-        }
-
-        setRecentScans(filledScans);
+        setRecentScans(latestScans);
       } catch (error) {
         console.error("Failed to fetch scan history:", error);
-        setRecentScans(TEMPLATE_DATA);
+        setRecentScans([]);
       } finally {
         setLoading(false);
       }
@@ -209,6 +204,7 @@ const RecentScans = () => {
                 transition: { duration: 0.2 },
               }}
             >
+              {" "}
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-main">
                   {scan.isTemplate
@@ -232,7 +228,11 @@ const RecentScans = () => {
                       ? scan.image
                       : `${BASE_URL}/images/${scan.filename}`
                   }
-                  alt="Food Image"
+                  alt={scan.isTemplate ? scan.title : "Food Image"}
+                  onError={(e) => {
+                    e.target.src =
+                      "https://via.placeholder.com/150?text=No+Image";
+                  }}
                   className="w-16 h-16 rounded-lg object-cover border-2 border-highlight/30 shadow-md"
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.2 }}
