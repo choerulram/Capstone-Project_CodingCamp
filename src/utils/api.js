@@ -1,4 +1,4 @@
-export const BASE_URL = "http://54.151.129.129:8000";
+export const BASE_URL = "/api";
 
 const defaultHeaders = {
   "Content-Type": "application/json",
