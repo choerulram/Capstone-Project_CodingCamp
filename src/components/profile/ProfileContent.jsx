@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import api from "../../utils/api";
+import { convertToLocalTime } from "../../utils/dateUtils.js";
 import EditProfileModal from "./EditProfileModal";
 
 const ProfileContent = () => {
@@ -30,12 +31,26 @@ const ProfileContent = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        console.log("[ProfileContent] Starting to fetch profile data...");
         setIsLoading(true);
         const data = await api.getProfile(token);
+
+        // Log data dengan waktu yang sudah dikonversi
+        console.log("[ProfileContent] Profile data received:", {
+          ...data,
+          created_at: data.created_at
+            ? convertToLocalTime(data.created_at)
+            : undefined,
+          updated_at: data.updated_at
+            ? convertToLocalTime(data.updated_at)
+            : undefined,
+        });
+
         setUserData(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
+        setIsLoading(false);
+      } catch (error) {
+        console.error("[ProfileContent] Error fetching profile:", error);
+        setError(error.message);
         setIsLoading(false);
       }
     };
@@ -97,9 +112,14 @@ const ProfileContent = () => {
                   : "Free Member"}
               </span>
               {userData?.created_at && (
-                <span className="text-white/60">
-                  Member since {new Date(userData.created_at).getFullYear()}
-                </span>
+                <p className="text-gray-600">
+                  Member since {convertToLocalTime(userData.created_at)}
+                </p>
+              )}
+              {userData?.updated_at && (
+                <p className="text-gray-500 text-sm">
+                  Last updated: {convertToLocalTime(userData.updated_at)}
+                </p>
               )}
             </div>
           </div>
@@ -222,7 +242,7 @@ const ProfileContent = () => {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-1.997 1.884z"
                         />
                       </svg>
                     </span>

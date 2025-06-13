@@ -1,5 +1,10 @@
 export const BASE_URL = "http://54.151.129.129:8000";
 
+const defaultHeaders = {
+  "Content-Type": "application/json",
+  "Time-Zone": "Asia/Jakarta",
+};
+
 const handleApiError = (error) => {
   if (error.name === "TypeError" && error.message === "Failed to fetch") {
     throw new Error(
@@ -15,7 +20,7 @@ const api = {
       const response = await fetch(`${BASE_URL}/login`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          ...defaultHeaders,
         },
         body: JSON.stringify({ email, password }),
       });
@@ -60,7 +65,7 @@ const api = {
       const response = await fetch(`${BASE_URL}/register`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          ...defaultHeaders,
         },
         body: JSON.stringify({
           nama: name,
@@ -181,6 +186,7 @@ const api = {
   },
   getProfile: async (token) => {
     try {
+      console.log("[API] Fetching profile data...");
       const response = await fetch(`${BASE_URL}/me`, {
         method: "GET",
         headers: {
@@ -192,10 +198,27 @@ const api = {
         const errorData = await response.json().catch(() => ({
           detail: "Terjadi kesalahan pada server",
         }));
+        console.error("[API] Error fetching profile:", errorData);
         throw new Error(errorData.detail || "Gagal mengambil data profil");
       }
 
       const data = await response.json();
+      console.log("[API] Profile data received:", {
+        email: data.email,
+        name: data.nama,
+        gender: data.gender,
+        timezone: data.timezone,
+        age: data.umur,
+        age_unit: data.umur_satuan,
+        weight: data.bb,
+        height: data.tinggi,
+        is_pregnant: data.hamil,
+        pregnancy_age: data.usia_kandungan,
+        is_nursing: data.menyusui,
+        child_age: data.umur_anak,
+        created_at: data.created_at,
+        updated_at: data.updated_at,
+      });
       return data;
     } catch (error) {
       handleApiError(error);
@@ -206,7 +229,7 @@ const api = {
       const response = await fetch(`${BASE_URL}/me`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
+          ...defaultHeaders,
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
