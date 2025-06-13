@@ -6,28 +6,28 @@ import api, { BASE_URL } from "../../utils/api";
 
 const TEMPLATE_DATA = [
   {
-    title: "Mie Instan Goreng",
+    title: "Pocary Sweat",
     image:
-      "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?ixlib=rb-4.0.3",
-    energi: 380,
-    karbohidrat: 56,
-    protein: 8,
+      "https://ik.imagekit.io/dcjlghyytp1/b82d6614ce50cf0aa1128f9682df35e1?tr=f-auto,w-360",
+    energi: 60,
+    karbohidrat: 15,
+    protein: 0,
   },
   {
-    title: "Roti Gandum",
+    title: "Taro Net BBQ",
     image:
-      "https://images.unsplash.com/photo-1509440159596-0249088772ff?ixlib=rb-4.0.3",
-    energi: 180,
-    karbohidrat: 35,
-    protein: 6,
+      "https://nilaigizi.com/assets/images/produk/produk_1612861702.jpg",
+    energi: 90,
+    karbohidrat: 15,
+    protein: 1,
   },
   {
-    title: "Yogurt Greek",
+    title: "Milku Susu UHT Rasa Cokelat",
     image:
-      "https://images.unsplash.com/photo-1488477181946-6428a0291777?ixlib=rb-4.0.3",
-    energi: 120,
-    karbohidrat: 9,
-    protein: 15,
+      "https://nilaigizi.com/assets/images/produk/produk_1613362652.jpeg",
+    energi: 100,
+    karbohidrat: 11,
+    protein: 5,
   },
 ];
 
