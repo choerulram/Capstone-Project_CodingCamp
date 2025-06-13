@@ -118,39 +118,43 @@ const NutritionScore = () => {
             Kualitas asupan nutrisi Anda
           </div>
         </div>
-      </h2>
-      {error && (
-        <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-4 animate-fade-in">
-          <div className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span>{error}</span>
+      </h2>{" "}
+      {error ? (
+        <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm min-h-[420px]">
+          <div className="flex items-center justify-center h-full">
+            <div className="p-4 bg-red-50 text-red-700 rounded-lg animate-fade-in w-full">
+              <div className="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>{error}</span>
+              </div>
+            </div>
           </div>
         </div>
-      )}
-      {loading ? (
-        <div className="flex justify-center items-center h-40">
-          <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-main mb-3"></div>
-            <p className="text-gray-500 text-sm">Menghitung skor...</p>
+      ) : loading ? (
+        <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm min-h-[420px]">
+          <div className="flex justify-center items-center h-full">
+            <div className="flex flex-col items-center">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-main mb-3"></div>
+              <p className="text-gray-500 text-sm">Menghitung skor...</p>
+            </div>
           </div>
         </div>
       ) : (
         score !== null &&
-        !error && (
-          <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm">
+        !error && (          <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm min-h-[420px] flex items-center justify-center">
             <div className="flex flex-col items-center">
               <div className="relative mb-6">
                 <svg className="w-40 h-40" viewBox="0 0 36 36">

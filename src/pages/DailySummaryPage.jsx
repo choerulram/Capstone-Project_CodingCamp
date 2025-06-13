@@ -14,8 +14,16 @@ const DailySummaryPage = () => {
       <Header />{" "}
       <main className="flex-grow container mx-auto px-4 py-8 animate-fadeIn">
         <div className="bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl animate-slideUp">
-          <h1 className="text-2xl font-bold text-main mb-6 animate-fadeInDown">
-            Ringkasan Nutrisi Harian
+          {" "}
+          <h1 className="text-3xl font-bold text-main mb-6 flex items-center gap-3 animate-fadeInDown">
+            <div>
+              <div className="text-3xl font-bold text-main">
+                Ringkasan Nutrisi Harian
+              </div>
+              <div className="text-sm text-gray-500 mt-1">
+                Pantau asupan nutrisi harian Anda
+              </div>
+            </div>
           </h1>
           <div className="space-y-8">
             <div
