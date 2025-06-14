@@ -85,61 +85,68 @@ const ProfileContent = () => {
 
   return (
     <div className="space-y-8">
-      {/* Profile Header - Updated with modern design */}
-      <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 transform hover:shadow-xl transition-all duration-300">
+      <div className="bg-white rounded-xl md:rounded-2xl shadow-lg overflow-hidden border border-gray-100 transform hover:shadow-xl transition-all duration-300">
         <div className="relative">
-          {" "}
-          <div className="h-28 bg-gradient-to-r from-main via-main/90 to-main/80 relative overflow-hidden flex items-center justify-center">
+          {/* Header with gradient background */}
+          <div className="h-24 md:h-28 bg-gradient-to-r from-main via-main/90 to-main/80 relative overflow-hidden">
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-            <div className="relative text-white/90 text-sm flex items-center gap-3">
-              <span className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
-                {userData?.role === "Premium"
-                  ? "Premium Member"
-                  : "Free Member"}
-              </span>
-              {userData?.created_at && (
-                <p className="text-gray-600">
-                  Member since {convertToLocalTime(userData.created_at)}
-                </p>
-              )}
-              {userData?.updated_at && (
-                <p className="text-gray-500 text-sm">
-                  Last updated: {convertToLocalTime(userData.updated_at)}
-                </p>
-              )}
+            {/* Member status - Only visible on desktop */}
+            <div className="hidden md:flex items-center justify-center h-full relative">
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-white/90">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
+                  </svg>
+                  <span>
+                    {userData?.role === "Premium"
+                      ? "Premium Member"
+                      : "Free Member"}
+                  </span>
+                </span>
+                {userData?.created_at && (
+                  <p className="text-white/80 text-sm">
+                    Member since {convertToLocalTime(userData.created_at)}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-          <div className="relative px-8 pb-8">
-            <div className="flex flex-col sm:flex-row items-center gap-8">
-              <div className="relative -mt-20 group">
-                <div className="w-36 h-36 bg-gradient-to-br from-white to-gray-50 text-main rounded-full flex items-center justify-center text-5xl font-bold shadow-2xl transform group-hover:scale-105 transition-all duration-300 border-4 border-white">
-                  {userData?.nama?.[0] || "?"}
+
+          {/* Profile content */}
+          <div className="relative px-4 md:px-8 pb-6 md:pb-8">
+            <div className="flex flex-col sm:flex-row items-center gap-6 md:gap-8">
+              {" "}
+              <div className="relative -mt-16 md:-mt-20 group">
+                <div className="w-28 h-28 md:w-36 md:h-36 bg-gradient-to-br from-white to-gray-50 text-main rounded-full flex items-center justify-center text-4xl md:text-5xl font-bold shadow-2xl transform group-hover:scale-105 transition-all duration-300 border-4 border-white relative">
+                  {userData?.nama?.[0] || "?"} {/* Mobile Member Badge */}
+                  <div className="md:hidden absolute -bottom-1 right-0 transform translate-x-1/4">
+                    <div className="inline-flex items-center bg-main text-white text-[10px] px-2 py-0.5 rounded-full shadow-md border border-white">
+                      {userData?.role === "Premium" ? "Premium" : "Free"}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="text-gray-800 text-center sm:text-left flex-1">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 md:gap-4">
                   <div>
-                    <h2 className="text-3xl font-bold mb-2 text-gray-800">
+                    <h2 className="text-2xl md:text-3xl font-bold mb-2 text-gray-800">
                       {userData?.nama || "-"}
                     </h2>
-                    <p className="text-gray-600 flex items-center justify-center sm:justify-start gap-2">
+                    <p className="text-gray-600 flex items-center justify-center sm:justify-start gap-1.5 md:gap-2 text-sm md:text-base">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-main/70"
+                        className="h-4 w-4 md:h-5 md:w-5 text-main/70"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -149,19 +156,19 @@ const ProfileContent = () => {
                       {userData?.email || "-"}
                     </p>
                   </div>
-                  <div className="flex items-center gap-3 justify-center sm:justify-end">
+                  <div className="flex items-center gap-2 md:gap-3 justify-center sm:justify-end">
                     {userData?.role && (
-                      <span className="px-4 py-2 bg-main/10 text-main rounded-full text-sm font-medium border border-main/20 transform hover:scale-105 transition-all duration-300">
+                      <span className="px-3 md:px-4 py-1.5 md:py-2 bg-main/10 text-main rounded-full text-xs md:text-sm font-medium border border-main/20 transform hover:scale-105 transition-all duration-300">
                         {userData.role}
                       </span>
                     )}
                     <button
                       onClick={() => setIsEditModalOpen(true)}
-                      className="px-6 py-2.5 bg-gradient-to-r from-main to-main/90 text-white rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 font-medium"
+                      className="px-4 md:px-6 py-2 md:py-2.5 bg-gradient-to-r from-main to-main/90 text-white rounded-lg md:rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-1.5 md:gap-2 text-xs md:text-sm font-medium"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
+                        className="h-4 w-4 md:h-5 md:w-5"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -176,14 +183,13 @@ const ProfileContent = () => {
           </div>
         </div>
 
-        {/* Profile Data Grid - Updated with modern cards */}
-        <div className="p-8 bg-gray-50/50">
+        <div className="p-4 md:p-8 bg-gray-50/50">
           {/* Basic Information Section */}
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+          <div className="mb-6 md:mb-8">
+            <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-4 md:mb-6 flex items-center gap-1.5 md:gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-main"
+                className="h-5 w-5 md:h-6 md:w-6 text-main"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -197,7 +203,7 @@ const ProfileContent = () => {
               </svg>
               Basic Information
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
               {/* Gender */}
               {userData?.gender && (
                 <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">

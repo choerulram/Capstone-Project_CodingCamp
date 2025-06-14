@@ -12,31 +12,31 @@ const DailySummaryPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />{" "}
-      <main className="flex-grow container mx-auto px-4 py-8 animate-fadeIn">
-        <div className="bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl animate-slideUp">
+      <main className="flex-grow container mx-auto px-3 md:px-4 py-4 md:py-8 animate-fadeIn">
+        <div className="bg-white rounded-lg md:rounded-xl shadow-lg p-4 md:p-6 transition-all duration-300 hover:shadow-xl animate-slideUp">
           {" "}
-          <h1 className="text-3xl font-bold text-main mb-6 flex items-center gap-3 animate-fadeInDown">
+          <h1 className="text-2xl md:text-3xl font-bold text-main mb-4 md:mb-6 flex items-center gap-2 md:gap-3 animate-fadeInDown">
             <div>
-              <div className="text-3xl font-bold text-main">
+              <div className="text-2xl md:text-3xl font-bold text-main">
                 Ringkasan Nutrisi Harian
               </div>
-              <div className="text-sm text-gray-500 mt-1">
+              <div className="text-xs md:text-sm text-gray-500 mt-0.5 md:mt-1">
                 Pantau asupan nutrisi harian Anda
               </div>
             </div>
           </h1>
-          <div className="space-y-8">
+          <div className="space-y-4 md:space-y-8">
             <div
               className="opacity-0 animate-fade-in"
               style={{ animationDelay: "200ms", animationFillMode: "forwards" }}
             >
               <NutritionProgress />
-            </div>
+            </div>{" "}
             <div
               className="opacity-0 animate-fade-in"
               style={{ animationDelay: "400ms", animationFillMode: "forwards" }}
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <NutritionScore />
                 <DiseasePrediction />
               </div>
