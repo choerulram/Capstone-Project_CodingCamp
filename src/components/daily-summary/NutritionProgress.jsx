@@ -130,13 +130,13 @@ const NutritionProgress = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
-      <h2 className="text-xl font-bold text-main mb-6 flex items-center animate-float">
-        <span className="bg-main p-3 rounded-xl mr-3">
+    <div className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
+      <h2 className="text-lg md:text-xl font-bold text-main mb-4 md:mb-6 flex items-center animate-float">
+        <span className="bg-main p-2 md:p-3 rounded-lg md:rounded-xl mr-2 md:mr-3">
           {" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-secondary"
+            className="h-5 w-5 md:h-6 md:w-6 text-secondary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -151,35 +151,39 @@ const NutritionProgress = () => {
         </span>
         Progress Kebutuhan Harian
       </h2>
-      <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm mb-8">
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-gradient-to-br from-red-50 to-white border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-            <div className="w-4 h-4 rounded-full bg-gradient-to-r from-red-500 to-red-600 ring-2 ring-red-200 ring-offset-1"></div>
-            <div className="text-sm font-medium text-main">
+      <div className="bg-white/90 backdrop-blur-sm p-3 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm mb-4 md:mb-8">
+        <div className="flex flex-col sm:flex-row justify-center gap-2 md:gap-4">
+          <div className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl bg-gradient-to-br from-red-50 to-white border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
+            <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-gradient-to-r from-red-500 to-red-600 ring-2 ring-red-200 ring-offset-1"></div>
+            <div className="text-xs md:text-sm font-medium text-main">
               Berlebih &gt;100%
             </div>
           </div>
-          <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-200/50 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-            <div className="w-4 h-4 rounded-full bg-gradient-to-r from-green-500 to-green-600 ring-2 ring-green-200 ring-offset-1"></div>
-            <div className="text-sm font-medium text-main">Ideal 80-100%</div>
+          <div className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-200/50 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
+            <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-gradient-to-r from-green-500 to-green-600 ring-2 ring-green-200 ring-offset-1"></div>
+            <div className="text-xs md:text-sm font-medium text-main">
+              Ideal 80-100%
+            </div>
           </div>
-          <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-gradient-to-br from-yellow-50 to-white border border-yellow-200/50 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-            <div className="w-4 h-4 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 ring-2 ring-yellow-200 ring-offset-1"></div>
-            <div className="text-sm font-medium text-main">Kurang &lt;80%</div>
+          <div className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl bg-gradient-to-br from-yellow-50 to-white border border-yellow-200/50 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
+            <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 ring-2 ring-yellow-200 ring-offset-1"></div>
+            <div className="text-xs md:text-sm font-medium text-main">
+              Kurang &lt;80%
+            </div>
           </div>
         </div>
-      </div>
+      </div>{" "}
       {/* Bar Chart Container */}
-      <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm">
-        <div className="relative h-[280px] sm:h-[360px] w-full pt-[30px]">
+      <div className="bg-white/90 backdrop-blur-sm p-3 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm">
+        <div className="relative h-[200px] sm:h-[360px] w-full pt-[30px]">
           {/* Chart Area with Y-axis and Grid */}
           <div className="absolute inset-0 flex pt-[30px]">
             {/* Y-axis labels (percentages) */}
-            <div className="w-12 sm:w-16 flex flex-col justify-between h-[220px] sm:h-[300px]">
+            <div className="w-10 sm:w-12 md:w-16 flex flex-col justify-between h-[140px] sm:h-[300px]">
               {[100, 80, 60, 40, 20, 0].map((percent) => (
                 <div key={percent} className="relative h-0">
                   <div className="absolute -top-2 right-0 flex items-center">
-                    <span className="text-[10px] sm:text-xs text-main/70 mr-1 sm:mr-2 font-medium">
+                    <span className="text-[8px] sm:text-[10px] md:text-xs text-main/70 mr-1 sm:mr-2 font-medium">
                       {percent}%
                     </span>
                     <div className="h-[1px] w-2 bg-main/30"></div>
@@ -195,9 +199,9 @@ const NutritionProgress = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div>{" "}
           {/* Bars Container */}
-          <div className="absolute left-12 sm:left-16 right-0 top-[30px] h-[220px] sm:h-[300px] flex items-stretch justify-between px-2 sm:px-8">
+          <div className="absolute left-10 sm:left-12 md:left-16 right-0 top-[30px] h-[140px] sm:h-[300px] flex items-stretch justify-between px-1 sm:px-2 md:px-8">
             {nutrients.map((nutrient) => {
               const percentage = calculatePercentage(
                 nutrient.current,
@@ -210,12 +214,12 @@ const NutritionProgress = () => {
                   style={{ width: `${100 / nutrients.length}%` }}
                 >
                   {/* Bar Container - Aligns with grid */}{" "}
-                  <div className="relative w-8 sm:w-14 md:w-20 h-full">
+                  <div className="relative w-4 sm:w-8 md:w-20 h-full">
                     {/* Target Bar (Background) */}
-                    <div className="absolute inset-0 rounded-lg bg-gray-200/50 border border-gray-300/30 backdrop-blur-sm"></div>{" "}
+                    <div className="absolute inset-0 rounded-md md:rounded-lg bg-gray-200/50 border border-gray-300/30 backdrop-blur-sm"></div>{" "}
                     {/* Progress Bar */}{" "}
                     <div
-                      className={`absolute bottom-0 w-full rounded-t-lg transition-all duration-500 ease-in-out animate-progress-grow ${
+                      className={`absolute bottom-0 w-full rounded-t-md md:rounded-t-lg transition-all duration-500 ease-in-out animate-progress-grow ${
                         percentage > 100
                           ? "bg-red-500"
                           : percentage >= 80
@@ -227,11 +231,11 @@ const NutritionProgress = () => {
                       }}
                     >
                       {/* Shine effect */}
-                      <div className="absolute inset-0 rounded-t-lg bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out"></div>
+                      <div className="absolute inset-0 rounded-t-md md:rounded-t-lg bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out"></div>
                     </div>
                   </div>{" "}
                   {/* X-axis label (nutrient name) */}
-                  <div className="absolute bottom-[-2.5rem] sm:bottom-[-2.5rem] left-1/2 transform -translate-x-1/2 sm:translate-x-[-50%] rotate-[-25deg] sm:rotate-0 origin-left sm:origin-center text-[10px] sm:text-sm font-semibold text-gray-700 whitespace-nowrap text-start sm:text-center">
+                  <div className="absolute bottom-[-2rem] sm:bottom-[-2.5rem] left-1/2 transform -translate-x-1/2 sm:translate-x-[-50%] rotate-[-35deg] sm:rotate-[-25deg] md:rotate-0 origin-left sm:origin-center text-[8px] sm:text-[10px] md:text-sm font-semibold text-gray-700 whitespace-nowrap text-start sm:text-center">
                     {nutrient.label.length > 6 && window.innerWidth < 640 ? (
                       <>
                         {nutrient.label.split(" ").map((word, i, arr) => (
@@ -247,7 +251,7 @@ const NutritionProgress = () => {
                   </div>{" "}
                   {/* Tooltip */}
                   <div
-                    className="absolute left-1/2 transform -translate-x-1/2 bg-gray-800/95 backdrop-blur-sm text-white px-4 py-2 rounded-xl text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 shadow-lg border border-gray-700/50"
+                    className="absolute left-1/2 transform -translate-x-1/2 bg-gray-800/95 backdrop-blur-sm text-white px-2 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl text-[10px] md:text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 shadow-lg border border-gray-700/50"
                     style={{
                       bottom: `${Math.min(percentage, 100)}%`,
                       marginBottom: "8px",
@@ -255,7 +259,7 @@ const NutritionProgress = () => {
                   >
                     {/* Status Badge */}
                     <div
-                      className={`text-[10px] font-medium rounded-full px-2 py-0.5 mb-1 inline-block ${
+                      className={`text-[8px] md:text-[10px] font-medium rounded-full px-1.5 md:px-2 py-0.5 mb-1 inline-block ${
                         percentage > 100
                           ? "bg-red-500/20 text-red-300"
                           : percentage >= 80
@@ -271,12 +275,12 @@ const NutritionProgress = () => {
                     </div>
 
                     {/* Percentage */}
-                    <div className="font-bold text-sm mb-0.5">
+                    <div className="font-bold text-xs md:text-sm mb-0.5">
                       {percentage.toFixed(1)}%
                     </div>
 
                     {/* Values */}
-                    <div className="text-gray-300 text-[10px] flex items-center gap-1">
+                    <div className="text-gray-300 text-[8px] md:text-[10px] flex items-center gap-1">
                       <span className="font-medium">
                         {nutrient.current.toFixed(1)}
                       </span>
@@ -286,7 +290,7 @@ const NutritionProgress = () => {
                     </div>
 
                     {/* Arrow */}
-                    <div className="absolute -bottom-1.5 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-gray-800/95 rotate-45 border-b border-r border-gray-700/50"></div>
+                    <div className="absolute -bottom-1.5 left-1/2 transform -translate-x-1/2 w-2 md:w-3 h-2 md:h-3 bg-gray-800/95 rotate-45 border-b border-r border-gray-700/50"></div>
                   </div>
                 </div>
               );
