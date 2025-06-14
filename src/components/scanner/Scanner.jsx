@@ -1,10 +1,14 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaCamera, FaStop, FaUpload, FaSearch, FaRedo } from "react-icons/fa";
 import api from "../../utils/api";
 import DecorativeDivider from "./DecorativeDivider";
 import InstructionsSection from "./InstructionsSection";
 import AnalysisResult from "./AnalysisResult";
+import CameraControls from "./CameraControls";
+import LoadingModal from "./LoadingModal";
+import ErrorMessage from "./ErrorMessage";
+import CameraSelector from "./CameraSelector";
+import CameraPreview from "./CameraPreview";
 import {
   startCamera,
   stopCamera,
@@ -31,7 +35,7 @@ const Scanner = () => {
   const [isErrorVisible, setIsErrorVisible] = useState(false);
   const [nutritionData, setNutritionData] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [imageSource, setImageSource] = useState(null); // 'upload' atau 'camera'
+  const [imageSource, setImageSource] = useState(null);
 
   const videoRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -305,232 +309,46 @@ const Scanner = () => {
         {/* Main Scanner Container */}{" "}
         <div className="w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-secondary overflow-hidden">
           {/* Pilihan Kamera */}
-          {devices.length > 1 && (
-            <div className="p-4 bg-highlight/5 border-b border-secondary/20">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-main">
-                  Pilih Kamera:
-                </span>
-                <select
-                  value={selectedDevice || ""}
-                  onChange={(e) => handleSwitchCamera(e.target.value)}
-                  className="ml-4 px-3 py-1.5 text-sm border border-secondary/20 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-highlight/50"
-                >
-                  {devices.map((device, index) => (
-                    <option key={device.deviceId} value={device.deviceId}>
-                      {device.label || `Kamera ${index + 1}`}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          )}
+          <CameraSelector
+            devices={devices}
+            selectedDevice={selectedDevice}
+            handleSwitchCamera={handleSwitchCamera}
+          />
           {/* Camera Preview Section */}
-          <div className="relative w-full aspect-video bg-gray-900 rounded-lg overflow-hidden">
-            {" "}
-            {isScanning ? (
-              <video
-                ref={videoRef}
-                className="w-full h-full object-cover"
-                autoPlay
-                playsInline
-                muted
-                onLoadedMetadata={() => {
-                  console.log("Video metadata loaded");
-                  videoRef.current.play().catch((err) => {
-                    console.error("Error playing video:", err);
-                    setError("Gagal memulai video stream");
-                  });
-                }}
-                onError={(e) => {
-                  console.error("Video element error:", e);
-                  setError(
-                    "Error saat memuat video: " + (e.message || "Unknown error")
-                  );
-                }}
-              />
-            ) : selectedImage ? (
-              <img
-                src={selectedImage}
-                alt="Captured"
-                className="w-full h-full object-contain"
-              />
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full bg-gray-100 text-main p-8">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-16 w-16 mb-4 text-main opacity-50"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                <p className="text-main text-center">
-                  Mulai dengan mengambil foto atau mengunggah gambar informasi
-                  nilai gizi
-                </p>
-              </div>
-            )}
-            <canvas ref={canvasRef} className="hidden" />
-            {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
-              </div>
-            )}
-          </div>
+          <CameraPreview
+            isScanning={isScanning}
+            selectedImage={selectedImage}
+            isLoading={isLoading}
+            videoRef={videoRef}
+            canvasRef={canvasRef}
+            setError={setError}
+          />
 
           {/* Error Message */}
-          {error && isErrorVisible && (
-            <div className="mx-6 mt-4 mb-2">
-              <div className="relative p-4 bg-red-50 rounded-lg border border-red-100 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="flex-shrink-0">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-red-600"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <p className="flex-1 text-sm text-red-700 font-medium">
-                    {error}
-                  </p>
-                  <button
-                    onClick={() => setIsErrorVisible(false)}
-                    className="p-1 rounded-lg hover:bg-red-100 transition-colors duration-200"
-                    aria-label="Tutup pesan error"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 text-red-600"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+          <ErrorMessage
+            error={error}
+            isErrorVisible={isErrorVisible}
+            setIsErrorVisible={setIsErrorVisible}
+          />
 
           {/* Controls and Instructions Container */}
           <div className="p-6 bg-highlight/5">
             {/* Camera Controls */}
-            <div className="flex justify-center gap-4 flex-wrap mb-12">
-              {!isScanning ? (
-                <>
-                  {!selectedImage ? (
-                    <>
-                      <button
-                        onClick={() => fileInputRef.current?.click()}
-                        className="flex items-center gap-2 px-6 py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                        disabled={isLoading}
-                      >
-                        <FaUpload /> Upload Foto
-                      </button>
-                      <button
-                        onClick={handleStartCamera}
-                        className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                        disabled={isLoading}
-                      >
-                        <FaCamera /> Buka Kamera
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      {" "}
-                      <button
-                        onClick={() => {
-                          setSelectedImage(null);
-                          setCurrentFile(null);
-                          setImageSource(null);
-                        }}
-                        className="flex items-center gap-2 px-6 py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                        disabled={isLoading}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        Kembali
-                      </button>
-                      {imageSource === "camera" ? (
-                        <button
-                          onClick={handleRetakePhoto}
-                          className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                          disabled={isLoading}
-                        >
-                          <FaRedo /> Ambil Ulang Foto
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => fileInputRef.current?.click()}
-                          className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                          disabled={isLoading}
-                        >
-                          <FaUpload /> Upload Ulang Foto
-                        </button>
-                      )}
-                      <button
-                        onClick={handleAnalyze}
-                        className="flex items-center gap-2 px-6 py-3 bg-secondary text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                        disabled={isLoading}
-                      >
-                        <FaSearch /> Analisis Nutrisi
-                      </button>
-                    </>
-                  )}
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={handleCapture}
-                    className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                    disabled={isLoading}
-                  >
-                    <FaCamera /> Ambil Foto
-                  </button>
-                  <button
-                    onClick={handleStopCamera}
-                    className="flex items-center gap-2 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
-                    disabled={isLoading}
-                  >
-                    <FaStop /> Tutup Kamera
-                  </button>
-                </>
-              )}
-            </div>
+            <CameraControls
+              isScanning={isScanning}
+              isLoading={isLoading}
+              selectedImage={selectedImage}
+              imageSource={imageSource}
+              handleStartCamera={handleStartCamera}
+              handleStopCamera={handleStopCamera}
+              handleCapture={handleCapture}
+              handleRetakePhoto={handleRetakePhoto}
+              handleAnalyze={handleAnalyze}
+              setSelectedImage={setSelectedImage}
+              setCurrentFile={setCurrentFile}
+              setImageSource={setImageSource}
+              fileInputRef={fileInputRef}
+            />
 
             {/* Decorative Divider Component */}
             <DecorativeDivider />
@@ -553,29 +371,8 @@ const Scanner = () => {
         <label htmlFor="file-upload" className="sr-only">
           Upload gambar makanan
         </label>{" "}
-        {/* Loading Modal */}{" "}
-        {isLoading && (
-          <div
-            className="fixed inset-0 min-h-[100vh] w-screen bg-black/50 backdrop-blur-sm z-[9999] overflow-hidden flex items-center justify-center"
-            style={{ margin: 0, padding: 0 }}
-          >
-            <div className="bg-white rounded-xl p-8 shadow-2xl transform transition-all animate-fade-in flex flex-col items-center max-w-sm w-[90%] sm:w-full mx-4">
-              <div className="relative">
-                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-main"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="h-8 w-8 rounded-full bg-white"></div>
-                </div>
-              </div>
-              <p className="mt-4 text-lg font-medium text-main">
-                Memproses gambar...
-              </p>
-              <p className="mt-2 text-sm text-gray-500 text-center">
-                Mohon tunggu sebentar, kami sedang menganalisis nutrisi dari
-                gambar Anda
-              </p>
-            </div>
-          </div>
-        )}
+        {/* Loading Modal */}
+        <LoadingModal isLoading={isLoading} />
       </div>
 
       {/* Hasil Analisis - Hanya muncul saat ada data */}
