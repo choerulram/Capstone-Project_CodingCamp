@@ -88,18 +88,19 @@ const ProductRecommendations = () => {
   return (
     <section
       id="product-recommendations"
-      className="py-16 bg-gradient-to-bl from-gray-50 via-white to-highlight/5"
+      className="py-8 md:py-16 bg-gradient-to-bl from-gray-50 via-white to-highlight/5"
     >
-      <div className="container mx-auto px-6">
-        <div className="flex items-center gap-3 mb-8">
-          <h2 className="text-3xl font-bold text-main mb-8 flex items-center">
+      <div className="container mx-auto px-4 md:px-6">
+        {/* <div className="flex items-center gap-3 mb-8"> */}
+          {" "}
+          <h2 className="text-xl md:text-3xl font-bold text-main mb-4 md:mb-8 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={2}
               stroke="currentColor"
-              className="w-8 h-8 text-highlight mr-3"
+              className="w-6 h-6 md:w-8 md:h-8 text-highlight mr-2 md:mr-3"
             >
               <path
                 strokeLinecap="round"
@@ -112,14 +113,14 @@ const ProductRecommendations = () => {
                 d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"
               />
             </svg>
-              Rekomendasi Produk Untukmu
+            Rekomendasi Produk Untukmu
           </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {/* </div> */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
           {products.map((product, index) => (
             <div
               key={index}
-              className={`bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 group transform hover:-translate-y-1 hover:scale-[1.02] border border-secondary/30 ${
+              className={`bg-white/80 backdrop-blur-sm p-4 md:p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 group transform hover:-translate-y-1 hover:scale-[1.02] border border-secondary/30 ${
                 isVisible
                   ? "translate-y-0 opacity-100"
                   : "translate-y-4 opacity-0"
@@ -130,16 +131,16 @@ const ProductRecommendations = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-48 object-cover rounded-xl"
+                  className="w-full h-40 md:h-48 object-cover rounded-xl"
                 />
-                <div className="absolute bottom-2 left-2 bg-green-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium">
+                <div className="absolute bottom-2 left-2 bg-green-500/90 backdrop-blur-sm text-white px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium">
                   {product.price}
                 </div>
-              </div>
-              <h3 className="font-semibold text-main text-lg mb-1">
+              </div>{" "}
+              <h3 className="font-semibold text-main text-base md:text-lg mb-1">
                 {product.name}
               </h3>
-              <p className="text-sm text-gray-600 mb-3">
+              <p className="text-xs md:text-sm text-gray-600 mb-2 md:mb-3">
                 {product.description}
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
@@ -157,7 +158,7 @@ const ProductRecommendations = () => {
                 href={product.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full py-2.5 text-center text-white bg-main/90 border border-main/20 rounded-lg hover:bg-main transition-colors font-medium shadow-sm hover:shadow-md"
+                className="block w-full py-2 md:py-2.5 text-sm md:text-base text-center text-white bg-main/90 border border-main/20 rounded-lg hover:bg-main transition-colors font-medium shadow-sm hover:shadow-md"
               >
                 Beli Sekarang
               </a>

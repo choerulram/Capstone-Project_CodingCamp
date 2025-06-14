@@ -168,7 +168,7 @@ const ArticlesSection = () => {
     <section className="py-8 md:py-16 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
         {" "}
-        <h2 className="text-2xl md:text-3xl font-bold text-main mb-6 md:mb-8 flex items-center">
+        <h2 className="text-xl md:text-3xl font-bold text-main mb-4 md:mb-8 flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 md:h-8 md:w-8 text-highlight mr-2 md:mr-3"
