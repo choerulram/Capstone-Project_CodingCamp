@@ -60,13 +60,13 @@ const Header = () => {
     <header className="bg-white border-b border-gray-100 shadow-md relative">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
+          {" "}
           <div className="flex items-center">
-            <h1 className="text-3xl font-bold">
+            <h1 className="text-2xl sm:text-3xl font-bold">
               Nu
               <span className="text-highlight">Track</span>
             </h1>
           </div>
-
           {/* Show Upgrade Button on Mobile */}
           <div className="flex md:hidden items-center space-x-3">
             {token && <UpgradeButton />}
@@ -94,7 +94,6 @@ const Header = () => {
               </svg>
             </button>
           </div>
-
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
