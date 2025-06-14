@@ -4,13 +4,13 @@ const ErrorMessage = ({ error, isErrorVisible, setIsErrorVisible }) => {
   if (!error || !isErrorVisible) return null;
 
   return (
-    <div className="mx-6 mt-4 mb-2">
-      <div className="relative p-4 bg-red-50 rounded-lg border border-red-100 shadow-sm">
-        <div className="flex items-center gap-3">
+    <div className="mx-3 sm:mx-6 mt-3 sm:mt-4 mb-2">
+      <div className="relative p-3 sm:p-4 bg-red-50 rounded-lg border border-red-100 shadow-sm">
+        <div className="flex items-center gap-2 sm:gap-3">
           <div className="flex-shrink-0">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-red-600"
+              className="h-4 w-4 sm:h-5 sm:w-5 text-red-600"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -21,7 +21,9 @@ const ErrorMessage = ({ error, isErrorVisible, setIsErrorVisible }) => {
               />
             </svg>
           </div>
-          <p className="flex-1 text-sm text-red-700 font-medium">{error}</p>
+          <p className="flex-1 text-xs sm:text-sm text-red-700 font-medium leading-snug">
+            {error}
+          </p>
           <button
             onClick={() => setIsErrorVisible(false)}
             className="p-1 rounded-lg hover:bg-red-100 transition-colors duration-200"
@@ -29,7 +31,7 @@ const ErrorMessage = ({ error, isErrorVisible, setIsErrorVisible }) => {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 text-red-600"
+              className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-red-600"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
