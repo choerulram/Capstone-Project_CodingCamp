@@ -94,14 +94,13 @@ const ProductRecommendation = () => {
   return (
     <div
       id="nutrition-recommendation"
-      className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24"
+      className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24"
     >
-      {" "}
-      <h2 className="text-xl font-bold text-main mb-6 flex items-center animate-float">
-        <span className="bg-main p-3 rounded-xl mr-3">
+      <h2 className="text-lg md:text-xl font-bold text-main mb-4 md:mb-6 flex items-center animate-float">
+        <span className="bg-main p-2 md:p-3 rounded-lg md:rounded-xl mr-2 md:mr-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-secondary"
+            className="h-5 w-5 md:h-6 md:w-6 text-secondary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -116,8 +115,8 @@ const ProductRecommendation = () => {
         </span>
         Rekomendasi Produk
       </h2>
-      <div className="mb-6 animate-fade-in animate-delay-100">
-        <p className="text-sm text-gray-600">
+      <div className="mb-4 md:mb-6 animate-fade-in animate-delay-100">
+        <p className="text-xs md:text-sm text-gray-600">
           {" "}
           {loading
             ? "Memuat rekomendasi produk..."
@@ -125,12 +124,12 @@ const ProductRecommendation = () => {
         </p>
       </div>{" "}
       {error && (
-        <div className="p-6 bg-red-50 text-red-800 rounded-2xl mb-6 border border-red-200 shadow-sm animate-fade-in-down">
-          <div className="flex items-center gap-4">
+        <div className="p-4 md:p-6 bg-red-50 text-red-800 rounded-xl md:rounded-2xl mb-4 md:mb-6 border border-red-200 shadow-sm animate-fade-in-down">
+          <div className="flex items-center gap-3 md:gap-4">
             <div className="flex-shrink-0">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-red-600"
+                className="h-5 w-5 md:h-6 md:w-6 text-red-600"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -144,20 +143,22 @@ const ProductRecommendation = () => {
               </svg>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-1">Oops! Ada masalah</h3>
-              <p className="text-red-700">{error}</p>
+              <h3 className="text-base md:text-lg font-semibold mb-1">
+                Oops! Ada masalah
+              </h3>
+              <p className="text-sm md:text-base text-red-700">{error}</p>
             </div>
           </div>
         </div>
       )}
       {loading && (
-        <div className="flex flex-col items-center justify-center p-12 animate-pulse">
+        <div className="flex flex-col items-center justify-center p-8 md:p-12 animate-pulse">
           <div className="relative">
             {" "}
-            <div className="w-16 h-16 border-4 border-secondary border-t-main rounded-full animate-spin"></div>
+            <div className="w-12 h-12 md:w-16 md:h-16 border-4 border-secondary border-t-main rounded-full animate-spin"></div>
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
               <svg
-                className="w-8 h-8 text-main"
+                className="w-6 h-6 md:w-8 md:h-8 text-main"
                 fill="none"
                 viewBox="0 0 24 24"
               >
@@ -171,21 +172,21 @@ const ProductRecommendation = () => {
               </svg>
             </div>
           </div>{" "}
-          <p className="mt-4 text-main font-medium">
+          <p className="mt-4 text-sm md:text-base text-main font-medium">
             Sedang memuat rekomendasi...
           </p>
         </div>
       )}
       {recommendation && !loading && (
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           {/* Area Fokus Gizi */}
           {recommendation.gizi_fokus &&
             recommendation.gizi_fokus.length > 0 && (
-              <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary shadow-sm">
-                <h3 className="text-lg font-bold text-main mb-4 flex items-center">
+              <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-secondary shadow-sm">
+                <h3 className="text-base md:text-lg font-bold text-main mb-3 md:mb-4 flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 mr-2 text-main"
+                    className="h-4 w-4 md:h-5 md:w-5 mr-2 text-main"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -197,16 +198,16 @@ const ProductRecommendation = () => {
                   </svg>
                   Area Fokus Gizi Anda
                 </h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 md:gap-4">
                   {recommendation.gizi_fokus.map((nutrient, index) => (
                     <div
                       key={nutrient}
-                      className="bg-gradient-to-r from-highlight/20 to-secondary/30 p-4 rounded-xl text-sm font-medium text-main flex items-center gap-2 shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in transform hover:-translate-y-1"
+                      className="bg-gradient-to-r from-highlight/20 to-secondary/30 p-2 md:p-4 rounded-lg md:rounded-xl text-xs md:text-sm font-medium text-main flex items-center gap-1 md:gap-2 shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in transform hover:-translate-y-1"
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 text-main"
+                        className="h-3 w-3 md:h-4 md:w-4 text-main"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -223,12 +224,11 @@ const ProductRecommendation = () => {
           {/* Rekomendasi Produk */}
           {recommendation.rekomendasi &&
             recommendation.rekomendasi.length > 0 && (
-              <div className="space-y-6">
-                {" "}
-                <h3 className="text-xl font-bold text-main flex items-center">
+              <div className="space-y-4 md:space-y-6">
+                <h3 className="text-lg md:text-xl font-bold text-main flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 mr-2 text-main"
+                    className="h-5 w-5 md:h-6 md:w-6 mr-2 text-main"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -242,22 +242,22 @@ const ProductRecommendation = () => {
                   </svg>
                   Rekomendasi Produk untuk Anda
                 </h3>
-                <div className="grid gap-6">
+                <div className="grid gap-4 md:gap-6">
                   {recommendation.rekomendasi.map((product, index) => (
                     <div
                       key={index}
-                      className="bg-white rounded-2xl border border-secondary overflow-hidden hover:shadow-lg transition-all duration-300 animate-fade-in-right transform hover:-translate-y-1"
+                      className="bg-white rounded-xl md:rounded-2xl border border-secondary overflow-hidden hover:shadow-lg transition-all duration-300 animate-fade-in-right transform hover:-translate-y-1"
                       style={{ animationDelay: `${index * 150}ms` }}
                     >
-                      <div className="p-6">
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                      <div className="p-4 md:p-6">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-4 mb-4 md:mb-6">
                           <div className="flex-1">
-                            <h4 className="text-xl font-bold text-main mb-2">
+                            <h4 className="text-base md:text-xl font-bold text-main mb-2">
                               {product.product_name}
                             </h4>
                             <div className="flex items-center gap-2">
                               <span
-                                className={`px-4 py-2 rounded-lg text-sm font-semibold ${
+                                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs md:text-sm font-semibold ${
                                   product.skor_gizi >= 8
                                     ? "bg-highlight/40 text-main"
                                     : product.skor_gizi >= 6
@@ -271,27 +271,27 @@ const ProductRecommendation = () => {
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                          {[
-                            ["Energi", "⚡"],
-                            ["Protein", "🥩"],
-                            ["Lemak total", "🥑"],
-                            ["Karbohidrat", "🌾"],
-                            ["Serat", "🌿"],
-                            ["Gula", "🍯"],
-                            ["Garam", "🧂"],
-                          ].map(
+                        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-4">
+                          {{
+                            ["Energi"]: "⚡",
+                            ["Protein"]: "🥩",
+                            ["Lemak total"]: "🥑",
+                            ["Karbohidrat"]: "🌾",
+                            ["Serat"]: "🌿",
+                            ["Gula"]: "🍯",
+                            ["Garam"]: "🧂",
+                          }.map(
                             ([key, emoji]) =>
                               product[key] && (
                                 <div
                                   key={key}
-                                  className="bg-gradient-to-br from-highlight/20 to-white p-4 rounded-xl shadow-sm"
+                                  className="bg-gradient-to-br from-highlight/20 to-white p-3 md:p-4 rounded-lg md:rounded-xl shadow-sm"
                                 >
-                                  <div className="text-sm text-main font-medium flex items-center gap-2 mb-1">
+                                  <div className="text-xs md:text-sm text-main font-medium flex items-center gap-1 md:gap-2 mb-1">
                                     <span>{emoji}</span>
                                     {key}
                                   </div>
-                                  <div className="font-bold text-main">
+                                  <div className="text-sm md:text-base font-bold text-main">
                                     {product[key]}
                                   </div>
                                 </div>
