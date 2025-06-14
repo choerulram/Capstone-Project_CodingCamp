@@ -20,28 +20,28 @@ const HeroSection = () => {
 
   return (
     <motion.section
-      className="bg-gradient-to-r from-main via-main to-main/90 py-20"
+      className="bg-gradient-to-r from-main via-main to-main/90 py-12 sm:py-20"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <motion.div
-            className="md:w-1/2 mb-10 md:mb-0"
+            className="md:w-1/2 mb-8 md:mb-0 text-center md:text-left"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <motion.h1
-              className="text-5xl font-bold text-light mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-light mb-4 sm:mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               {user ? `Welcome back, ${user.name}!` : "Welcome to"}
               <motion.span
-                className="text-highlight block mt-2"
+                className="text-highlight block mt-1 sm:mt-2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
@@ -50,7 +50,7 @@ const HeroSection = () => {
               </motion.span>
             </motion.h1>
             <motion.p
-              className="text-xl text-gray-100 mb-8"
+              className="text-lg sm:text-xl text-gray-100 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
@@ -60,7 +60,7 @@ const HeroSection = () => {
             </motion.p>
             <motion.button
               onClick={handleScanClick}
-              className="bg-highlight text-main px-8 py-3 rounded-xl font-medium hover:bg-secondary transition-colors duration-300"
+              className="bg-highlight text-main px-6 sm:px-8 py-3 rounded-xl font-medium text-base sm:text-lg shadow-lg hover:shadow-highlight/50 hover:bg-secondary transition-all duration-300 animate-pulse hover:animate-none"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               whileHover={{ scale: 1.05 }}
@@ -69,31 +69,33 @@ const HeroSection = () => {
             >
               Mulai Scan
             </motion.button>
-          </motion.div>
+          </motion.div>{" "}
           <motion.div
-            className="md:w-1/2"
+            className="md:w-1/2 w-full"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <motion.div
-              className="bg-white p-8 rounded-3xl shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300"
+              className="bg-white p-6 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300"
               whileHover={{ y: -10 }}
             >
-              <h2 className="text-2xl font-bold text-main mb-6">Fitur Utama</h2>
-              <div className="space-y-6">
-                {/* Fitur Items */}
+              <h2 className="text-xl sm:text-2xl font-bold text-main mb-4 sm:mb-6">
+                Fitur Utama
+              </h2>
+              <div className="space-y-4 sm:space-y-6">
+                {/* Fitur Items */}{" "}
                 <motion.div
-                  className="flex items-center space-x-4"
+                  className="flex items-center space-x-3 sm:space-x-4"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
                   whileHover={{ x: 10 }}
                 >
-                  <div className="bg-highlight/20 p-3 rounded-full">
+                  <div className="bg-highlight/20 p-2 sm:p-3 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-main"
+                      className="h-5 w-5 sm:h-6 sm:w-6 text-main"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -107,23 +109,25 @@ const HeroSection = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-main">Scan Instan</h3>
-                    <p className="text-gray-600">
+                    <h3 className="font-semibold text-main text-sm sm:text-base">
+                      Scan Instan
+                    </h3>
+                    <p className="text-gray-600 text-xs sm:text-sm">
                       Informasi gizi dalam hitungan detik
                     </p>
                   </div>
-                </motion.div>
+                </motion.div>{" "}
                 <motion.div
-                  className="flex items-center space-x-4"
+                  className="flex items-center space-x-3 sm:space-x-4"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
                   whileHover={{ x: 10 }}
                 >
-                  <div className="bg-highlight/20 p-3 rounded-full">
+                  <div className="bg-highlight/20 p-2 sm:p-3 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-main"
+                      className="h-5 w-5 sm:h-6 sm:w-6 text-main"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -137,25 +141,25 @@ const HeroSection = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-main">
+                    <h3 className="font-semibold text-main text-sm sm:text-base">
                       Rekomendasi Pintar
                     </h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-xs sm:text-sm">
                       Saran makanan sehat sesuai kebutuhan
                     </p>
                   </div>
                 </motion.div>
                 <motion.div
-                  className="flex items-center space-x-4"
+                  className="flex items-center space-x-3 sm:space-x-4"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
                   whileHover={{ x: 10 }}
                 >
-                  <div className="bg-highlight/20 p-3 rounded-full">
+                  <div className="bg-highlight/20 p-2 sm:p-3 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-main"
+                      className="h-5 w-5 sm:h-6 sm:w-6 text-main"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -169,10 +173,12 @@ const HeroSection = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-main">
+                    <h3 className="font-semibold text-main text-sm sm:text-base">
                       Riwayat & Analisis
                     </h3>
-                    <p className="text-gray-600">Pantau pola makan Anda</p>
+                    <p className="text-gray-600 text-xs sm:text-sm">
+                      Pantau pola makan Anda
+                    </p>
                   </div>
                 </motion.div>
               </div>

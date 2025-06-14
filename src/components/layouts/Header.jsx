@@ -62,10 +62,15 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {" "}
           <div className="flex items-center">
-            <h1 className="text-2xl sm:text-3xl font-bold">
-              Nu
-              <span className="text-highlight">Track</span>
-            </h1>
+            <Link
+              to="/"
+              className="hover:opacity-80 transition-opacity duration-300"
+            >
+              <h1 className="text-2xl sm:text-3xl font-bold">
+                Nu
+                <span className="text-highlight">Track</span>
+              </h1>
+            </Link>
           </div>
           {/* Show Upgrade Button on Mobile */}
           <div className="flex md:hidden items-center space-x-3">
