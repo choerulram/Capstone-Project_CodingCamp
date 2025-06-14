@@ -120,20 +120,20 @@ const DailyNutritionStats = () => {
 
   return (
     <motion.section
-      className="py-16 bg-gradient-to-b from-highlight/5 to-white"
+      className="py-8 md:py-16 bg-gradient-to-b from-highlight/5 to-white"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
       variants={containerVariants}
     >
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4 md:px-6">
         <motion.h2
-          className="text-3xl font-bold text-main mb-8 flex items-center"
+          className="text-xl md:text-3xl font-bold text-main mb-4 md:mb-8 flex items-center"
           variants={cardVariants}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8 text-highlight mr-3"
+            className="h-6 w-6 md:h-8 md:w-8 text-highlight mr-2 md:mr-3"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -147,17 +147,17 @@ const DailyNutritionStats = () => {
           </svg>
           Ringkasan Gizi Harian
         </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
           <motion.div
-            className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
+            className="bg-white p-4 md:p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
             variants={cardVariants}
             whileHover={{ y: -5, scale: 1.02 }}
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-blue-100 p-3 rounded-lg">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="bg-blue-100 p-2 md:p-3 rounded-lg">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-blue-600"
+                  className="h-5 w-5 md:h-6 md:w-6 text-blue-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -170,15 +170,15 @@ const DailyNutritionStats = () => {
                   />
                 </svg>
               </div>
-              <span className="text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+              <span className="text-xs md:text-sm font-medium text-blue-600 bg-blue-50 px-2 md:px-3 py-1 rounded-full">
                 {calculatePercentage(totalNutrition.energi, dailyTarget.energi)}
                 %
               </span>
             </div>{" "}
-            <h3 className="font-semibold text-gray-800 text-lg mb-1">
+            <h3 className="font-semibold text-gray-800 text-base md:text-lg mb-1">
               {Number(totalNutrition.energi).toFixed(1)}kkal
             </h3>
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-600 text-xs md:text-sm">
               Energi dari {Number(dailyTarget.energi).toFixed(1)}kkal target
             </p>
           </motion.div>
@@ -187,11 +187,11 @@ const DailyNutritionStats = () => {
             variants={cardVariants}
             whileHover={{ y: -5, scale: 1.02 }}
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-green-100 p-3 rounded-lg">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="bg-green-100 p-2 md:p-3 rounded-lg">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-green-600"
+                  className="h-5 w-5 md:h-6 md:w-6 text-green-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -204,7 +204,7 @@ const DailyNutritionStats = () => {
                   />
                 </svg>
               </div>
-              <span className="text-sm font-medium text-green-600 bg-green-50 px-3 py-1 rounded-full">
+              <span className="text-xs md:text-sm font-medium text-green-600 bg-green-50 px-2 md:px-3 py-1 rounded-full">
                 {calculatePercentage(
                   totalNutrition.protein,
                   dailyTarget.protein
@@ -224,11 +224,11 @@ const DailyNutritionStats = () => {
             variants={cardVariants}
             whileHover={{ y: -5, scale: 1.02 }}
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-yellow-100 p-3 rounded-lg">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="bg-yellow-100 p-2 md:p-3 rounded-lg">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-yellow-600"
+                  className="h-5 w-5 md:h-6 md:w-6 text-yellow-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -241,7 +241,7 @@ const DailyNutritionStats = () => {
                   />
                 </svg>
               </div>
-              <span className="text-sm font-medium text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">
+              <span className="text-xs md:text-sm font-medium text-yellow-600 bg-yellow-50 px-2 md:px-3 py-1 rounded-full">
                 {calculatePercentage(
                   totalNutrition["lemak total"],
                   dailyTarget["lemak total"]
@@ -261,11 +261,11 @@ const DailyNutritionStats = () => {
             variants={cardVariants}
             whileHover={{ y: -5, scale: 1.02 }}
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-purple-100 p-3 rounded-lg">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="bg-purple-100 p-2 md:p-3 rounded-lg">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-purple-600"
+                  className="h-5 w-5 md:h-6 md:w-6 text-purple-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -278,7 +278,7 @@ const DailyNutritionStats = () => {
                   />
                 </svg>
               </div>
-              <span className="text-sm font-medium text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
+              <span className="text-xs md:text-sm font-medium text-purple-600 bg-purple-50 px-2 md:px-3 py-1 rounded-full">
                 {calculatePercentage(
                   totalNutrition.karbohidrat,
                   dailyTarget.karbohidrat
@@ -296,13 +296,13 @@ const DailyNutritionStats = () => {
           </motion.div>
         </div>
         <motion.div
-          className="flex justify-center mt-8"
+          className="flex justify-center mt-6 md:mt-8"
           variants={buttonVariants}
           whileHover="hover"
         >
           <Link
             to="/daily-summary"
-            className="inline-flex items-center px-6 py-3 bg-highlight text-white font-medium rounded-lg hover:bg-highlight/90 transition-all duration-300 shadow-sm hover:shadow"
+            className="inline-flex items-center px-4 md:px-6 py-2 md:py-3 bg-highlight text-white text-sm md:text-base font-medium rounded-lg hover:bg-highlight/90 transition-all duration-300 shadow-sm hover:shadow"
           >
             <span>Lihat Ringkasan Lengkap</span>
             <svg
