@@ -17,24 +17,24 @@ const CameraControls = ({
   fileInputRef,
 }) => {
   return (
-    <div className="flex justify-center gap-4 flex-wrap mb-12">
+    <div className="flex justify-center gap-2 sm:gap-4 flex-wrap mb-8 sm:mb-12">
       {!isScanning ? (
         <>
           {!selectedImage ? (
             <>
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-2 px-6 py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md text-sm sm:text-base"
                 disabled={isLoading}
               >
-                <FaUpload /> Upload Foto
+                <FaUpload className="text-base sm:text-lg" /> Upload Foto
               </button>
               <button
                 onClick={handleStartCamera}
-                className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md text-sm sm:text-base"
                 disabled={isLoading}
               >
-                <FaCamera /> Buka Kamera
+                <FaCamera className="text-base sm:text-lg" /> Buka Kamera
               </button>
             </>
           ) : (
@@ -45,12 +45,12 @@ const CameraControls = ({
                   setCurrentFile(null);
                   setImageSource(null);
                 }}
-                className="flex items-center gap-2 px-6 py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md text-sm sm:text-base"
                 disabled={isLoading}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
+                  className="h-4 w-4 sm:h-5 sm:w-5"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -65,23 +65,24 @@ const CameraControls = ({
               {imageSource === "camera" ? (
                 <button
                   onClick={handleRetakePhoto}
-                  className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                  className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md text-sm sm:text-base"
                   disabled={isLoading}
                 >
-                  <FaRedo /> Ambil Ulang Foto
+                  <FaRedo className="text-base sm:text-lg" /> Ambil Ulang Foto
                 </button>
               ) : (
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                  className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md text-sm sm:text-base"
                   disabled={isLoading}
                 >
-                  <FaUpload /> Upload Ulang Foto
+                  <FaUpload className="text-base sm:text-lg" /> Upload Ulang
+                  Foto
                 </button>
               )}
               <button
                 onClick={handleAnalyze}
-                className="flex items-center gap-2 px-6 py-3 bg-secondary text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+                className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-secondary text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md text-sm sm:text-base"
                 disabled={isLoading}
               >
                 <FaSearch /> Analisis Nutrisi
@@ -93,14 +94,14 @@ const CameraControls = ({
         <>
           <button
             onClick={handleCapture}
-            className="flex items-center gap-2 px-6 py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+            className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md text-sm sm:text-base"
             disabled={isLoading}
           >
-            <FaCamera /> Ambil Foto
+            <FaCamera className="text-base sm:text-lg" /> Ambil Foto
           </button>
           <button
             onClick={handleStopCamera}
-            className="flex items-center gap-2 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md"
+            className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-red-500 text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md text-sm sm:text-base"
             disabled={isLoading}
           >
             <FaStop /> Tutup Kamera
