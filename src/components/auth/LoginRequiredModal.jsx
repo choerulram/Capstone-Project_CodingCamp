@@ -8,6 +8,7 @@ const LoginRequiredModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-[60] overflow-y-auto">
+      {" "}
       <div className="flex min-h-screen items-center justify-center p-4">
         {/* Overlay */}
         <div
@@ -16,16 +17,16 @@ const LoginRequiredModal = ({ isOpen, onClose }) => {
         ></div>
 
         {/* Modal Content */}
-        <div className="relative transform overflow-hidden rounded-2xl bg-white px-8 py-12 text-center shadow-xl transition-all sm:w-full sm:max-w-md animate-scale-in">
+        <div className="relative transform overflow-hidden rounded-xl sm:rounded-2xl bg-white px-6 sm:px-8 py-8 sm:py-12 text-center shadow-xl transition-all w-[95%] sm:w-full sm:max-w-md animate-scale-in">
           {/* Decorative elements */}
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-highlight/10 rounded-full"></div>
-            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-highlight/10 rounded-full"></div>
+            <div className="absolute -top-16 -right-16 sm:-top-20 sm:-right-20 w-32 h-32 sm:w-40 sm:h-40 bg-highlight/10 rounded-full"></div>
+            <div className="absolute -bottom-16 -left-16 sm:-bottom-20 sm:-left-20 w-32 h-32 sm:w-40 sm:h-40 bg-highlight/10 rounded-full"></div>
           </div>{" "}
           {/* Icon */}
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-highlight/20 animate-fade-in-down">
+          <div className="mx-auto flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-highlight/20 animate-fade-in-down">
             <svg
-              className="h-8 w-8 text-highlight animate-bounce-slow"
+              className="h-7 w-7 sm:h-8 sm:w-8 text-highlight animate-bounce-slow"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -39,15 +40,15 @@ const LoginRequiredModal = ({ isOpen, onClose }) => {
             </svg>
           </div>{" "}
           {/* Content */}
-          <div className="mt-6">
+          <div className="mt-5 sm:mt-6">
             <h3
-              className="text-2xl font-bold text-gray-900 animate-fade-in"
+              className="text-xl sm:text-2xl font-bold text-gray-900 animate-fade-in"
               style={{ animationDelay: "200ms" }}
             >
               Login Diperlukan
             </h3>
             <p
-              className="mt-4 text-gray-500 animate-fade-in"
+              className="mt-3 sm:mt-4 text-sm sm:text-base text-gray-500 animate-fade-in"
               style={{ animationDelay: "400ms" }}
             >
               Untuk mengakses fitur ini, Anda perlu login terlebih dahulu. Login
@@ -55,20 +56,20 @@ const LoginRequiredModal = ({ isOpen, onClose }) => {
             </p>
           </div>
           {/* Buttons */}
-          <div className="mt-8 space-y-3">
+          <div className="mt-6 sm:mt-8 space-y-2 sm:space-y-3">
             <button
               onClick={() => {
                 navigate("/login");
                 onClose();
               }}
-              className="w-full rounded-lg bg-main px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-main/90 focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group animate-fade-in"
+              className="w-full rounded-lg bg-main px-4 py-2 sm:py-2.5 text-center text-sm font-semibold text-white hover:bg-main/90 focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group animate-fade-in"
               style={{ animationDelay: "600ms" }}
             >
               <span className="inline-flex items-center justify-center group-hover:translate-x-1 transition-transform duration-300">
                 Login Sekarang
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 ml-2"
+                  className="h-3.5 w-3.5 sm:h-4 sm:w-4 ml-1.5 sm:ml-2"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -84,7 +85,7 @@ const LoginRequiredModal = ({ isOpen, onClose }) => {
             </button>
             <button
               onClick={onClose}
-              className="w-full rounded-lg border border-main px-4 py-2.5 text-sm font-semibold text-main hover:bg-main/5 focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 transition-all duration-300 hover:scale-105 animate-fade-in"
+              className="w-full rounded-lg border border-main px-4 py-2 sm:py-2.5 text-sm font-semibold text-main hover:bg-main/5 focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 transition-all duration-300 hover:scale-105 animate-fade-in"
               style={{ animationDelay: "700ms" }}
             >
               Kembali
