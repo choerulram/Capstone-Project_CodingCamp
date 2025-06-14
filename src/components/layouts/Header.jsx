@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../states/authUser/slice.js";
@@ -13,6 +13,19 @@ const Header = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+
+  // Add scroll event listener
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMobileMenuOpen]);
+
   const handleProtectedLink = (e, path) => {
     if (e) e.preventDefault();
     if (!token) {
@@ -47,36 +60,41 @@ const Header = () => {
     <header className="bg-white border-b border-gray-100 shadow-md relative">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          {" "}
           <div className="flex items-center">
             <h1 className="text-3xl font-bold">
               Nu
               <span className="text-highlight">Track</span>
             </h1>
           </div>
-          <button
-            onClick={toggleMobileMenu}
-            className="md:hidden text-main hover:text-highlight transition-colors duration-300"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+
+          {/* Show Upgrade Button on Mobile */}
+          <div className="flex md:hidden items-center space-x-3">
+            {token && <UpgradeButton />}
+            <button
+              onClick={toggleMobileMenu}
+              className="text-main hover:text-highlight transition-colors duration-300"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d={
-                  isMobileMenuOpen
-                    ? "M6 18L18 6M6 6l12 12"
-                    : "M4 6h16M4 12h16M4 18h16"
-                }
-              />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d={
+                    isMobileMenuOpen
+                      ? "M6 18L18 6M6 6l12 12"
+                      : "M4 6h16M4 12h16M4 18h16"
+                  }
+                />
+              </svg>
+            </button>
+          </div>
+
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
@@ -145,8 +163,8 @@ const Header = () => {
                   className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
                 >
                   Sign Out
-                </button>{" "}
-                <div className="border-l border-gray-200 h-6 mx-2"></div>{" "}
+                </button>
+                <div className="border-l border-gray-200 h-6 mx-2"></div>
                 <button
                   onClick={() => handleProtectedLink(null, "/profile")}
                   className={`p-2 transition-all duration-300 rounded-full ${
@@ -259,23 +277,19 @@ const Header = () => {
               }`}
             >
               Daily Summary
-            </a>
-
+            </a>{" "}
             {/* Mobile Auth Buttons */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-              {" "}
               {token ? (
-                <>
-                  <UpgradeButton />
-                  <div className="flex items-center space-x-4">
-                    {" "}
-                    <button
-                      onClick={handleLogout}
-                      className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
-                    >
-                      Sign Out
-                    </button>
-                    <div className="border-l border-gray-200 h-6 mx-2"></div>{" "}
+                <div className="flex items-center justify-between w-full">
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
+                  >
+                    Sign Out
+                  </button>
+                  <div className="flex items-center">
+                    <div className="border-l border-gray-200 h-6 mr-4"></div>
                     <button
                       onClick={() => {
                         setIsMobileMenuOpen(false);
@@ -303,7 +317,7 @@ const Header = () => {
                       </svg>
                     </button>
                   </div>
-                </>
+                </div>
               ) : (
                 <Link
                   to="/login"
