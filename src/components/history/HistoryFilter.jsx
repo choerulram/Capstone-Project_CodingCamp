@@ -7,16 +7,16 @@ const HistoryFilter = ({
   setTimeFilter,
 }) => {
   return (
-    <div className="p-6 bg-gradient-to-b from-gray-50/50 to-white/50 border-b border-gray-100">
-      <div className="flex flex-col md:flex-row gap-4">
+    <div className="p-4 md:p-6 bg-gradient-to-b from-gray-50/50 to-white/50 border-b border-gray-100">
+      <div className="flex flex-col md:flex-row gap-3 md:gap-4">
         <div className="flex-1">
           <div className="relative">
             <input
               type="text"
-              placeholder="Cari waktu scan... contoh: 5 Juni 2025"
+              placeholder="Cari waktu scan..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-highlight/50 focus:border-transparent transition-all duration-300 bg-white/70"
+              className="w-full pl-10 md:pl-12 pr-3 md:pr-4 py-2.5 md:py-3 text-sm md:text-base rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-highlight/50 focus:border-transparent transition-all duration-300 bg-white/70"
             />
             <svg
               className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
@@ -34,10 +34,11 @@ const HistoryFilter = ({
           </div>
         </div>
         <div className="flex gap-2">
+          {" "}
           <select
             value={timeFilter}
             onChange={(e) => setTimeFilter(e.target.value)}
-            className="px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-highlight/50 focus:border-transparent transition-all duration-300 bg-white/70 pr-10"
+            className="px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-highlight/50 focus:border-transparent transition-all duration-300 bg-white/70 pr-8 md:pr-10"
           >
             <option value="">Semua Waktu</option>
             <option value="today">Hari Ini</option>

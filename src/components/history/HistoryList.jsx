@@ -46,11 +46,13 @@ const HistoryList = ({
       return true;
     });
   return (
-    <div className="p-6 bg-gradient-to-br from-white/50 via-gray-50/30 to-highlight/5">
+    <div className="p-3 md:p-6 bg-gradient-to-br from-white/50 via-gray-50/30 to-highlight/5">
       {loading ? (
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-main mx-auto"></div>
-          <p className="mt-4 text-gray-600">Memuat riwayat pemindaian...</p>
+        <div className="text-center py-8 md:py-12">
+          <div className="animate-spin rounded-full h-10 w-10 md:h-12 md:w-12 border-b-2 border-main mx-auto"></div>
+          <p className="mt-4 text-sm md:text-base text-gray-600">
+            Memuat riwayat pemindaian...
+          </p>
         </div>
       ) : error ? (
         <div className="text-center py-12">
@@ -66,7 +68,8 @@ const HistoryList = ({
         </div>
       ) : filteredHistory.length > 0 ? (
         <>
-          <div className="grid gap-6">
+          {" "}
+          <div className="grid gap-3 md:gap-6">
             {filteredHistory
               .slice(
                 (currentPage - 1) * itemsPerPage,
@@ -90,13 +93,15 @@ const HistoryList = ({
           </div>
         </>
       ) : (
-        <div className="text-center py-12">
-          <div className="bg-gray-50/80 backdrop-blur-sm p-8 rounded-2xl inline-block shadow-sm border border-gray-100/50">
-            <div className="text-gray-400 text-6xl mb-4">📄</div>
-            <h3 className="text-xl font-semibold text-main mb-2">
+        <div className="text-center py-8 md:py-12">
+          <div className="bg-gray-50/80 backdrop-blur-sm p-6 md:p-8 rounded-xl md:rounded-2xl inline-block shadow-sm border border-gray-100/50">
+            <div className="text-gray-400 text-5xl md:text-6xl mb-3 md:mb-4">
+              📄
+            </div>
+            <h3 className="text-lg md:text-xl font-semibold text-main mb-2">
               Belum Ada Riwayat
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-sm md:text-base text-gray-600 mb-4">
               Anda belum melakukan pemindaian nutrisi apapun
             </p>
             <a

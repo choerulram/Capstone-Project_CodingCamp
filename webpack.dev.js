@@ -17,6 +17,11 @@ export default merge(commonConfig, {
         secure: false,
         changeOrigin: true,
         logLevel: "debug",
+        onProxyReq: function (proxyReq, req) {
+          if (req.headers.authorization) {
+            proxyReq.setHeader("Authorization", req.headers.authorization);
+          }
+        },
       },
     ],
     static: {

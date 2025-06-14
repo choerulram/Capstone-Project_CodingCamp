@@ -87,11 +87,11 @@ const HistoryPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-main/5 via-gray-50 to-highlight/10">
-      <Header />
-      <main className="flex-grow py-8">
-        <div className="container mx-auto px-4">
+      <Header />{" "}
+      <main className="flex-grow py-4 md:py-8">
+        <div className="container mx-auto px-3 md:px-4">
           <div
-            className={`bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100/50 overflow-hidden transition-all duration-500 transform ${
+            className={`bg-white/80 backdrop-blur-sm rounded-xl md:rounded-2xl shadow-lg border border-gray-100/50 overflow-hidden transition-all duration-500 transform ${
               isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
           >
