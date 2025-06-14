@@ -38,10 +38,10 @@ const CameraPreview = ({
           className="w-full h-full object-contain"
         />
       ) : (
-        <div className="flex flex-col items-center justify-center h-full bg-gray-100 text-main p-8">
+        <div className="flex flex-col items-center justify-center h-full bg-gray-100 text-main p-4 sm:p-8">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-16 w-16 mb-4 text-main opacity-50"
+            className="h-12 w-12 sm:h-16 sm:w-16 mb-2 sm:mb-4 text-main opacity-50"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -59,16 +59,16 @@ const CameraPreview = ({
               d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
             />
           </svg>
-          <p className="text-main text-center">
+          <p className="text-sm sm:text-base text-main text-center px-2 sm:px-4">
             Mulai dengan mengambil foto atau mengunggah gambar informasi nilai
             gizi
           </p>
         </div>
       )}
-      <canvas ref={canvasRef} className="hidden" />
+      <canvas ref={canvasRef} className="hidden" />{" "}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
+          <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-t-2 border-b-2 border-white"></div>
         </div>
       )}
     </div>
