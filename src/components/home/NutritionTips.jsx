@@ -29,21 +29,21 @@ const NutritionTips = () => {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-tr from-highlight/5 via-white to-gray-50">
+    <section className="py-8 md:py-16 bg-gradient-to-tr from-highlight/5 via-white to-gray-50">
       <motion.div
-        className="container mx-auto px-6"
+        className="container mx-auto px-4 md:px-6"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={containerVariants}
       >
         <motion.h2
-          className="text-3xl font-bold text-main mb-8 flex items-center"
+          className="text-xl md:text-3xl font-bold text-main mb-4 md:mb-8 flex items-center"
           variants={cardVariants}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8 text-highlight mr-3"
+            className="h-6 w-6 md:h-8 md:w-8 text-highlight mr-2 md:mr-3"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -57,7 +57,7 @@ const NutritionTips = () => {
           </svg>
           Tips & Fakta Gizi
         </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
           {/* Protein Card */}
           <motion.div
             className="relative group"
@@ -66,8 +66,8 @@ const NutritionTips = () => {
             transition={{ duration: 0.2 }}
           >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-            <div className="relative bg-white p-6 rounded-xl shadow-md">
-              <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
+            <div className="relative bg-white p-4 md:p-6 rounded-xl shadow-md">
+              <div className="bg-highlight/10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-lg mb-3 md:mb-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-highlight"
@@ -83,10 +83,10 @@ const NutritionTips = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-main mb-2">
+              <h3 className="text-base md:text-lg font-semibold text-main mb-2">
                 Protein: Fondasi Kesehatan
               </h3>{" "}
-              <p className="text-gray-600 mb-4">
+              <p className="text-sm md:text-base text-gray-600 mb-4">
                 Perhatikan kandungan protein dalam label makanan kemasan. Pilih
                 produk dengan protein minimal 5g per sajian untuk camilan.
                 Konsumsi harian yang dianjurkan: 0.8-1g protein per kg berat
@@ -104,8 +104,8 @@ const NutritionTips = () => {
             transition={{ duration: 0.2 }}
           >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-            <div className="relative bg-white p-6 rounded-xl shadow-md">
-              <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
+            <div className="relative bg-white p-4 md:p-6 rounded-xl shadow-md">
+              <div className="bg-highlight/10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-lg mb-3 md:mb-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-highlight"
@@ -121,10 +121,10 @@ const NutritionTips = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-main mb-2">
+              <h3 className="text-base md:text-lg font-semibold text-main mb-2">
                 Lemak yang Sehat
               </h3>{" "}
-              <p className="text-gray-600 mb-4">
+              <p className="text-sm md:text-base text-gray-600 mb-4">
                 Periksa jenis lemak pada kemasan: total lemak, lemak jenuh, dan
                 lemak trans. Pilih produk dengan lemak jenuh kurang dari 10% per
                 sajian. Hindari produk dengan kandungan lemak trans pada
@@ -142,8 +142,8 @@ const NutritionTips = () => {
             transition={{ duration: 0.2 }}
           >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-            <div className="relative bg-white p-6 rounded-xl shadow-md">
-              <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
+            <div className="relative bg-white p-4 md:p-6 rounded-xl shadow-md">
+              <div className="bg-highlight/10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-lg mb-3 md:mb-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-highlight"
@@ -159,10 +159,10 @@ const NutritionTips = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-main mb-2">
+              <h3 className="text-base md:text-lg font-semibold text-main mb-2">
                 Karbohidrat Cerdas
               </h3>{" "}
-              <p className="text-gray-600 mb-4">
+              <p className="text-sm md:text-base text-gray-600 mb-4">
                 Cek total karbohidrat dan serat pada label informasi nilai gizi.
                 Perhatikan rasio karbohidrat dengan serat untuk pilihan lebih
                 sehat. Pilih produk dengan "whole grain" sebagai bahan utama.
@@ -180,8 +180,8 @@ const NutritionTips = () => {
             transition={{ duration: 0.2 }}
           >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-            <div className="relative bg-white p-6 rounded-xl shadow-md">
-              <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
+            <div className="relative bg-white p-4 md:p-6 rounded-xl shadow-md">
+              <div className="bg-highlight/10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-lg mb-3 md:mb-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-highlight"
@@ -197,10 +197,10 @@ const NutritionTips = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-main mb-2">
+              <h3 className="text-base md:text-lg font-semibold text-main mb-2">
                 Pentingnya Serat
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-sm md:text-base text-gray-600 mb-4">
                 {" "}
                 Perhatikan kandungan serat di label "Dietary Fiber" pada
                 kemasan. Pilih produk minimal 3g serat per sajian untuk camilan
@@ -219,8 +219,8 @@ const NutritionTips = () => {
             transition={{ duration: 0.2 }}
           >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-            <div className="relative bg-white p-6 rounded-xl shadow-md">
-              <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
+            <div className="relative bg-white p-4 md:p-6 rounded-xl shadow-md">
+              <div className="bg-highlight/10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-lg mb-3 md:mb-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-highlight"
@@ -236,10 +236,10 @@ const NutritionTips = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-main mb-2">
+              <h3 className="text-base md:text-lg font-semibold text-main mb-2">
                 Bijak dengan Gula
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-sm md:text-base text-gray-600 mb-4">
                 {" "}
                 Cek daftar gula pada ingredient list di kemasan makanan.
                 Waspadai nama lain gula: syrup, dextrose, sucrose, atau
@@ -258,8 +258,8 @@ const NutritionTips = () => {
             transition={{ duration: 0.2 }}
           >
             <div className="absolute -inset-0.5 bg-gradient-to-r from-highlight to-secondary rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-            <div className="relative bg-white p-6 rounded-xl shadow-md">
-              <div className="bg-highlight/10 w-12 h-12 flex items-center justify-center rounded-lg mb-4">
+            <div className="relative bg-white p-4 md:p-6 rounded-xl shadow-md">
+              <div className="bg-highlight/10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-lg mb-3 md:mb-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-highlight"
@@ -275,10 +275,10 @@ const NutritionTips = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-main mb-2">
+              <h3 className="text-base md:text-lg font-semibold text-main mb-2">
                 Kendali Asupan Garam
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-sm md:text-base text-gray-600 mb-4">
                 {" "}
                 Perhatikan kandungan "Sodium" atau "Garam" pada label makanan.
                 Pilih produk dengan sodium kurang dari 20% Daily Value per
