@@ -111,12 +111,14 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="w-full md:w-[65%] bg-gray-50 p-4 sm:p-6 md:p-10 flex flex-col justify-center items-center">
+    <div className="w-full md:w-[65%] bg-gray-50 p-3 sm:p-6 md:p-10 flex flex-col justify-center items-center">
       <div className="w-full max-w-3xl">
-        <div className="bg-white p-6 sm:p-8 md:p-12 rounded-xl sm:rounded-2xl md:rounded-3xl shadow-xl md:shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300">
+        <div className="bg-white p-4 sm:p-8 md:p-12 rounded-lg sm:rounded-xl md:rounded-3xl shadow-lg sm:shadow-xl md:shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300">
           {" "}
-          <h2 className="text-dark text-4xl mb-3 font-bold">Join NuTrack</h2>
-          <p className="text-gray-500 mb-10 text-lg">
+          <h2 className="text-dark text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 font-bold">
+            Join NuTrack
+          </h2>
+          <p className="text-gray-500 mb-6 sm:mb-8 md:mb-10 text-base sm:text-lg">
             Create your account to get started
           </p>
           <form onSubmit={handleSubmit} className="w-full space-y-6">
@@ -127,14 +129,13 @@ const RegisterForm = () => {
               >
                 {error}
               </div>
-            )}
-
+            )}{" "}
             {/* Basic Information */}
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="space-y-1.5 sm:space-y-2">
                 <label
                   htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-xs sm:text-sm font-medium text-gray-700"
                 >
                   Full Name
                 </label>
@@ -146,13 +147,13 @@ const RegisterForm = () => {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Enter your full name"
-                  className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+                  className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
-              </div>
-              <div className="space-y-2">
+              </div>{" "}
+              <div className="space-y-1.5 sm:space-y-2">
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-xs sm:text-sm font-medium text-gray-700"
                 >
                   Email Address
                 </label>
@@ -164,14 +165,13 @@ const RegisterForm = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Enter your email"
-                  className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+                  className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
               </div>
             </div>
-
-            {/* Health Information Section */}
-            <div className="mt-8 pt-6 border-t border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">
+            {/* Health Information Section */}{" "}
+            <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
+              <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">
                 Health Information
               </h3>
 
@@ -179,7 +179,7 @@ const RegisterForm = () => {
                 <div className="space-y-2">
                   <label
                     htmlFor="gender"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-xs sm:text-sm font-medium text-gray-700"
                   >
                     Gender
                   </label>
@@ -188,7 +188,7 @@ const RegisterForm = () => {
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
-                    className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+                    className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                   >
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -197,7 +197,7 @@ const RegisterForm = () => {
                 <div className="space-y-2">
                   <label
                     htmlFor="age"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-xs sm:text-sm font-medium text-gray-700"
                   >
                     Age
                   </label>
@@ -209,7 +209,7 @@ const RegisterForm = () => {
                       value={formData.age}
                       onChange={handleChange}
                       placeholder="Enter your age"
-                      className="w-full border border-gray-300 rounded-xl p-3 pr-16 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+                      className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 pr-12 sm:pr-16 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                       years
@@ -222,7 +222,7 @@ const RegisterForm = () => {
                 <div className="space-y-2">
                   <label
                     htmlFor="height"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-xs sm:text-sm font-medium text-gray-700"
                   >
                     Height
                   </label>
@@ -234,7 +234,7 @@ const RegisterForm = () => {
                       value={formData.height}
                       onChange={handleChange}
                       placeholder="Enter your height"
-                      className="w-full border border-gray-300 rounded-xl p-3 pr-12 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+                      className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 pr-10 sm:pr-12 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                       cm
@@ -244,7 +244,7 @@ const RegisterForm = () => {
                 <div className="space-y-2">
                   <label
                     htmlFor="weight"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-xs sm:text-sm font-medium text-gray-700"
                   >
                     Weight
                   </label>
@@ -256,7 +256,7 @@ const RegisterForm = () => {
                       value={formData.weight}
                       onChange={handleChange}
                       placeholder="Enter your weight"
-                      className="w-full border border-gray-300 rounded-xl p-3 pr-12 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+                      className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 pr-10 sm:pr-12 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                       kg
@@ -346,12 +346,12 @@ const RegisterForm = () => {
                 </div>
               )}
             </div>
-
             {/* Password Section */}
             <div className="space-y-2 pt-6 border-t border-gray-200">
+              {" "}
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-xs sm:text-sm font-medium text-gray-700"
               >
                 Password
               </label>
@@ -364,7 +364,7 @@ const RegisterForm = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Minimum 8 characters"
-                  className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+                  className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
                 <button
                   type="button"
@@ -409,16 +409,15 @@ const RegisterForm = () => {
                     </svg>
                   )}
                 </button>
-              </div>
-              <p className="text-sm text-gray-500">
+              </div>{" "}
+              <p className="text-[10px] sm:text-xs text-gray-500 mt-1 sm:mt-1.5">
                 Must be at least 8 characters long
               </p>
-            </div>
-
+            </div>{" "}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-main text-white py-3 rounded-xl hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main transition-all duration-300 mt-6 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-main text-white py-2.5 sm:py-3 rounded-lg sm:rounded-xl hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main transition-all duration-300 mt-5 sm:mt-6 font-medium text-xs sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center">
@@ -462,9 +461,10 @@ const RegisterForm = () => {
             </div>
 
             <div className="mt-6">
+              {" "}
               <Link
                 to="/login"
-                className="w-full flex justify-center py-3 px-4 border-2 border-main text-sm font-medium rounded-xl text-main bg-white hover:bg-main hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main transition-all duration-300"
+                className="w-full flex justify-center py-2.5 sm:py-3 px-3 sm:px-4 border-2 border-main text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl text-main bg-white hover:bg-main hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main transition-all duration-300"
               >
                 Sign in to your account
               </Link>
