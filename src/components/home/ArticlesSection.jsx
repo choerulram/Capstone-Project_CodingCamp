@@ -165,12 +165,13 @@ const ArticlesSection = () => {
   }, []);
 
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
-      <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold text-main mb-8 flex items-center">
+    <section className="py-8 md:py-16 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6">
+        {" "}
+        <h2 className="text-2xl md:text-3xl font-bold text-main mb-6 md:mb-8 flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8 text-highlight mr-3"
+            className="h-6 w-6 md:h-8 md:w-8 text-highlight mr-2 md:mr-3"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -200,7 +201,7 @@ const ArticlesSection = () => {
                 href={article.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-none w-[280px] bg-white rounded-xl overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group/card animate-fade-in [transform-style:preserve-3d]"
+                className="flex-none w-[260px] md:w-[280px] bg-white rounded-xl overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group/card animate-fade-in [transform-style:preserve-3d]"
                 style={{
                   animation: `fadeIn 0.5s ease-out`,
                   transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
@@ -213,12 +214,12 @@ const ArticlesSection = () => {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110 rounded-t-xl"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 rounded-t-xl"></div>
-                </div>
-                <div className="p-5 bg-gradient-to-b from-white to-gray-50/50">
-                  <h3 className="text-lg font-semibold text-main mb-3 line-clamp-2 group-hover/card:text-highlight transition-colors min-h-[3.25rem]">
+                </div>{" "}
+                <div className="p-4 md:p-5 bg-gradient-to-b from-white to-gray-50/50">
+                  <h3 className="text-base md:text-lg font-semibold text-main mb-2 md:mb-3 line-clamp-2 group-hover/card:text-highlight transition-colors min-h-[3rem] md:min-h-[3.25rem]">
                     {article.title}
                   </h3>
-                  <p className="text-sm text-gray-600 mb-4 line-clamp-4 min-h-[5rem] leading-relaxed">
+                  <p className="text-xs md:text-sm text-gray-600 mb-3 md:mb-4 line-clamp-4 min-h-[4.5rem] md:min-h-[5rem] leading-relaxed">
                     {article.excerpt ||
                       "Baca artikel lengkap untuk informasi lebih detail tentang kesehatan dan gizi terkini."}
                   </p>
@@ -282,7 +283,7 @@ const ArticlesSection = () => {
           {/* Navigation Buttons */}
           <button
             onClick={() => scrollArticles("left")}
-            className="absolute -left-4 top-1/2 -translate-y-1/2 bg-white/95 backdrop-blur-sm rounded-full p-3.5 shadow-lg opacity-0 group-hover:opacity-100 hover:bg-gray-50 disabled:opacity-0 transition-all duration-300 disabled:cursor-not-allowed z-20 border border-gray-100 hover:border-gray-200"
+            className="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 bg-white/95 backdrop-blur-sm rounded-full p-2.5 md:p-3.5 shadow-lg opacity-0 group-hover:opacity-100 hover:bg-gray-50 disabled:opacity-0 transition-all duration-300 disabled:cursor-not-allowed z-20 border border-gray-100 hover:border-gray-200"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -302,7 +303,7 @@ const ArticlesSection = () => {
 
           <button
             onClick={() => scrollArticles("right")}
-            className="absolute -right-4 top-1/2 -translate-y-1/2 bg-white/95 backdrop-blur-sm rounded-full p-3.5 shadow-lg opacity-0 group-hover:opacity-100 hover:bg-gray-50 disabled:opacity-0 transition-all duration-300 disabled:cursor-not-allowed z-20 border border-gray-100 hover:border-gray-200"
+            className="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 bg-white/95 backdrop-blur-sm rounded-full p-2.5 md:p-3.5 shadow-lg opacity-0 group-hover:opacity-100 hover:bg-gray-50 disabled:opacity-0 transition-all duration-300 disabled:cursor-not-allowed z-20 border border-gray-100 hover:border-gray-200"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
