@@ -1,21 +1,24 @@
 import { merge } from "webpack-merge";
 import commonConfig from "./webpack.common.js";
 
-export default merge(commonConfig, {  mode: "development",
+export default merge(commonConfig, {
+  mode: "development",
   devtool: "inline-source-map",
   devServer: {
     historyApiFallback: true,
     port: 3000,
     hot: true,
     open: true,
-    proxy: [{
-      context: ['/api'],
-      target: 'http://54.151.129.129:8000',
-      pathRewrite: { '^/api': '' },
-      secure: false,
-      changeOrigin: true,
-      logLevel: 'debug'
-    }],
+    proxy: [
+      {
+        context: ["/api"],
+        target: "http://54.151.129.129:8000",
+        pathRewrite: { "^/api": "" },
+        secure: false,
+        changeOrigin: true,
+        logLevel: "debug",
+      },
+    ],
     static: {
       directory: "./dist",
       watch: true,

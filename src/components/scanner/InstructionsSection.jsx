@@ -44,13 +44,13 @@ const InstructionsSection = () => {
   ];
 
   return (
-    <div className="bg-white/90 rounded-2xl p-8 shadow-lg backdrop-blur-md">
+    <div className="bg-white/90 rounded-2xl p-4 md:p-8 shadow-lg backdrop-blur-md">
       {/* Header Section */}
-      <div className="mb-8 text-center">
-        <h2 className="text-2xl font-bold text-main mb-2 flex items-center justify-center gap-3">
+      <div className="mb-6 md:mb-8 text-center">
+        <h2 className="text-xl md:text-2xl font-bold text-main mb-2 flex items-center justify-center gap-2 md:gap-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8 text-secondary"
+            className="h-6 w-6 md:h-8 md:w-8 text-secondary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -63,17 +63,16 @@ const InstructionsSection = () => {
             />
           </svg>
           Panduan Penggunaan
-        </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
+        </h2>{" "}
+        <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto px-2">
           Ikuti langkah-langkah berikut untuk menganalisis nutrisi dari foto
           informasi nilai gizi
         </p>
       </div>
-
       {/* Instructions Grid */}
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className="grid lg:grid-cols-2 gap-4 md:gap-8">
         {/* Upload Section */}
-        <div className="bg-gradient-to-br from-main/5 to-secondary/10 rounded-xl p-6 transform transition-all duration-300 hover:scale-[1.02]">
+        <div className="bg-gradient-to-br from-main/5 to-secondary/10 rounded-xl p-4 md:p-6 transform transition-all duration-300 hover:scale-[1.02]">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-3 bg-secondary/10 rounded-full">
               <svg
@@ -156,11 +155,10 @@ const InstructionsSection = () => {
             ))}
           </div>
         </div>
-      </div>
-
+      </div>{" "}
       {/* Tips Section */}
-      <div className="mt-8 p-4 bg-secondary/5 rounded-lg">
-        <p className="text-sm text-main/80 text-center">
+      <div className="mt-6 md:mt-8 p-3 md:p-4 bg-secondary/5 rounded-lg">
+        <p className="text-xs md:text-sm text-main/80 text-center">
           💡 Tips: Pastikan foto yang diambil memiliki pencahayaan yang baik dan
           tabel nilai gizi terlihat jelas untuk hasil analisis yang optimal
         </p>
