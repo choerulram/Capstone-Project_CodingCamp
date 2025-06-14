@@ -15,16 +15,14 @@ const TEMPLATE_DATA = [
   },
   {
     title: "Taro Net BBQ",
-    image:
-      "https://nilaigizi.com/assets/images/produk/produk_1612861702.jpg",
+    image: "https://nilaigizi.com/assets/images/produk/produk_1612861702.jpg",
     energi: 90,
     karbohidrat: 15,
     protein: 1,
   },
   {
     title: "Milku Susu UHT Rasa Cokelat",
-    image:
-      "https://nilaigizi.com/assets/images/produk/produk_1613362652.jpeg",
+    image: "https://nilaigizi.com/assets/images/produk/produk_1613362652.jpeg",
     energi: 100,
     karbohidrat: 11,
     protein: 5,
@@ -137,18 +135,19 @@ const RecentScans = () => {
   }
 
   return (
-    <section className="py-16 bg-gradient-to-br from-white via-gray-50 to-highlight/5">
-      <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between mb-8">
+    <section className="py-8 md:py-16 bg-gradient-to-br from-white via-gray-50 to-highlight/5">
+      <div className="container mx-auto px-4 md:px-6">
+        {" "}
+        <div className="flex items-center justify-between mb-6 md:mb-8">
           <motion.h2
-            className="text-3xl font-bold text-main flex items-center"
+            className="text-xl md:text-3xl font-bold text-main flex items-center"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-highlight mr-3"
+              className="h-6 w-6 md:h-8 md:w-8 text-highlight mr-2 md:mr-3"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -164,7 +163,7 @@ const RecentScans = () => {
           </motion.h2>
           <motion.button
             onClick={() => navigate("/history")}
-            className="px-4 py-2 text-white bg-highlight hover:bg-highlight/90 transition-all duration-300 rounded-lg shadow-sm hover:shadow flex items-center gap-2 font-medium"
+            className="hidden md:flex px-4 py-2 text-white text-base bg-highlight hover:bg-highlight/90 transition-all duration-300 rounded-lg shadow-sm hover:shadow items-center gap-2 font-medium"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             whileHover={{ scale: 1.05 }}
@@ -186,73 +185,99 @@ const RecentScans = () => {
               />
             </svg>
           </motion.button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {recentScans.map((scan, index) => (
-            <motion.div
-              key={scan.id || index}
-              className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.1, // Memberikan delay berdasarkan index
-              }}
-              whileHover={{
-                y: -5,
-                scale: 1.02,
-                transition: { duration: 0.2 },
-              }}
-            >
-              {" "}
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-main">
-                  {scan.isTemplate
-                    ? scan.title
-                    : formatTimestamp(scan.timestamp)}
-                </h3>
-                <span className="text-sm text-gray-500">
-                  {scan.isTemplate
-                    ? index === 0
-                      ? "2 jam yang lalu"
-                      : index === 1
-                      ? "5 jam yang lalu"
-                      : "8 jam yang lalu"
-                    : calculateTimeAgo(scan.timestamp)}
-                </span>
-              </div>
-              <div className="flex items-start gap-4">
-                <motion.img
-                  src={
-                    scan.isTemplate
-                      ? scan.image
-                      : `${BASE_URL}/images/${scan.filename}`
-                  }
-                  alt={scan.isTemplate ? scan.title : "Food Image"}
-                  onError={(e) => {
-                    e.target.src =
-                      "https://via.placeholder.com/150?text=No+Image";
-                  }}
-                  className="w-16 h-16 rounded-lg object-cover border-2 border-highlight/30 shadow-md"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.2 }}
-                />
-                <div>
-                  <p className="text-sm text-gray-600 mb-2">
-                    Energi: {scan.energi || 0} kkal
-                  </p>
-                  <div className="flex gap-2">
-                    <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
-                      Karbohidrat: {scan.karbohidrat || 0}g
-                    </span>
-                    <span className="text-xs bg-green-50 text-green-600 px-2 py-1 rounded-full">
-                      Protein: {scan.protein || 0}g
-                    </span>
+        </div>{" "}
+        <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {recentScans.map((scan, index) => (
+              <motion.div
+                key={scan.id || index}
+                className="bg-white p-4 md:p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.1, // Memberikan delay berdasarkan index
+                }}
+                whileHover={{
+                  y: -5,
+                  scale: 1.02,
+                  transition: { duration: 0.2 },
+                }}
+              >
+                {" "}
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-main text-sm md:text-base">
+                    {scan.isTemplate
+                      ? scan.title
+                      : formatTimestamp(scan.timestamp)}
+                  </h3>
+                  <span className="text-sm text-gray-500">
+                    {scan.isTemplate
+                      ? index === 0
+                        ? "2 jam yang lalu"
+                        : index === 1
+                        ? "5 jam yang lalu"
+                        : "8 jam yang lalu"
+                      : calculateTimeAgo(scan.timestamp)}
+                  </span>
+                </div>
+                <div className="flex items-start gap-4">
+                  <motion.img
+                    src={
+                      scan.isTemplate
+                        ? scan.image
+                        : `${BASE_URL}/images/${scan.filename}`
+                    }
+                    alt={scan.isTemplate ? scan.title : "Food Image"}
+                    onError={(e) => {
+                      e.target.src =
+                        "https://via.placeholder.com/150?text=No+Image";
+                    }}
+                    className="w-14 h-14 md:w-16 md:h-16 rounded-lg object-cover border-2 border-highlight/30 shadow-md"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                  <div>
+                    <p className="text-sm text-gray-600 mb-2">
+                      Energi: {scan.energi || 0} kkal
+                    </p>
+                    <div className="flex gap-2">
+                      <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
+                        Karbohidrat: {scan.karbohidrat || 0}g
+                      </span>
+                      <span className="text-xs bg-green-50 text-green-600 px-2 py-1 rounded-full">
+                        Protein: {scan.protein || 0}g
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
+          <motion.button
+            onClick={() => navigate("/history")}
+            className="md:hidden mx-auto px-4 py-2 text-white text-sm bg-highlight hover:bg-highlight/90 transition-all duration-300 rounded-lg shadow-sm hover:shadow flex items-center justify-center gap-2 font-medium"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Lihat Semua Riwayat Scan
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </motion.button>
         </div>
       </div>
     </section>
