@@ -93,13 +93,13 @@ const NutritionScore = () => {
     return "text-red-600";
   };
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
-      <h2 className="text-xl font-bold text-main mb-6 flex items-center animate-float">
-        <span className="bg-main p-3 rounded-xl mr-3">
+    <div className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
+      <h2 className="text-lg md:text-xl font-bold text-main mb-4 md:mb-6 flex items-center animate-float">
+        <span className="bg-main p-2 md:p-3 rounded-lg md:rounded-xl mr-2 md:mr-3">
           {" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-secondary"
+            className="h-5 w-5 md:h-6 md:w-6 text-secondary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -113,20 +113,22 @@ const NutritionScore = () => {
           </svg>
         </span>
         <div>
-          <div className="text-xl font-bold text-main">Skor Gizi Harian</div>
-          <div className="text-sm text-gray-500 mt-1">
+          <div className="text-lg md:text-xl font-bold text-main">
+            Skor Gizi Harian
+          </div>
+          <div className="text-xs md:text-sm text-gray-500 mt-1">
             Kualitas asupan nutrisi Anda
           </div>
         </div>
       </h2>{" "}
       {error ? (
-        <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm min-h-[420px]">
+        <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm min-h-[320px] md:min-h-[420px]">
           <div className="flex items-center justify-center h-full">
-            <div className="p-4 bg-red-50 text-red-700 rounded-lg animate-fade-in w-full">
+            <div className="p-3 md:p-4 bg-red-50 text-red-700 rounded-lg animate-fade-in w-full">
               <div className="flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
+                  className="h-4 w-4 md:h-5 md:w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -138,26 +140,29 @@ const NutritionScore = () => {
                     d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span>{error}</span>
+                <span className="text-sm md:text-base">{error}</span>
               </div>
             </div>
           </div>
         </div>
       ) : loading ? (
-        <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm min-h-[420px]">
+        <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm min-h-[320px] md:min-h-[420px]">
           <div className="flex justify-center items-center h-full">
             <div className="flex flex-col items-center">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-main mb-3"></div>
-              <p className="text-gray-500 text-sm">Menghitung skor...</p>
+              <div className="animate-spin rounded-full h-8 w-8 md:h-10 md:w-10 border-b-2 border-main mb-2 md:mb-3"></div>
+              <p className="text-xs md:text-sm text-gray-500">
+                Menghitung skor...
+              </p>
             </div>
           </div>
         </div>
       ) : (
         score !== null &&
-        !error && (          <div className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-secondary/30 shadow-sm min-h-[420px] flex items-center justify-center">
+        !error && (
+          <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm min-h-[320px] md:min-h-[420px] flex items-center justify-center">
             <div className="flex flex-col items-center">
-              <div className="relative mb-6">
-                <svg className="w-40 h-40" viewBox="0 0 36 36">
+              <div className="relative mb-4 md:mb-6">
+                <svg className="w-32 h-32 md:w-40 md:h-40" viewBox="0 0 36 36">
                   <path
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     fill="none"
@@ -182,19 +187,19 @@ const NutritionScore = () => {
                 </svg>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
                   <div
-                    className={`text-5xl font-bold ${getScoreColor(
+                    className={`text-4xl md:text-5xl font-bold ${getScoreColor(
                       score
                     )} mb-1 animate-fade-in`}
                   >
                     {score.toFixed(1)}
                   </div>
-                  <div className="text-gray-400 text-sm font-medium">
+                  <div className="text-xs md:text-sm text-gray-400 font-medium">
                     dari 10
                   </div>
                 </div>
               </div>
               <div
-                className={`text-xl font-bold mb-3 ${getScoreColor(
+                className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${getScoreColor(
                   score
                 )} animate-fade-in`}
               >
@@ -204,7 +209,7 @@ const NutritionScore = () => {
                   ? "Baik"
                   : "Perlu Perhatian"}
               </div>
-              <p className="text-gray-600 text-center max-w-sm font-medium">
+              <p className="text-sm md:text-base text-gray-600 text-center max-w-sm font-medium px-2 md:px-0">
                 {score >= 8
                   ? "Asupan gizi Anda sangat seimbang dan ideal"
                   : score >= 6
@@ -224,11 +229,11 @@ const NutritionScore = () => {
                       });
                     }
                   }}
-                  className="mt-6 px-4 py-2 bg-main/10 hover:bg-main/15 text-main rounded-xl font-medium text-sm focus:outline-none flex items-center gap-2 transition-all duration-300 hover:-translate-y-1 group"
+                  className="mt-4 md:mt-6 px-3 md:px-4 py-1.5 md:py-2 bg-main/10 hover:bg-main/15 text-main rounded-lg md:rounded-xl font-medium text-xs md:text-sm focus:outline-none flex items-center gap-1.5 md:gap-2 transition-all duration-300 hover:-translate-y-1 group"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 transition-transform duration-300 group-hover:translate-y-1"
+                    className="h-4 w-4 md:h-5 md:w-5 transition-transform duration-300 group-hover:translate-y-1"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
