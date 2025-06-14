@@ -307,7 +307,7 @@ const Scanner = () => {
         }`}
       >
         {/* Main Scanner Container */}{" "}
-        <div className="w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-secondary overflow-hidden">
+        <div className="w-full bg-white/95 backdrop-blur-sm rounded-lg sm:rounded-2xl shadow-md sm:shadow-xl border sm:border-2 border-secondary/80 sm:border-secondary overflow-hidden">
           {/* Pilihan Kamera */}
           <CameraSelector
             devices={devices}
