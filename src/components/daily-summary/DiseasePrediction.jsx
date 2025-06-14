@@ -176,12 +176,12 @@ const DiseasePrediction = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
-      <h2 className="text-xl font-bold text-main mb-6 flex items-center animate-float">
-        <span className="bg-main p-3 rounded-xl mr-3">
+    <div className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
+      <h2 className="text-lg md:text-xl font-bold text-main mb-4 md:mb-6 flex items-center animate-float">
+        <span className="bg-main p-2 md:p-3 rounded-lg md:rounded-xl mr-2 md:mr-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-secondary"
+            className="h-5 w-5 md:h-6 md:w-6 text-secondary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -195,20 +195,20 @@ const DiseasePrediction = () => {
           </svg>
         </span>
         <div>
-          <div className="text-xl font-bold text-main">
+          <div className="text-lg md:text-xl font-bold text-main">
             Prediksi Risiko Penyakit
           </div>
-          <div className="text-sm text-gray-500 mt-1">
+          <div className="text-xs md:text-sm text-gray-500 mt-1">
             Berdasarkan pola makan hari ini
           </div>
         </div>
       </h2>
       {error && (
-        <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-4 animate-fade-in">
+        <div className="p-3 md:p-4 bg-red-50 text-red-700 rounded-lg mb-4 animate-fade-in">
           <div className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-4 w-4 md:h-5 md:w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -220,15 +220,17 @@ const DiseasePrediction = () => {
                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span>{error}</span>
+            <span className="text-sm md:text-base">{error}</span>
           </div>
         </div>
       )}
       {loading ? (
-        <div className="flex justify-center items-center h-40">
+        <div className="flex justify-center items-center h-32 md:h-40">
           <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-main mb-3"></div>
-            <p className="text-gray-500 text-sm">Menganalisis data...</p>
+            <div className="animate-spin rounded-full h-8 w-8 md:h-10 md:w-10 border-b-2 border-main mb-2 md:mb-3"></div>
+            <p className="text-xs md:text-sm text-gray-500">
+              Menganalisis data...
+            </p>
           </div>
         </div>
       ) : (
@@ -236,19 +238,19 @@ const DiseasePrediction = () => {
         !error &&
         userData &&
         totalGizi && (
-          <div className="animate-fade-in space-y-6">
-            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl border border-secondary/30 shadow-sm">
+          <div className="animate-fade-in space-y-4 md:space-y-6">
+            <div className="bg-white/90 backdrop-blur-sm p-4 md:p-8 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm">
               <div className="flex flex-col items-center">
                 <div
                   className={`${
                     getStatusInfo(status).color
-                  } transform transition-all duration-300 hover:scale-105 p-5 rounded-2xl ${
+                  } transform transition-all duration-300 hover:scale-105 p-3 md:p-5 rounded-xl md:rounded-2xl ${
                     getStatusInfo(status).bgColor
-                  } bg-opacity-20 mb-6`}
+                  } bg-opacity-20 mb-4 md:mb-6`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-16 w-16"
+                    className="h-12 w-12 md:h-16 md:w-16"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -257,18 +259,18 @@ const DiseasePrediction = () => {
                     {getStatusInfo(status).icon.props.children}
                   </svg>
                 </div>
-                <div className="flex flex-col items-center space-y-4">
+                <div className="flex flex-col items-center space-y-3 md:space-y-4">
                   <div
                     className={`${
                       getStatusInfo(status).color
-                    } text-5xl font-bold animate-fade-in`}
+                    } text-3xl md:text-5xl font-bold animate-fade-in`}
                   >
                     {status}
                   </div>
                   <div
                     className={`${
                       getStatusInfo(status).color
-                    } text-base font-medium px-6 py-2 rounded-xl ${
+                    } text-sm md:text-base font-medium px-4 md:px-6 py-1.5 md:py-2 rounded-lg md:rounded-xl ${
                       getStatusInfo(status).bgColor
                     } bg-opacity-20 max-w-md text-center`}
                   >
@@ -277,12 +279,12 @@ const DiseasePrediction = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-white/90 backdrop-blur-sm p-4 rounded-xl border border-secondary/30 shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="bg-red-100 p-2 rounded-lg">
+            <div className="bg-white/90 backdrop-blur-sm p-3 md:p-4 rounded-lg md:rounded-xl border border-secondary/30 shadow-sm">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="bg-red-100 p-1.5 md:p-2 rounded-md md:rounded-lg">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-red-500"
+                    className="h-4 w-4 md:h-5 md:w-5 text-red-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -295,7 +297,7 @@ const DiseasePrediction = () => {
                     />
                   </svg>
                 </div>
-                <span className="text-sm font-medium text-gray-600">
+                <span className="text-xs md:text-sm font-medium text-gray-600">
                   Prediksi ini berdasarkan analisis nutrisi dari makanan yang
                   Anda konsumsi hari ini
                 </span>
