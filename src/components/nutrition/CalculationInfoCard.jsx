@@ -2,22 +2,24 @@ import React from "react";
 
 const CalculationInfoCard = () => {
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl animate-fade-in">
-      <div className="bg-gradient-to-r from-main to-main/90 text-white p-4">
-        <h2 className="text-xl font-semibold">Informasi Perhitungan</h2>
+    <div className="bg-white rounded-lg md:rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl animate-fade-in">
+      <div className="bg-gradient-to-r from-main to-main/90 text-white p-3 md:p-4">
+        <h2 className="text-lg md:text-xl font-semibold">
+          Informasi Perhitungan
+        </h2>
       </div>
-      <div className="p-6">
-        <div className="text-gray-600">
+      <div className="p-4 md:p-6">
+        <div className="text-gray-600 text-sm md:text-base">
           <p
             className="mb-4 animate-fade-in"
             style={{ animationDelay: "100ms" }}
           >
             Kebutuhan gizi harian ini dihitung berdasarkan data profil Anda
             dengan mempertimbangkan:
-          </p>
-          <ul className="space-y-3">
+          </p>{" "}
+          <ul className="space-y-2 md:space-y-3">
             <li
-              className="flex items-center space-x-3 animate-fade-in-left"
+              className="flex items-center space-x-2 md:space-x-3 animate-fade-in-left"
               style={{ animationDelay: "200ms" }}
             >
               <svg

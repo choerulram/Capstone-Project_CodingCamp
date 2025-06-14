@@ -3,16 +3,18 @@ import React from "react";
 const AdditionalRecommendations = () => {
   return (
     <div
-      className="bg-white rounded-xl shadow-lg overflow-hidden animate-fade-in"
+      className="bg-white rounded-lg md:rounded-xl shadow-lg overflow-hidden animate-fade-in"
       style={{ animationDelay: "700ms" }}
     >
-      <div className="bg-gradient-to-r from-main/80 via-main/70 to-main/60 text-white p-4">
-        <h2 className="text-xl font-semibold">Rekomendasi Tambahan</h2>
+      <div className="bg-gradient-to-r from-main/80 via-main/70 to-main/60 text-white p-3 md:p-4">
+        <h2 className="text-lg md:text-xl font-semibold">
+          Rekomendasi Tambahan
+        </h2>
       </div>
-      <div className="p-6">
-        <div className="space-y-4">
+      <div className="p-4 md:p-6">
+        <div className="space-y-3 md:space-y-4">
           <div
-            className="flex items-start space-x-4 p-4 bg-teal-50 hover:bg-main/5 transition-all duration-300 rounded-lg hover:shadow-md animate-fade-in-left transform hover:scale-102"
+            className="flex items-start space-x-3 md:space-x-4 p-3 md:p-4 bg-teal-50 hover:bg-main/5 transition-all duration-300 rounded-lg hover:shadow-md animate-fade-in-left transform hover:scale-102"
             style={{ animationDelay: "800ms" }}
           >
             <svg
@@ -29,10 +31,11 @@ const AdditionalRecommendations = () => {
               />
             </svg>
             <div className="transition-all duration-300">
-              <h4 className="font-semibold text-main hover:scale-105 transition-transform duration-300">
+              {" "}
+              <h4 className="text-sm md:text-base font-semibold text-main hover:scale-105 transition-transform duration-300">
                 Jadwal Makan
               </h4>
-              <p className="text-gray-600 mt-1">
+              <p className="text-xs md:text-sm text-gray-600 mt-1">
                 Atur waktu makan dengan interval 4-5 jam untuk metabolisme
                 optimal
               </p>
