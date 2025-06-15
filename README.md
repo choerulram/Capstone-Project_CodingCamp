@@ -1,6 +1,10 @@
-# PackFacts - Nutrition Scanner App
+# NuTrack - Nutrition Tracking App
 
-This application is a Capstone Project for the Coding Camp 2025 program powered by DBS Foundation. PackFacts enables users to scan nutritional information from food packaging and receive instant nutrition analysis.
+This application is a Capstone Project for the Coding Camp 2025 program powered by DBS Foundation. NuTrack enables users to scan nutritional information from food packaging and receive instant nutrition analysis.
+
+## Live Website
+
+Visit our live application at: https://nu-track.netlify.app/
 
 ## Key Features
 
@@ -10,7 +14,7 @@ This application is a Capstone Project for the Coding Camp 2025 program powered 
 - 🔍 Detailed nutrition information (calories, protein, carbs, fat, etc.)
 - 🔔 Daily nutrition alerts and warnings
 
-### Frontend Setup
+### Setup
 
 1. Clone the repository
 
