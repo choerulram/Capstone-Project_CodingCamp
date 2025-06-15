@@ -118,18 +118,19 @@ const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
       <div className="bg-white p-4 lg:p-6 rounded-xl shadow-md border border-gray-100">
         {/* Header dengan tombol edit */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-4 lg:mb-6 pb-4 border-b border-gray-100 gap-4">
-          <h2 className="text-xl lg:text-2xl font-bold text-main">
+          {" "}
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-main">
             Hasil Analisis Nutrisi
           </h2>
           {!isEditing ? (
             <button
               onClick={initializeEditValues}
-              className="text-sm px-4 py-2 bg-main text-white hover:bg-main/90 rounded-lg transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+              className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 bg-main text-white hover:bg-main/90 rounded-lg transition-all duration-200 flex items-center gap-1.5 sm:gap-2 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
               title="Edit nutrisi"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-4 sm:h-5 w-4 sm:w-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -190,11 +191,12 @@ const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
           {/* Kandungan Gizi */}
           <div className="bg-gray-50 p-4 lg:p-6 rounded-xl border border-gray-100">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-main flex items-center">
-                <span className="bg-secondary p-2 rounded-lg mr-2">
+              {" "}
+              <h3 className="text-base sm:text-lg font-semibold text-main flex items-center">
+                <span className="bg-secondary p-1.5 sm:p-2 rounded-lg mr-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
+                    className="h-4 sm:h-5 w-4 sm:w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -213,7 +215,7 @@ const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
                 <div className="flex gap-2">
                   <button
                     onClick={handleCancelEdit}
-                    className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg transition-colors"
+                    className="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg transition-colors"
                     disabled={loading}
                   >
                     Batal
@@ -221,7 +223,7 @@ const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
                   <button
                     onClick={handleSubmitUpdate}
                     disabled={loading}
-                    className="px-3 py-1.5 text-sm bg-main hover:bg-main/90 text-white rounded-lg transition-colors flex items-center gap-1"
+                    className="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm bg-main hover:bg-main/90 text-white rounded-lg transition-colors flex items-center gap-1"
                   >
                     {loading ? (
                       <>
@@ -307,11 +309,12 @@ const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
           {/* Perbandingan Kebutuhan Harian */}
           {nutritionData.perbandingan.length > 0 && (
             <div className="bg-gray-50 p-4 lg:p-6 rounded-xl border border-gray-100">
-              <h3 className="text-lg font-semibold mb-4 text-main flex items-center">
-                <span className="bg-secondary p-2 rounded-lg mr-2">
+              {" "}
+              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-main flex items-center">
+                <span className="bg-secondary p-1.5 sm:p-2 rounded-lg mr-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
+                    className="h-4 sm:h-5 w-4 sm:w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -326,7 +329,6 @@ const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
                 </span>
                 Perbandingan dengan Kebutuhan Harian
               </h3>
-
               {/* Peringatan jika ada yang melebihi */}
               {nutritionData.perbandingan.some(
                 (row) => row.status === "Melebihi"
@@ -364,7 +366,6 @@ const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
                   </div>
                 </div>
               )}
-
               <div className="overflow-x-auto -mx-4 lg:mx-0">
                 <div className="inline-block min-w-full align-middle">
                   <div className="overflow-hidden rounded-lg border border-gray-100">
