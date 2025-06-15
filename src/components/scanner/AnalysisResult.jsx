@@ -10,6 +10,27 @@ const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
   const [successMessage, setSuccessMessage] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
+  // Helper untuk mendapatkan satuan nutrisi yang sesuai
+  const getNutritionUnit = (nutrientKey) => {
+    switch (nutrientKey.toLowerCase()) {
+      case "energi":
+        return "kkal";
+      case "garam":
+        return "mg";
+      default:
+        return "g";
+    }
+  };
+
+  // Helper untuk memformat nilai nutrisi sesuai satuannya
+  const formatNutritionValue = (value, unit) => {
+    if (unit === "mg") {
+      // Konversi dari gram ke miligram
+      return (parseFloat(value) * 1000).toFixed(1);
+    }
+    return value;
+  };
+
   // Inisialisasi nilai yang bisa diedit
   const initializeEditValues = () => {
     const values = {};
@@ -24,10 +45,18 @@ const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
 
   // Handle perubahan nilai input
   const handleInputChange = (key, value) => {
-    // Validasi input: tidak boleh negatif dan maksimal 999.9
-    const numValue = parseFloat(value);
+    // Konversi nilai untuk garam dari mg ke g saat menyimpan
+    let processedValue = value;
+    if (key.toLowerCase() === "garam") {
+      processedValue = (parseFloat(value) / 1000).toString();
+    }
+
+    // Validasi input: tidak boleh negatif dan maksimal sesuai satuan
+    const numValue = parseFloat(processedValue);
     if (isNaN(numValue) || numValue < 0) return;
-    if (numValue > 999.9) return;
+
+    const maxValue = key.toLowerCase() === "garam" ? 100 : 999.9; // 100g garam = 100000mg
+    if (numValue > maxValue) return;
 
     setUpdatedValues((prev) => ({
       ...prev,
@@ -296,10 +325,15 @@ const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
                         min="0"
                         max="999.9"
                       />
-                      <span className="text-xs text-gray-500">g</span>
+                      <span className="text-xs text-gray-500">
+                        {getNutritionUnit(key)}
+                      </span>
                     </div>
                   ) : (
-                    <span className="font-medium text-main">{value} g</span>
+                    <span className="font-medium text-main">
+                      {formatNutritionValue(value, getNutritionUnit(key))}{" "}
+                      {getNutritionUnit(key)}
+                    </span>
                   )}
                 </div>
               ))}

@@ -38,6 +38,7 @@ const Scanner = () => {
   const [imageSource, setImageSource] = useState(null);
 
   const videoRef = useRef(null);
+  const analysisResultRef = useRef(null);
   const fileInputRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -119,6 +120,9 @@ const Scanner = () => {
         perbandingan: result.perbandingan || [],
         kebutuhan: result.kebutuhan_harian || {},
       });
+
+      // Scroll ke hasil analisis setelah data tersedia
+      scrollToResult();
     } catch (err) {
       console.error("Error:", err);
       setError(err.message || "Terjadi kesalahan saat menganalisis gambar");
@@ -293,6 +297,19 @@ const Scanner = () => {
     }
   }, [error]);
 
+  // Fungsi untuk scroll ke hasil analisis
+  const scrollToResult = useCallback(() => {
+    // Tambah sedikit delay untuk memastikan hasil analisis sudah di-render
+    setTimeout(() => {
+      if (analysisResultRef.current) {
+        analysisResultRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, 100);
+  }, []);
+
   return (
     <div
       className={`min-h-screen flex ${
@@ -378,15 +395,17 @@ const Scanner = () => {
       </div>
       {/* Hasil Analisis - Hanya muncul saat ada data */}{" "}
       {nutritionData && (
-        <AnalysisResult
-          nutritionData={nutritionData}
-          currentTime={currentTime}
-          onUpdateSuccess={(updatedData) => {
-            console.log("Data nutrisi diperbarui:", updatedData);
-            // Update state dengan data terbaru
-            setNutritionData(updatedData);
-          }}
-        />
+        <div ref={analysisResultRef}>
+          <AnalysisResult
+            nutritionData={nutritionData}
+            currentTime={currentTime}
+            onUpdateSuccess={(updatedData) => {
+              console.log("Data nutrisi diperbarui:", updatedData);
+              // Update state dengan data terbaru
+              setNutritionData(updatedData);
+            }}
+          />
+        </div>
       )}
     </div>
   );
