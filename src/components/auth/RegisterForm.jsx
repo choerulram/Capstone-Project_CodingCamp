@@ -10,13 +10,15 @@ const RegisterForm = () => {
     email: "",
     password: "",
     age: "",
+    age_unit: "years",
     height: "",
     weight: "",
-    gender: "Male",
+    gender: "Laki-laki",
     is_pregnant: false,
     pregnancy_age: "",
     is_nursing: false,
     child_age: "",
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -43,13 +45,12 @@ const RegisterForm = () => {
     }
     return true;
   };
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
     if (type === "checkbox") {
       if (name === "is_pregnant" && checked) {
-        // Jika memilih hamil, uncheck menyusui
+        // If selecting pregnant, uncheck nursing
         setFormData((prev) => ({
           ...prev,
           [name]: checked,
@@ -57,7 +58,7 @@ const RegisterForm = () => {
           child_age: "",
         }));
       } else if (name === "is_nursing" && checked) {
-        // Jika memilih menyusui, uncheck hamil
+        // If selecting nursing, uncheck pregnant
         setFormData((prev) => ({
           ...prev,
           [name]: checked,
@@ -65,7 +66,7 @@ const RegisterForm = () => {
           pregnancy_age: "",
         }));
       } else {
-        // Untuk unchecking checkbox
+        // For unchecking checkbox
         setFormData((prev) => ({
           ...prev,
           [name]: checked,
@@ -74,6 +75,36 @@ const RegisterForm = () => {
           ...(name === "is_nursing" && { child_age: "" }),
         }));
       }
+    } else if (name === "age_unit") {
+      // When age unit changes
+      setFormData((prev) => ({
+        ...prev,
+        age_unit: value,
+        age: "", // Reset age when unit changes to prevent invalid values
+      }));
+    } else if (name === "age") {
+      // Validate age based on unit
+      let newValue = value;
+      if (formData.age_unit === "months") {
+        if (value > 12) newValue = "12";
+        if (value < 1) newValue = "1";
+      } else {
+        if (value > 150) newValue = "150";
+        if (value < 1) newValue = "1";
+      }
+      setFormData((prev) => ({
+        ...prev,
+        [name]: newValue,
+      }));
+    } else if (name === "child_age") {
+      // Validate child age (1-12 months)
+      let newValue = value;
+      if (value > 12) newValue = "12";
+      if (value < 1) newValue = "1";
+      setFormData((prev) => ({
+        ...prev,
+        [name]: newValue,
+      }));
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -174,7 +205,6 @@ const RegisterForm = () => {
               <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">
                 Health Information
               </h3>
-
               <div className="grid grid-cols-2 gap-6 mb-6">
                 <div className="space-y-2">
                   <label
@@ -182,7 +212,7 @@ const RegisterForm = () => {
                     className="block text-xs sm:text-sm font-medium text-gray-700"
                   >
                     Gender
-                  </label>
+                  </label>{" "}
                   <select
                     id="gender"
                     name="gender"
@@ -190,8 +220,9 @@ const RegisterForm = () => {
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                   >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                    <option value="">Select Gender</option>
+                    <option value="Laki-laki">Male</option>
+                    <option value="Perempuan">Female</option>
                   </select>
                 </div>
                 <div className="space-y-2">
@@ -200,24 +231,35 @@ const RegisterForm = () => {
                     className="block text-xs sm:text-sm font-medium text-gray-700"
                   >
                     Age
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="age"
-                      name="age"
-                      type="number"
-                      value={formData.age}
+                  </label>{" "}
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <input
+                        id="age"
+                        name="age"
+                        type="number"
+                        value={formData.age}
+                        onChange={handleChange}
+                        min={formData.age_unit === "months" ? 1 : 1}
+                        max={formData.age_unit === "months" ? 12 : 150}
+                        placeholder={
+                          formData.age_unit === "months" ? "1-12" : "1-150"
+                        }
+                        className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+                      />
+                    </div>
+                    <select
+                      name="age_unit"
+                      value={formData.age_unit}
                       onChange={handleChange}
-                      placeholder="Enter your age"
-                      className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 pr-12 sm:pr-16 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
-                    />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
-                      years
-                    </span>
+                      className="w-28 border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+                    >
+                      <option value="years">Years</option>
+                      <option value="months">Months</option>
+                    </select>
                   </div>
                 </div>
               </div>
-
               <div className="grid grid-cols-2 gap-6 mb-6">
                 <div className="space-y-2">
                   <label
@@ -264,9 +306,27 @@ const RegisterForm = () => {
                   </div>
                 </div>
               </div>
-
-              {formData.gender === "Female" && (
-                <div className="space-y-4">
+              <div className="space-y-2 mb-6">
+                <label
+                  htmlFor="timezone"
+                  className="block text-xs sm:text-sm font-medium text-gray-700"
+                >
+                  Timezone
+                </label>
+                <select
+                  id="timezone"
+                  name="timezone"
+                  value={formData.timezone}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+                >
+                  <option value="Asia/Jakarta">WIB - Jakarta</option>
+                  <option value="Asia/Makassar">WITA - Makassar</option>
+                  <option value="Asia/Jayapura">WIT - Jayapura</option>
+                </select>
+              </div>{" "}
+              {formData.gender === "Perempuan" && (
+                <div className="space-y-4 mb-6">
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center">
                       <input
@@ -308,18 +368,20 @@ const RegisterForm = () => {
                         htmlFor="pregnancy_age"
                         className="block text-sm text-gray-700"
                       >
-                        Pregnancy Age (months)
+                        Trimester
                       </label>
-                      <input
+                      <select
                         id="pregnancy_age"
                         name="pregnancy_age"
-                        type="number"
-                        min="1"
-                        max="9"
                         value={formData.pregnancy_age}
                         onChange={handleChange}
-                        className="mt-1 w-32 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
-                      />
+                        className="mt-1 w-48 border border-gray-300 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
+                      >
+                        <option value="">Select Trimester</option>
+                        <option value="1">First Trimester</option>
+                        <option value="2">Second Trimester</option>
+                        <option value="3">Third Trimester</option>
+                      </select>
                     </div>
                   )}
 
@@ -329,18 +391,24 @@ const RegisterForm = () => {
                         htmlFor="child_age"
                         className="block text-sm text-gray-700"
                       >
-                        Child Age (months)
+                        Baby Age
                       </label>
-                      <input
-                        id="child_age"
-                        name="child_age"
-                        type="number"
-                        min="0"
-                        max="60"
-                        value={formData.child_age}
-                        onChange={handleChange}
-                        className="mt-1 w-32 border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
-                      />
+                      <div className="relative">
+                        <input
+                          id="child_age"
+                          name="child_age"
+                          type="number"
+                          min="1"
+                          max="12"
+                          value={formData.child_age}
+                          onChange={handleChange}
+                          placeholder="1-12 months"
+                          className="mt-1 w-32 border border-gray-300 rounded-xl p-2.5 pr-16 text-sm focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
+                        />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
+                          months
+                        </span>
+                      </div>
                     </div>
                   )}
                 </div>
