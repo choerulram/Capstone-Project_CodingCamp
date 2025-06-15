@@ -111,8 +111,10 @@ const Scanner = () => {
       if (!isPremium) {
         dispatch(incrementScanCount());
       }
+      console.log("Response dari API upload:", result);
 
       setNutritionData({
+        id: result.id, // Menambahkan ID dari response
         kandungan: result.kandungan_gizi || {},
         perbandingan: result.perbandingan || [],
         kebutuhan: result.kebutuhan_harian || {},
@@ -374,12 +376,16 @@ const Scanner = () => {
         {/* Loading Modal */}
         <LoadingModal isLoading={isLoading} />
       </div>
-
-      {/* Hasil Analisis - Hanya muncul saat ada data */}
+      {/* Hasil Analisis - Hanya muncul saat ada data */}{" "}
       {nutritionData && (
         <AnalysisResult
           nutritionData={nutritionData}
           currentTime={currentTime}
+          onUpdateSuccess={(updatedData) => {
+            console.log("Data nutrisi diperbarui:", updatedData);
+            // Update state dengan data terbaru
+            setNutritionData(updatedData);
+          }}
         />
       )}
     </div>

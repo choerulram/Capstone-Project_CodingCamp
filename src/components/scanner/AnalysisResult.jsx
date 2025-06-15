@@ -1,19 +1,135 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import api from "../../utils/api";
 
-const AnalysisResult = ({ nutritionData, currentTime }) => {
+const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [updatedValues, setUpdatedValues] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const token = useSelector((state) => state.auth.token);
+
+  // Inisialisasi nilai yang bisa diedit
+  const initializeEditValues = () => {
+    const values = {};
+    Object.entries(nutritionData.kandungan).forEach(([key, value]) => {
+      values[key] = value;
+    });
+    setUpdatedValues(values);
+    setIsEditing(true);
+    setError(null);
+    setSuccessMessage(null);
+  };
+
+  // Handle perubahan nilai input
+  const handleInputChange = (key, value) => {
+    // Validasi input: tidak boleh negatif dan maksimal 999.9
+    const numValue = parseFloat(value);
+    if (isNaN(numValue) || numValue < 0) return;
+    if (numValue > 999.9) return;
+
+    setUpdatedValues((prev) => ({
+      ...prev,
+      [key]: numValue,
+    }));
+  };
+
+  // Validasi semua nilai sebelum submit
+  const validateValues = () => {
+    for (const [key, value] of Object.entries(updatedValues)) {
+      if (value < 0 || value > 999.9 || isNaN(value)) {
+        setError(`Nilai ${key} tidak valid. Pastikan antara 0 dan 999.9`);
+        return false;
+      }
+    }
+    return true;
+  };
+  // Handle submit update nutrisi
+  const handleSubmitUpdate = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccessMessage(null);
+
+    if (!validateValues()) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // Debug log untuk melihat data yang diterima
+      console.log("nutritionData:", nutritionData);
+
+      // Periksa apakah ID ada di dalam objek nutritionData
+      if (!nutritionData.id) {
+        console.error(
+          "ID pemindaian tidak ditemukan dalam nutritionData:",
+          nutritionData
+        );
+        throw new Error(
+          "ID pemindaian tidak ditemukan - Pastikan data yang dikirim dari parent component memiliki ID"
+        );
+      }
+
+      const response = await api.updateNutrition(
+        token,
+        nutritionData.id,
+        updatedValues
+      );
+      if (response?.message) {
+        setSuccessMessage("Berhasil memperbarui kandungan gizi!");
+        // Update local state dengan nilai baru
+        const updatedNutritionData = {
+          ...nutritionData,
+          kandungan: updatedValues,
+          // Update juga nilai di perbandingan
+          perbandingan: nutritionData.perbandingan.map((row) => ({
+            ...row,
+            hasil_ocr: updatedValues[row.label]
+              ? `${updatedValues[row.label]} g`
+              : row.hasil_ocr,
+          })),
+        };
+
+        // Reset state editing
+        setIsEditing(false);
+
+        // Panggil callback untuk memperbarui data parent
+        if (onUpdateSuccess) {
+          onUpdateSuccess(updatedNutritionData);
+        }
+      }
+    } catch (err) {
+      setError(err.message || "Gagal memperbarui nutrisi");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle batal edit
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setError(null);
+    setSuccessMessage(null);
+  };
+
   return (
     <div className="lg:w-1/2 w-full animate-slide-up px-4">
       <div className="bg-white p-4 lg:p-6 rounded-xl shadow-md border border-gray-100">
-        {/* Header dengan tanggal dan waktu yang diperbarui */}
+        {/* Header dengan tombol edit */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-4 lg:mb-6 pb-4 border-b border-gray-100 gap-4">
           <h2 className="text-xl lg:text-2xl font-bold text-main">
             Hasil Analisis Nutrisi
           </h2>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-            <span className="px-4 py-2 bg-highlight text-main rounded-lg text-sm font-medium flex items-center gap-2">
+          {!isEditing ? (
+            <button
+              onClick={initializeEditValues}
+              className="text-sm px-4 py-2 bg-main text-white hover:bg-main/90 rounded-lg transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+              title="Edit nutrisi"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
+                className="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -22,43 +138,142 @@ const AnalysisResult = ({ nutritionData, currentTime }) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                 />
               </svg>
-              {currentTime.toLocaleDateString("id-ID", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </span>
-          </div>
+              <span className="font-medium">Edit Nutrisi</span>
+            </button>
+          ) : null}
         </div>
+
+        {error && (
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            {error}
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+            {successMessage}
+          </div>
+        )}
 
         <div className="space-y-8">
           {/* Kandungan Gizi */}
           <div className="bg-gray-50 p-4 lg:p-6 rounded-xl border border-gray-100">
-            <h3 className="text-lg font-semibold mb-4 text-main flex items-center">
-              <span className="bg-secondary p-2 rounded-lg mr-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  />
-                </svg>
-              </span>
-              Kandungan Gizi per Sajian
-            </h3>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-main flex items-center">
+                <span className="bg-secondary p-2 rounded-lg mr-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    />
+                  </svg>
+                </span>
+                Kandungan Gizi per Sajian
+              </h3>
+              {isEditing && (
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleCancelEdit}
+                    className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg transition-colors"
+                    disabled={loading}
+                  >
+                    Batal
+                  </button>
+                  <button
+                    onClick={handleSubmitUpdate}
+                    disabled={loading}
+                    className="px-3 py-1.5 text-sm bg-main hover:bg-main/90 text-white rounded-lg transition-colors flex items-center gap-1"
+                  >
+                    {loading ? (
+                      <>
+                        <svg
+                          className="animate-spin h-4 w-4 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                          ></path>
+                        </svg>
+                        <span>Menyimpan...</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        <span>Simpan</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-3">
-              {Object.entries(nutritionData.kandungan).map(([key, value]) => (
+              {Object.entries(
+                isEditing ? updatedValues : nutritionData.kandungan
+              ).map(([key, value]) => (
                 <div
                   key={key}
                   className="flex justify-between p-2 lg:p-3 bg-white rounded-lg hover:bg-gray-100 transition-colors border border-gray-100"
@@ -68,7 +283,22 @@ const AnalysisResult = ({ nutritionData, currentTime }) => {
                       .replace("_", " ")
                       .replace(/\b\w/g, (c) => c.toUpperCase())}
                   </span>
-                  <span className="font-medium text-main">{value ?? 0}</span>
+                  {isEditing ? (
+                    <div className="flex items-center gap-1">
+                      <input
+                        type="number"
+                        value={value}
+                        onChange={(e) => handleInputChange(key, e.target.value)}
+                        className="w-20 text-right border border-gray-200 rounded px-2 py-1 text-sm focus:outline-none focus:border-main"
+                        step="0.1"
+                        min="0"
+                        max="999.9"
+                      />
+                      <span className="text-xs text-gray-500">g</span>
+                    </div>
+                  ) : (
+                    <span className="font-medium text-main">{value} g</span>
+                  )}
                 </div>
               ))}
             </div>
@@ -165,7 +395,9 @@ const AnalysisResult = ({ nutritionData, currentTime }) => {
                               {row.label}
                             </td>
                             <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm text-gray-600">
-                              {row.hasil_ocr}
+                              {isEditing && row.label in updatedValues
+                                ? `${updatedValues[row.label]} g`
+                                : row.hasil_ocr}
                             </td>
                             <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm text-gray-600">
                               {row.kebutuhan_harian}

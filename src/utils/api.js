@@ -343,6 +343,31 @@ const api = {
       handleApiError(error);
     }
   },
+
+  // Fungsi untuk mengupdate kandungan gizi hasil OCR
+  updateNutrition: async (token, id, nutritionData) => {
+    try {
+      const response = await fetch(`${BASE_URL}/update-nutrition/${id}`, {
+        method: "PUT",
+        headers: {
+          ...defaultHeaders,
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(nutritionData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          message: "Terjadi kesalahan saat mengupdate kandungan gizi",
+        }));
+        throw new Error(errorData.message || "Gagal mengupdate kandungan gizi");
+      }
+
+      return response.json();
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
 };
 
 export default api;
