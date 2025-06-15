@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../../utils/api";
 import { useSelector } from "react-redux";
 
@@ -8,13 +8,37 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
     nama: userData?.nama || "",
     gender: userData?.gender || "",
     umur: userData?.umur || "",
+    umur_satuan: userData?.umur_satuan || "tahun", // default ke tahun jika tidak ada
     tinggi: userData?.tinggi || "",
     bb: userData?.bb || "",
     hamil: userData?.hamil || false,
     usia_kandungan: userData?.usia_kandungan || "",
     menyusui: userData?.menyusui || false,
     umur_anak: userData?.umur_anak || "",
+    timezone:
+      userData?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
   });
+
+  // Effect untuk memperbarui form data ketika userData berubah
+  useEffect(() => {
+    if (userData) {
+      setFormData((prevData) => ({
+        ...prevData,
+        nama: userData.nama || "",
+        gender: userData.gender || "",
+        umur: userData.umur || "",
+        umur_satuan: userData.umur_satuan || "tahun",
+        tinggi: userData.tinggi || "",
+        bb: userData.bb || "",
+        hamil: userData.hamil || false,
+        usia_kandungan: userData.usia_kandungan || "",
+        menyusui: userData.menyusui || false,
+        umur_anak: userData.umur_anak || "",
+        timezone:
+          userData.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
+      }));
+    }
+  }, [userData]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -24,31 +48,37 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
     const errors = {};
 
     // Validate required fields
-    if (!formData.nama.trim()) errors.nama = "Full name is required";
-    if (!formData.gender) errors.gender = "Gender is required";
-    if (!formData.umur) errors.umur = "Age is required";
-    if (!formData.tinggi) errors.tinggi = "Height is required";
-    if (!formData.bb) errors.bb = "Weight is required";
+    if (!formData.nama.trim()) errors.nama = "Nama lengkap wajib diisi";
+    if (!formData.gender) errors.gender = "Jenis kelamin wajib diisi";
+    if (!formData.umur) errors.umur = "Umur wajib diisi";
+    if (!formData.tinggi) errors.tinggi = "Tinggi badan wajib diisi";
+    if (!formData.bb) errors.bb = "Berat badan wajib diisi";
 
-    // Validate specific conditions for female users
-    if (formData.gender === "Female") {
+    // Validate specific conditions for perempuan users
+    if (formData.gender === "Perempuan") {
       if (formData.hamil && !formData.usia_kandungan) {
-        errors.usia_kandungan = "Pregnancy age is required";
+        errors.usia_kandungan = "Usia kandungan wajib diisi";
       }
       if (formData.menyusui && !formData.umur_anak) {
-        errors.umur_anak = "Child age is required";
+        errors.umur_anak = "Usia anak wajib diisi";
+      }
+    } // Validate numeric fields
+    if (formData.umur) {
+      if (formData.umur_satuan === "bulan") {
+        if (formData.umur < 1 || formData.umur > 12) {
+          errors.umur = "Untuk bayi, masukkan umur 1-12 bulan";
+        }
+      } else {
+        if (formData.umur < 1 || formData.umur > 150) {
+          errors.umur = "Masukkan umur yang valid (1-150 tahun)";
+        }
       }
     }
-
-    // Validate numeric fields
-    if (formData.umur && (formData.umur < 0 || formData.umur > 150)) {
-      errors.umur = "Please enter a valid age (0-150 years)";
-    }
     if (formData.tinggi && (formData.tinggi < 0 || formData.tinggi > 300)) {
-      errors.tinggi = "Please enter a valid height (0-300 cm)";
+      errors.tinggi = "Masukkan tinggi badan yang valid (0-300 cm)";
     }
     if (formData.bb && (formData.bb < 0 || formData.bb > 500)) {
-      errors.bb = "Please enter a valid weight (0-500 kg)";
+      errors.bb = "Masukkan berat badan yang valid (0-500 kg)";
     }
 
     setValidationErrors(errors);
@@ -59,38 +89,53 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
 
     if (type === "checkbox") {
       if (name === "hamil") {
-        // When changing pregnancy status
         setFormData((prev) => ({
           ...prev,
           hamil: checked,
-          // If checking pregnant, clear nursing
           menyusui: false,
           usia_kandungan: checked ? prev.usia_kandungan : "",
           umur_anak: "",
         }));
       } else if (name === "menyusui") {
-        // When changing nursing status
         setFormData((prev) => ({
           ...prev,
           menyusui: checked,
-          // If checking nursing, clear pregnant
           hamil: false,
           umur_anak: checked ? prev.umur_anak : "",
           usia_kandungan: "",
         }));
       }
     } else if (name === "gender") {
-      // Ketika gender berubah
       setFormData((prev) => ({
         ...prev,
         gender: value,
-        // Reset status kesehatan jika gender berubah menjadi Male
-        ...(value === "Male" && {
+        ...(value === "Laki-laki" && {
           hamil: false,
           menyusui: false,
           usia_kandungan: "",
           umur_anak: "",
         }),
+      }));
+    } else if (name === "umur_satuan") {
+      // Ketika satuan berubah
+      setFormData((prev) => ({
+        ...prev,
+        umur_satuan: value,
+        umur: "", // Reset nilai umur untuk menghindari nilai yang tidak valid
+      }));
+    } else if (name === "umur") {
+      // Validasi nilai umur sesuai satuan
+      let newValue = value;
+      if (formData.umur_satuan === "bulan") {
+        if (value > 12) newValue = "12";
+        if (value < 1) newValue = "1";
+      } else {
+        if (value > 150) newValue = "150";
+        if (value < 1) newValue = "1";
+      }
+      setFormData((prev) => ({
+        ...prev,
+        [name]: newValue,
       }));
     } else {
       setFormData((prev) => ({
@@ -105,31 +150,42 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
     setValidationErrors({});
 
     if (!validateForm()) {
-      setError("Please fill in all required fields correctly");
+      setError("Mohon isi semua field yang diperlukan dengan benar");
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      const updatedProfile = await api.updateProfile(token, {
+      // Konversi format data sesuai dengan API
+      const dataToUpdate = {
         nama: formData.nama,
-        bb: formData.bb,
-        tinggi: formData.tinggi,
+        email: userData.email,
+        bb: formData.bb ? Number(formData.bb) : null,
+        tinggi: formData.tinggi ? Number(formData.tinggi) : null,
         gender: formData.gender,
-        umur: formData.umur,
-        hamil: formData.hamil,
-        usia_kandungan: formData.hamil ? formData.usia_kandungan : null,
-        menyusui: formData.menyusui,
-        umur_anak: formData.menyusui ? formData.umur_anak : null,
-      });
+        umur: formData.umur ? Number(formData.umur) : null,
+        umur_satuan: formData.umur_satuan,
+        hamil: formData.hamil ? 1 : 0,
+        usia_kandungan: formData.hamil ? Number(formData.usia_kandungan) : null,
+        menyusui: formData.menyusui ? 1 : 0,
+        umur_anak: formData.menyusui ? Number(formData.umur_anak) : null,
+        timezone: formData.timezone, // Menambahkan timezone ke data yang dikirim
+      };
+
+      console.log("Data yang akan dikirim ke API:", dataToUpdate);
+
+      const updatedProfile = await api.updateProfile(token, dataToUpdate);
+
+      console.log("Response dari API:", updatedProfile);
 
       if (updatedProfile) {
         onUpdate(); // Refresh profile data
         onClose(); // Close the modal
       }
     } catch (err) {
-      setError(err.message || "Failed to update profile");
+      console.error("Error updating profile:", err);
+      setError(err.message || "Gagal memperbarui profil");
     } finally {
       setIsSubmitting(false);
     }
@@ -205,7 +261,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
-              {/* Informasi Dasar */}
+              {/* Basic Information */}
               <div className="bg-gray-50/50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-100">
                 <div className="flex items-center space-x-2 sm:space-x-3 mb-4">
                   <div className="p-1.5 sm:p-2 bg-blue-50 rounded-lg">
@@ -227,17 +283,17 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                     Basic Information
                   </h3>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                <div className="space-y-4 sm:space-y-6">
                   <div className="space-y-1.5 sm:space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
-                      Full Name
+                      Nama Lengkap
                     </label>
                     <input
                       type="text"
                       name="nama"
                       value={formData.nama}
                       onChange={handleChange}
-                      placeholder="Enter your full name"
+                      placeholder="Masukkan nama lengkap"
                       className={`w-full border ${
                         validationErrors.nama
                           ? "border-red-500"
@@ -251,10 +307,9 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                     )}
                   </div>
                   <div className="space-y-1.5 sm:space-y-2">
-                    {" "}
                     <label className="block text-sm font-medium text-gray-700">
                       Gender
-                    </label>{" "}
+                    </label>
                     <select
                       name="gender"
                       value={formData.gender}
@@ -265,9 +320,9 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                           : "border-gray-300"
                       } rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
                     >
-                      <option value="">Select Gender</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
+                      <option value="">Pilih Jenis Kelamin</option>
+                      <option value="Laki-laki">Laki-laki</option>
+                      <option value="Perempuan">Perempuan</option>
                     </select>
                     {validationErrors.gender && (
                       <p className="mt-1 text-xs sm:text-sm text-red-500">
@@ -276,32 +331,58 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                     )}
                   </div>
                   <div className="space-y-1.5 sm:space-y-2">
-                    {" "}
                     <label className="block text-sm font-medium text-gray-700">
-                      Age
-                    </label>{" "}
-                    <div className="relative">
-                      <input
-                        type="number"
-                        name="umur"
-                        value={formData.umur}
+                      Umur
+                    </label>
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <input
+                          type="number"
+                          name="umur"
+                          value={formData.umur}
+                          onChange={handleChange}
+                          min={formData.umur_satuan === "bulan" ? 1 : 1}
+                          max={formData.umur_satuan === "bulan" ? 12 : 150}
+                          placeholder={
+                            formData.umur_satuan === "bulan" ? "1-12" : "1-150"
+                          }
+                          className={`w-full border ${
+                            validationErrors.umur
+                              ? "border-red-500"
+                              : "border-gray-300"
+                          } rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
+                        />
+                      </div>
+                      <select
+                        name="umur_satuan"
+                        value={formData.umur_satuan}
                         onChange={handleChange}
-                        placeholder="Enter your age"
-                        className={`w-full border ${
-                          validationErrors.umur
-                            ? "border-red-500"
-                            : "border-gray-300"
-                        } rounded-lg sm:rounded-xl p-2.5 sm:p-3 pr-14 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
-                      />
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
-                        years
-                      </span>
+                        className="w-28 border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
+                      >
+                        <option value="tahun">Tahun</option>
+                        <option value="bulan">Bulan</option>
+                      </select>
                     </div>
                     {validationErrors.umur && (
                       <p className="mt-1 text-xs sm:text-sm text-red-500">
                         {validationErrors.umur}
                       </p>
                     )}
+                  </div>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Zona Waktu
+                    </label>
+                    <select
+                      name="timezone"
+                      value={formData.timezone}
+                      onChange={handleChange}
+                      className={`w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
+                    >
+                      <option value="Asia/Jakarta">WIB - Jakarta</option>
+                      <option value="Asia/Makassar">WITA - Makassar</option>
+                      <option value="Asia/Jayapura">WIT - Jayapura</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -385,7 +466,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                 </div>
               </div>{" "}
               {/* Status Kesehatan */}{" "}
-              {formData.gender === "Female" && (
+              {formData.gender === "Perempuan" && (
                 <div className="bg-gray-50/50 p-4 sm:p-6 rounded-lg sm:rounded-xl border border-gray-100">
                   <div className="flex items-center space-x-2 sm:space-x-3 mb-4">
                     <div className="p-1.5 sm:p-2 bg-purple-50 rounded-lg">
@@ -422,7 +503,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                           htmlFor="hamil"
                           className="ml-2 text-sm font-medium text-gray-700"
                         >
-                          Pregnant
+                          Hamil
                         </label>
                       </div>
                       <div className="flex items-center">
@@ -438,7 +519,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                           htmlFor="menyusui"
                           className="ml-2 text-sm font-medium text-gray-700"
                         >
-                          Nursing
+                          Menyusui
                         </label>
                       </div>
                     </div>
@@ -446,22 +527,23 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                     {formData.hamil && (
                       <div className="pl-4 sm:pl-6">
                         <label className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-                          Pregnancy Age (months)
+                          Usia Kehamilan (Trimester)
                         </label>
-                        <input
-                          type="number"
+                        <select
                           name="usia_kandungan"
                           value={formData.usia_kandungan}
                           onChange={handleChange}
-                          min="1"
-                          max="9"
-                          placeholder="1-9 months"
-                          className={`w-full sm:w-32 border ${
+                          className={`w-full sm:w-48 border ${
                             validationErrors.usia_kandungan
                               ? "border-red-500"
                               : "border-gray-300"
                           } rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
-                        />
+                        >
+                          <option value="">Pilih Trimester</option>
+                          <option value="1">Trimester 1</option>
+                          <option value="2">Trimester 2</option>
+                          <option value="3">Trimester 3</option>
+                        </select>
                         {validationErrors.usia_kandungan && (
                           <p className="mt-1 text-xs sm:text-sm text-red-500">
                             {validationErrors.usia_kandungan}
@@ -473,22 +555,27 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                     {formData.menyusui && (
                       <div className="pl-4 sm:pl-6">
                         <label className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-                          Child Age (months)
+                          Usia Bayi (bulan)
                         </label>
-                        <input
-                          type="number"
-                          name="umur_anak"
-                          value={formData.umur_anak}
-                          onChange={handleChange}
-                          min="0"
-                          max="60"
-                          placeholder="0-60 months"
-                          className={`w-full sm:w-32 border ${
-                            validationErrors.umur_anak
-                              ? "border-red-500"
-                              : "border-gray-300"
-                          } rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
-                        />
+                        <div className="relative">
+                          <input
+                            type="number"
+                            name="umur_anak"
+                            value={formData.umur_anak}
+                            onChange={handleChange}
+                            min="1"
+                            max="12"
+                            placeholder="1-12 bulan"
+                            className={`w-full sm:w-32 border ${
+                              validationErrors.umur_anak
+                                ? "border-red-500"
+                                : "border-gray-300"
+                            } rounded-lg sm:rounded-xl p-2.5 sm:p-3 pr-16 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300`}
+                          />
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
+                            bulan
+                          </span>
+                        </div>
                         {validationErrors.umur_anak && (
                           <p className="mt-1 text-xs sm:text-sm text-red-500">
                             {validationErrors.umur_anak}

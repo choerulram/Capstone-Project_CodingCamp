@@ -20,12 +20,10 @@ const ProfileContent = () => {
   const getBMICategory = (bmi) => {
     if (!bmi) return null;
     const bmiValue = parseFloat(bmi);
-    if (bmiValue < 18.5)
-      return { category: "Underweight", color: "bg-blue-600" };
+    if (bmiValue < 18.5) return { category: "Kurus", color: "bg-blue-600" };
     if (bmiValue < 25) return { category: "Normal", color: "bg-green-600" };
-    if (bmiValue < 30)
-      return { category: "Overweight", color: "bg-yellow-600" };
-    return { category: "Obese", color: "bg-red-600" };
+    if (bmiValue < 30) return { category: "Gemuk", color: "bg-yellow-600" };
+    return { category: "Obesitas", color: "bg-red-600" };
   };
 
   useEffect(() => {
@@ -35,18 +33,18 @@ const ProfileContent = () => {
         setIsLoading(true);
         const data = await api.getProfile(token);
 
-        // Log data dengan waktu yang sudah dikonversi
-        console.log("[ProfileContent] Profile data received:", {
-          ...data,
-          created_at: data.created_at
-            ? convertToLocalTime(data.created_at)
-            : undefined,
-          updated_at: data.updated_at
-            ? convertToLocalTime(data.updated_at)
-            : undefined,
-        });
+        // Log data yang diterima dari server
+        console.log("[ProfileContent] Raw profile data:", data);
 
-        setUserData(data);
+        // Pastikan umur_satuan memiliki nilai default
+        const processedData = {
+          ...data,
+          umur_satuan: data.umur_satuan || "tahun",
+        };
+
+        console.log("[ProfileContent] Processed profile data:", processedData);
+
+        setUserData(processedData);
         setIsLoading(false);
       } catch (error) {
         console.error("[ProfileContent] Error fetching profile:", error);
@@ -201,7 +199,7 @@ const ProfileContent = () => {
                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                 />
               </svg>
-              Basic Information
+              Informasi Dasar
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
               {/* Gender */}
@@ -225,7 +223,9 @@ const ProfileContent = () => {
                       </svg>
                     </span>
                     <div>
-                      <h3 className="text-gray-700 font-medium mb-1">Gender</h3>
+                      <h3 className="text-gray-700 font-medium mb-1">
+                        Jenis Kelamin
+                      </h3>
                       <p className="text-gray-600">{userData.gender}</p>
                     </div>
                   </div>
@@ -253,8 +253,48 @@ const ProfileContent = () => {
                       </svg>
                     </span>
                     <div>
-                      <h3 className="text-gray-700 font-medium mb-1">Age</h3>
-                      <p className="text-gray-600">{userData.umur} years</p>
+                      {" "}
+                      <h3 className="text-gray-700 font-medium mb-1">Umur</h3>
+                      <p className="text-gray-600">
+                        {userData.umur} {userData.umur_satuan || "tahun"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Timezone */}
+              {userData?.timezone && (
+                <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+                  <div className="flex items-start gap-4">
+                    <span className="p-3 bg-purple-500/10 rounded-xl group-hover:bg-purple-500/20 transition-colors">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6 text-purple-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </span>
+                    <div>
+                      <h3 className="text-gray-700 font-medium mb-1">
+                        Zona Waktu
+                      </h3>
+                      <p className="text-gray-600">
+                        {userData.timezone === "Asia/Jakarta" &&
+                          "WIB - Jakarta"}
+                        {userData.timezone === "Asia/Makassar" &&
+                          "WITA - Makassar"}
+                        {userData.timezone === "Asia/Jayapura" &&
+                          "WIT - Jayapura"}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -280,7 +320,7 @@ const ProfileContent = () => {
                     d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                   />
                 </svg>
-                Body Measurements
+                Pengukuran Tubuh
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Height */}
@@ -305,7 +345,7 @@ const ProfileContent = () => {
                       </span>
                       <div>
                         <h3 className="text-gray-700 font-medium mb-1">
-                          Height
+                          Tinggi Badan
                         </h3>
                         <p className="text-gray-600">{userData.tinggi} cm</p>
                       </div>
@@ -335,7 +375,7 @@ const ProfileContent = () => {
                       </span>
                       <div>
                         <h3 className="text-gray-700 font-medium mb-1">
-                          Weight
+                          Berat Badan
                         </h3>
                         <p className="text-gray-600">{userData.bb} kg</p>
                       </div>
@@ -394,9 +434,9 @@ const ProfileContent = () => {
                         ></div>
                       </div>
                       <div className="flex justify-between mt-2 text-xs text-gray-500">
-                        <span>{"Underweight (<18.5)"}</span>
+                        <span>{"Kurus (<18.5)"}</span>
                         <span>{"Normal (18.5-24.9)"}</span>
-                        <span>{"Overweight (>25)"}</span>
+                        <span>{"Gemuk (>25)"}</span>
                       </div>
                     </div>
                   </div>
@@ -448,12 +488,12 @@ const ProfileContent = () => {
                       </span>
                       <div>
                         <h3 className="text-gray-700 font-medium mb-1">
-                          Pregnancy Status
+                          Status Kehamilan
                         </h3>
                         <p className="text-gray-600">
                           {userData.usia_kandungan
-                            ? `${userData.usia_kandungan} months`
-                            : "Pregnant"}
+                            ? `Trimester ${userData.usia_kandungan}`
+                            : "Sedang Hamil"}
                         </p>
                       </div>
                     </div>
@@ -482,12 +522,12 @@ const ProfileContent = () => {
                       </span>
                       <div>
                         <h3 className="text-gray-700 font-medium mb-1">
-                          Nursing Status
+                          Status Menyusui
                         </h3>
                         <p className="text-gray-600">
                           {userData.umur_anak
-                            ? `Child age: ${userData.umur_anak} months`
-                            : "Currently nursing"}
+                            ? `Usia bayi: ${userData.umur_anak} bulan`
+                            : "Sedang Menyusui"}
                         </p>
                       </div>
                     </div>

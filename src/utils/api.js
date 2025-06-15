@@ -226,6 +226,7 @@ const api = {
   },
   updateProfile: async (token, profileData) => {
     try {
+      console.log("Data yang akan dikirim ke backend:", profileData);
       const response = await fetch(`${BASE_URL}/me`, {
         method: "PUT",
         headers: {
@@ -238,6 +239,7 @@ const api = {
           tinggi: profileData.tinggi ? Number(profileData.tinggi) : null,
           gender: profileData.gender,
           umur: profileData.umur ? Number(profileData.umur) : null,
+          umur_satuan: profileData.umur_satuan || "tahun", // Menambahkan field umur_satuan
           hamil: profileData.hamil,
           usia_kandungan: profileData.usia_kandungan
             ? Number(profileData.usia_kandungan)
@@ -246,20 +248,22 @@ const api = {
           umur_anak: profileData.umur_anak
             ? Number(profileData.umur_anak)
             : null,
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          timezone: profileData.timezone,
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({
-          detail: "Failed to update profile",
+          detail: "Gagal memperbarui profil",
         }));
         throw new Error(
-          errorData.detail || errorData.message || "Failed to update profile"
+          errorData.detail || errorData.message || "Gagal memperbarui profil"
         );
       }
 
-      return response.json();
+      const responseData = await response.json();
+      console.log("Response dari backend:", responseData);
+      return responseData;
     } catch (error) {
       handleApiError(error);
     }
