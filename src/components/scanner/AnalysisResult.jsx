@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { useSelector } from "react-redux";
 import api from "../../utils/api";
 
-const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
+const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedValues, setUpdatedValues] = useState({});
   const [loading, setLoading] = useState(false);
@@ -143,7 +143,7 @@ const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
   };
 
   return (
-    <div className="lg:w-1/2 w-full animate-slide-up px-4">
+    <div className="lg:w-1/2 w-full animate-slide-up px-4" ref={ref}>
       <div className="bg-white p-4 lg:p-6 rounded-xl shadow-md border border-gray-100">
         {/* Header dengan tombol edit */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-4 lg:mb-6 pb-4 border-b border-gray-100 gap-4">
@@ -492,6 +492,6 @@ const AnalysisResult = ({ nutritionData, onUpdateSuccess }) => {
       </div>
     </div>
   );
-};
+});
 
 export default AnalysisResult;

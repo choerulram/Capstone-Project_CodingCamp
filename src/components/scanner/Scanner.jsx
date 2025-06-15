@@ -392,20 +392,19 @@ const Scanner = () => {
         </label>{" "}
         {/* Loading Modal */}
         <LoadingModal isLoading={isLoading} />
-      </div>
+      </div>{" "}
       {/* Hasil Analisis - Hanya muncul saat ada data */}{" "}
       {nutritionData && (
-        <div ref={analysisResultRef}>
-          <AnalysisResult
-            nutritionData={nutritionData}
-            currentTime={currentTime}
-            onUpdateSuccess={(updatedData) => {
-              console.log("Data nutrisi diperbarui:", updatedData);
-              // Update state dengan data terbaru
-              setNutritionData(updatedData);
-            }}
-          />
-        </div>
+        <AnalysisResult
+          ref={analysisResultRef}
+          nutritionData={nutritionData}
+          currentTime={currentTime}
+          onUpdateSuccess={(updatedData) => {
+            console.log("Data nutrisi diperbarui:", updatedData);
+            // Update state dengan data terbaru
+            setNutritionData(updatedData);
+          }}
+        />
       )}
     </div>
   );
