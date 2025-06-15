@@ -268,6 +268,81 @@ const api = {
       handleApiError(error);
     }
   },
+
+  // Fungsi untuk mendapatkan rekomendasi produk
+  getRecommendation: async (token, nutritionData) => {
+    try {
+      const response = await fetch(`${BASE_URL}/recommendation`, {
+        method: "POST",
+        headers: {
+          ...defaultHeaders,
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(nutritionData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          message: "Terjadi kesalahan saat mengambil rekomendasi",
+        }));
+        throw new Error(errorData.message || "Gagal mendapatkan rekomendasi");
+      }
+
+      return response.json();
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  // Fungsi untuk menyimpan rekomendasi
+  saveRecommendation: async (token, nutritionData) => {
+    try {
+      const response = await fetch(`${BASE_URL}/recommendation/save`, {
+        method: "POST",
+        headers: {
+          ...defaultHeaders,
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(nutritionData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          message: "Terjadi kesalahan saat menyimpan rekomendasi",
+        }));
+        throw new Error(errorData.message || "Gagal menyimpan rekomendasi");
+      }
+
+      return response.json();
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  // Fungsi untuk mendapatkan riwayat rekomendasi
+  getRecommendationHistory: async (token) => {
+    try {
+      const response = await fetch(`${BASE_URL}/recommendation/history`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          message: "Terjadi kesalahan saat mengambil riwayat rekomendasi",
+        }));
+        throw new Error(
+          errorData.message || "Gagal mendapatkan riwayat rekomendasi"
+        );
+      }
+
+      return response.json();
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
 };
 
 export default api;

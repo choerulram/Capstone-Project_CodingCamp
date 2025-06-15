@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
-import api, { BASE_URL } from "../../utils/api";
+import api from "../../utils/api";
 
 const ProductRecommendation = () => {
   const [recommendation, setRecommendation] = useState(null);
@@ -8,99 +8,137 @@ const ProductRecommendation = () => {
   const [error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
-  useEffect(() => {
-    const getRecommendation = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        if (!token) {
-          throw new Error("Anda harus login terlebih dahulu.");
-        }
-
-        // Mengambil riwayat pemindaian hari ini
-        const historyData = await api.getTodayScanHistory(token);
-        const todayHistory = historyData.history || [];
-
-        if (todayHistory.length === 0) {
-          throw new Error(
-            "Anda belum memiliki riwayat pemindaian hari ini. Silakan lakukan pemindaian makanan terlebih dahulu."
-          );
-        }
-
-        // Menghitung total nutrisi
-        const totalGizi = todayHistory.reduce((acc, item) => {
-          const gizi = item.kandungan_gizi || {};
-          return {
-            energy_kal: (acc.energy_kal || 0) + Number(gizi.energi || 0),
-            protein_g: (acc.protein_g || 0) + Number(gizi.protein || 0),
-            fat_g: (acc.fat_g || 0) + Number(gizi["lemak total"] || 0),
-            carbohydrate_g:
-              (acc.carbohydrate_g || 0) + Number(gizi.karbohidrat || 0),
-            fiber_g: (acc.fiber_g || 0) + Number(gizi.serat || 0),
-            sugar_g: (acc.sugar_g || 0) + Number(gizi.gula || 0),
-            sodium_mg: (acc.sodium_mg || 0) + Number(gizi.garam || 0),
-          };
-        }, {});
-
-        // Menyiapkan payload sesuai format API
-        const inputData = {
-          konsumsi: totalGizi,
-          target_harian: {
-            energy_kal: 2100,
-            protein_g: 60,
-            fat_g: 70,
-            carbohydrate_g: 300,
-            fiber_g: 30,
-            sugar_g: 50,
-            sodium_mg: 2000,
-          },
-        };
-
-        // Mengambil rekomendasi
-        const response = await fetch(`${BASE_URL}/recommendation`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(inputData),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(
-            data?.error ||
-              data?.message ||
-              "Terjadi kesalahan saat memuat rekomendasi"
-          );
-        }
-
-        if (!data) {
-          throw new Error("Tidak dapat memuat rekomendasi. Silakan coba lagi.");
-        }
-
-        setRecommendation(data);
-      } catch (err) {
-        console.error("Recommendation Error:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
+  const getNewRecommendation = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      if (!token) {
+        throw new Error("Anda harus login terlebih dahulu.");
       }
-    };
 
-    getRecommendation();
+      // Mengambil riwayat pemindaian hari ini
+      const historyData = await api.getTodayScanHistory(token);
+      const todayHistory = historyData?.history || [];
+
+      if (todayHistory.length === 0) {
+        throw new Error(
+          "Anda belum memiliki riwayat pemindaian hari ini. Silakan lakukan pemindaian makanan terlebih dahulu."
+        );
+      }
+
+      // Menghitung total nutrisi
+      const totalGizi = todayHistory.reduce((acc, item) => {
+        const gizi = item.kandungan_gizi || {};
+        return {
+          energy_kal: (acc.energy_kal || 0) + Number(gizi.energi || 0),
+          protein_g: (acc.protein_g || 0) + Number(gizi.protein || 0),
+          fat_g: (acc.fat_g || 0) + Number(gizi["lemak total"] || 0),
+          carbohydrate_g:
+            (acc.carbohydrate_g || 0) + Number(gizi.karbohidrat || 0),
+          fiber_g: (acc.fiber_g || 0) + Number(gizi.serat || 0),
+          sugar_g: (acc.sugar_g || 0) + Number(gizi.gula || 0),
+          sodium_mg: (acc.sodium_mg || 0) + Number(gizi.garam || 0),
+        };
+      }, {});
+
+      // Menyiapkan payload sesuai format API
+      const inputData = {
+        konsumsi: totalGizi,
+        target_harian: {
+          energy_kal: 2100,
+          protein_g: 60,
+          fat_g: 70,
+          carbohydrate_g: 300,
+          fiber_g: 30,
+          sugar_g: 50,
+          sodium_mg: 2000,
+        },
+      }; // Mendapatkan dan menyimpan rekomendasi baru
+      const recommendationData = await api.getRecommendation(token, inputData);
+      console.log("Recommendation Data:", recommendationData); // Untuk debugging
+      if (recommendationData) {
+        await api.saveRecommendation(token, inputData);
+        setRecommendation(recommendationData);
+      }
+    } catch (err) {
+      console.error("Recommendation Error:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }, [token]);
+
+  const getLastRecommendation = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      if (!token) {
+        throw new Error("Anda harus login terlebih dahulu.");
+      } // Mengambil riwayat rekomendasi terakhir
+      const historyResponse = await api.getRecommendationHistory(token);
+      console.log("History Response:", historyResponse); // Untuk debugging
+      if (historyResponse?.history && historyResponse.history.length > 0) {
+        const lastRecommendation = historyResponse.history[0].recommendation;
+        console.log("Last Recommendation:", lastRecommendation); // Untuk debugging
+        setRecommendation(lastRecommendation);
+      } else {
+        // Jika tidak ada history, maka generate rekomendasi baru
+        await getNewRecommendation();
+      }
+    } catch (err) {
+      console.error("History Error:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [token, getNewRecommendation]);
+
+  // Handle refresh button click
+  const handleRefresh = () => {
+    getNewRecommendation();
+  };
+
+  // Load last recommendation when component mounts
+  useEffect(() => {
+    if (token) {
+      getLastRecommendation();
+    }
+  }, [token, getLastRecommendation]);
+
   return (
     <div
       id="nutrition-recommendation"
       className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24"
     >
-      <h2 className="text-lg md:text-xl font-bold text-main mb-4 md:mb-6 flex items-center animate-float">
-        <span className="bg-main p-2 md:p-3 rounded-lg md:rounded-xl mr-2 md:mr-3">
+      <div className="flex justify-between items-center mb-4 md:mb-6">
+        <h2 className="text-lg md:text-xl font-bold text-main flex items-center animate-float">
+          <span className="bg-main p-2 md:p-3 rounded-lg md:rounded-xl mr-2 md:mr-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 md:h-6 md:w-6 text-secondary"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+              />
+            </svg>
+          </span>
+          Rekomendasi Produk
+        </h2>
+        <button
+          onClick={handleRefresh}
+          disabled={loading}
+          className="p-2 md:p-3 rounded-lg md:rounded-xl bg-main text-secondary hover:bg-main/90 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          title="Perbarui rekomendasi"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 md:h-6 md:w-6 text-secondary"
+            className={`h-5 w-5 md:h-6 md:w-6 ${loading ? "animate-spin" : ""}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -109,20 +147,20 @@ const ProductRecommendation = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
             />
           </svg>
-        </span>
-        Rekomendasi Produk
-      </h2>
+        </button>
+      </div>
+
       <div className="mb-4 md:mb-6 animate-fade-in animate-delay-100">
         <p className="text-xs md:text-sm text-gray-600">
-          {" "}
           {loading
             ? "Memuat rekomendasi produk..."
             : "Rekomendasi produk berdasarkan konsumsi gizi harian Anda"}
         </p>
-      </div>{" "}
+      </div>
+
       {error && (
         <div className="p-4 md:p-6 bg-red-50 text-red-800 rounded-xl md:rounded-2xl mb-4 md:mb-6 border border-red-200 shadow-sm animate-fade-in-down">
           <div className="flex items-center gap-3 md:gap-4">
@@ -151,10 +189,10 @@ const ProductRecommendation = () => {
           </div>
         </div>
       )}
+
       {loading && (
         <div className="flex flex-col items-center justify-center p-8 md:p-12 animate-pulse">
           <div className="relative">
-            {" "}
             <div className="w-12 h-12 md:w-16 md:h-16 border-4 border-secondary border-t-main rounded-full animate-spin"></div>
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
               <svg
@@ -171,16 +209,17 @@ const ProductRecommendation = () => {
                 />
               </svg>
             </div>
-          </div>{" "}
+          </div>
           <p className="mt-4 text-sm md:text-base text-main font-medium">
             Sedang memuat rekomendasi...
           </p>
         </div>
       )}
+
       {recommendation && !loading && (
         <div className="space-y-4 md:space-y-6">
           {/* Area Fokus Gizi */}
-          {recommendation.gizi_fokus &&
+          {Array.isArray(recommendation.gizi_fokus) &&
             recommendation.gizi_fokus.length > 0 && (
               <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-secondary shadow-sm">
                 <h3 className="text-base md:text-lg font-bold text-main mb-3 md:mb-4 flex items-center">
@@ -222,7 +261,7 @@ const ProductRecommendation = () => {
             )}
 
           {/* Rekomendasi Produk */}
-          {recommendation.rekomendasi &&
+          {Array.isArray(recommendation.rekomendasi) &&
             recommendation.rekomendasi.length > 0 && (
               <div className="space-y-4 md:space-y-6">
                 <h3 className="text-lg md:text-xl font-bold text-main flex items-center">
@@ -253,7 +292,7 @@ const ProductRecommendation = () => {
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-4 mb-4 md:mb-6">
                           <div className="flex-1">
                             <h4 className="text-base md:text-xl font-bold text-main mb-2">
-                              {product.product_name}
+                              {product.nama_produk || product.product_name}
                             </h4>
                             <div className="flex items-center gap-2">
                               <span
@@ -265,38 +304,41 @@ const ProductRecommendation = () => {
                                     : "bg-gray-100 text-main"
                                 }`}
                               >
-                                Skor Gizi: {product.skor_gizi.toFixed(1)}
+                                Skor Gizi: {product.skor_gizi?.toFixed(1)}
                               </span>
                             </div>
                           </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-4">
-                          {{
-                            ["Energi"]: "⚡",
-                            ["Protein"]: "🥩",
-                            ["Lemak total"]: "🥑",
-                            ["Karbohidrat"]: "🌾",
-                            ["Serat"]: "🌿",
-                            ["Gula"]: "🍯",
-                            ["Garam"]: "🧂",
-                          }.map(
-                            ([key, emoji]) =>
-                              product[key] && (
+                          {Object.entries({
+                            Energi: ["⚡", "energi"],
+                            Protein: ["🥩", "protein"],
+                            "Lemak total": ["🥑", "lemak_total"],
+                            Karbohidrat: ["🌾", "karbohidrat"],
+                            Serat: ["🌿", "serat"],
+                            Gula: ["🍯", "gula"],
+                            Garam: ["🧂", "garam"],
+                          }).map(([label, [emoji, key]]) => {
+                            const value = product[label];
+                            if (value) {
+                              return (
                                 <div
                                   key={key}
                                   className="bg-gradient-to-br from-highlight/20 to-white p-3 md:p-4 rounded-lg md:rounded-xl shadow-sm"
                                 >
                                   <div className="text-xs md:text-sm text-main font-medium flex items-center gap-1 md:gap-2 mb-1">
                                     <span>{emoji}</span>
-                                    {key}
+                                    {label}
                                   </div>
                                   <div className="text-sm md:text-base font-bold text-main">
-                                    {product[key]}
+                                    {value}
                                   </div>
                                 </div>
-                              )
-                          )}
+                              );
+                            }
+                            return null;
+                          })}
                         </div>
                       </div>
                     </div>
