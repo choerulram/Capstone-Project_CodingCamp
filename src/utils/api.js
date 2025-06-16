@@ -105,7 +105,6 @@ const api = {
 
   getDailyNutrition: async (token, timestamp = new Date().getTime()) => {
     try {
-      console.log("[API] Memulai fetch daily nutrition");
       const response = await fetch(
         `${BASE_URL}/daily-nutrition?_t=${timestamp}`,
         {

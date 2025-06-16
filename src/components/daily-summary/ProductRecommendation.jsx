@@ -24,7 +24,27 @@ const ProductRecommendation = () => {
         throw new Error(
           "Anda belum memiliki riwayat pemindaian hari ini. Silakan lakukan pemindaian makanan terlebih dahulu."
         );
+      } // Mengambil data target harian dari API
+      const dailyNutritionData = await api.getDailyNutrition(token);
+      if (!dailyNutritionData) {
+        throw new Error("Gagal mengambil data target harian");
       }
+
+      console.log("Response Daily Nutrition:", dailyNutritionData);
+
+      // Mengambil target harian dari response API dengan pengecekan
+      // Menggunakan kebutuhan_harian dari response sesuai dengan NutritionPage
+      const kebutuhanHarian = dailyNutritionData.kebutuhan_harian || {};
+
+      const targetHarian = {
+        energy_kal: Number(kebutuhanHarian.energi || 0),
+        protein_g: Number(kebutuhanHarian.protein || 0),
+        fat_g: Number(kebutuhanHarian["lemak total"] || 0),
+        carbohydrate_g: Number(kebutuhanHarian.karbohidrat || 0),
+        fiber_g: Number(kebutuhanHarian.serat || 0),
+        sugar_g: Number(kebutuhanHarian.gula || 0),
+        sodium_mg: Number(kebutuhanHarian.garam || 0),
+      };
 
       // Menghitung total nutrisi
       const totalGizi = todayHistory.reduce((acc, item) => {
@@ -41,21 +61,19 @@ const ProductRecommendation = () => {
         };
       }, {});
 
+      // Log informasi nutrisi
+      console.log("=== Informasi Nutrisi Harian ===");
+      console.log("Target Harian:", targetHarian);
+      console.log("Total Konsumsi:", totalGizi);
+
       // Menyiapkan payload sesuai format API
       const inputData = {
         konsumsi: totalGizi,
-        target_harian: {
-          energy_kal: 2100,
-          protein_g: 60,
-          fat_g: 70,
-          carbohydrate_g: 300,
-          fiber_g: 30,
-          sugar_g: 50,
-          sodium_mg: 2000,
-        },
-      }; // Mendapatkan dan menyimpan rekomendasi baru
+        target_harian: targetHarian,
+      };
+
+      // Mendapatkan dan menyimpan rekomendasi baru
       const recommendationData = await api.getRecommendation(token, inputData);
-      console.log("Recommendation Data:", recommendationData); // Untuk debugging
       if (recommendationData) {
         await api.saveRecommendation(token, inputData);
         setRecommendation(recommendationData);
@@ -74,12 +92,13 @@ const ProductRecommendation = () => {
     try {
       if (!token) {
         throw new Error("Anda harus login terlebih dahulu.");
-      } // Mengambil riwayat rekomendasi terakhir
+      }
+
+      // Mengambil riwayat rekomendasi terakhir
       const historyResponse = await api.getRecommendationHistory(token);
-      console.log("History Response:", historyResponse); // Untuk debugging
+
       if (historyResponse?.history && historyResponse.history.length > 0) {
         const lastRecommendation = historyResponse.history[0].recommendation;
-        console.log("Last Recommendation:", lastRecommendation); // Untuk debugging
         setRecommendation(lastRecommendation);
       } else {
         // Jika tidak ada history, maka generate rekomendasi baru
