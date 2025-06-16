@@ -110,12 +110,14 @@ const DiseasePrediction = () => {
     if (probability < 0.4) {
       return {
         color: "text-green-600",
-        bgColor: "bg-green-100",
+        gradientFrom: "from-green-600",
+        gradientTo: "to-emerald-500",
+        iconBg: "bg-green-100/50",
         riskText: "Risiko Rendah",
         icon: (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
+            className="h-6 w-6"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -132,12 +134,14 @@ const DiseasePrediction = () => {
     } else if (probability < 0.7) {
       return {
         color: "text-yellow-600",
-        bgColor: "bg-yellow-100",
+        gradientFrom: "from-yellow-500",
+        gradientTo: "to-orange-400",
+        iconBg: "bg-yellow-100/50",
         riskText: "Risiko Sedang",
         icon: (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
+            className="h-6 w-6"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -154,12 +158,14 @@ const DiseasePrediction = () => {
     } else {
       return {
         color: "text-red-600",
-        bgColor: "bg-red-100",
+        gradientFrom: "from-red-600",
+        gradientTo: "to-rose-500",
+        iconBg: "bg-red-100/50",
         riskText: "Risiko Tinggi",
         icon: (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
+            className="h-6 w-6"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -177,12 +183,12 @@ const DiseasePrediction = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
-      <h2 className="text-lg md:text-xl font-bold text-main mb-4 md:mb-6 flex items-center animate-float">
-        <span className="bg-main p-2 md:p-3 rounded-lg md:rounded-xl mr-2 md:mr-3">
+    <div className="bg-gradient-to-br from-white to-gray-50 p-3 sm:p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
+      <h2 className="text-base sm:text-lg md:text-xl font-bold text-main mb-4 sm:mb-6 md:mb-8 flex items-center animate-float">
+        <span className="bg-main p-2 sm:p-2 md:p-3 rounded-lg md:rounded-xl mr-2 md:mr-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 md:h-6 md:w-6 text-secondary"
+            className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-secondary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -196,20 +202,21 @@ const DiseasePrediction = () => {
           </svg>
         </span>
         <div>
-          <div className="text-lg md:text-xl font-bold text-main">
+          <div className="text-base sm:text-lg md:text-xl font-bold text-main">
             Prediksi Risiko Penyakit
           </div>
-          <div className="text-xs md:text-sm text-gray-500 mt-1">
+          <div className="text-xs sm:text-xs md:text-sm text-gray-500 mt-0.5 sm:mt-1">
             Berdasarkan pola makan hari ini
           </div>
         </div>
       </h2>
+
       {error && (
-        <div className="p-3 md:p-4 bg-red-50 text-red-700 rounded-lg mb-4 animate-fade-in">
-          <div className="flex items-center gap-2">
+        <div className="p-3 sm:p-4 md:p-5 bg-red-50 text-red-700 rounded-lg mb-4 sm:mb-6 animate-fade-in">
+          <div className="flex items-center gap-2 sm:gap-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 md:h-5 md:w-5"
+              className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 shrink-0"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -221,15 +228,23 @@ const DiseasePrediction = () => {
                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span className="text-sm md:text-base">{error}</span>
+            <span className="text-sm sm:text-sm md:text-base font-medium">
+              {error}
+            </span>
           </div>
         </div>
-      )}{" "}
+      )}
+
       {loading ? (
-        <div className="flex justify-center items-center h-32 md:h-40">
+        <div className="flex justify-center items-center h-40 sm:h-48 md:h-56">
           <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-8 w-8 md:h-10 md:w-10 border-b-2 border-main mb-2 md:mb-3"></div>
-            <p className="text-xs md:text-sm text-gray-500">
+            <div className="relative">
+              <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 border-2 border-main border-l-transparent"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 rounded-full bg-main/10"></div>
+              </div>
+            </div>
+            <p className="text-sm sm:text-sm md:text-base text-gray-600 font-medium mt-3 sm:mt-4">
               Menganalisis data...
             </p>
           </div>
@@ -239,67 +254,98 @@ const DiseasePrediction = () => {
         !error &&
         userData &&
         totalGizi && (
-          <div className="animate-fade-in space-y-4 md:space-y-6">
-            <div className="bg-white/90 backdrop-blur-sm p-4 md:p-8 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm">
-              <div className="space-y-4">
-                <h3 className="text-lg md:text-xl font-semibold text-main mb-4">
-                  Hasil Analisis Risiko Penyakit:
-                </h3>
-                <div className="grid gap-4">
-                  {predictions.map((prediction, index) => {
-                    const riskInfo = getRiskLevel(prediction.probabilitas);
-                    return (
-                      <div
-                        key={index}
-                        className={`${riskInfo.bgColor} bg-opacity-10 p-4 rounded-lg border border-${riskInfo.color} flex items-center justify-between`}
-                      >
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <span
-                              className={`${riskInfo.color} p-1 rounded-md`}
+          <div className="animate-fade-in space-y-4 sm:space-y-6 md:space-y-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+              {predictions.map((prediction, index) => {
+                const riskInfo = getRiskLevel(prediction.probabilitas);
+                const probability = Math.round(prediction.probabilitas * 100);
+                return (
+                  <div
+                    key={index}
+                    className="bg-white rounded-xl sm:rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden hover:-translate-y-1"
+                  >
+                    <div className="p-4 sm:p-5 md:p-6">
+                      {/* Icon and Disease Name */}
+                      <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
+                        <div
+                          className={`${riskInfo.iconBg} p-2 sm:p-3 rounded-lg sm:rounded-xl`}
+                        >
+                          <div className={`${riskInfo.color}`}>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5 sm:h-6 sm:w-6"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
                             >
-                              {riskInfo.icon}
-                            </span>
-                            <h4 className="font-medium text-gray-800">
-                              {prediction["Label terprediksi"]}
-                            </h4>
-                          </div>
-                          <div className="mt-2">
-                            <div className="flex items-center justify-between">
-                              <span
-                                className={`text-sm ${riskInfo.color} font-medium`}
-                              >
-                                {riskInfo.riskText}
-                              </span>
-                              <span className="text-sm font-medium text-gray-600">
-                                {Math.round(prediction.probabilitas * 100)}%
-                              </span>
-                            </div>
-                            <div className="mt-1 w-full bg-gray-200 rounded-full h-2">
-                              <div
-                                className={`h-2 rounded-full ${riskInfo.color.replace(
-                                  "text-",
-                                  "bg-"
-                                )}`}
-                                style={{
-                                  width: `${prediction.probabilitas * 100}%`,
-                                }}
-                              ></div>
-                            </div>
+                              {riskInfo.icon.props.children}
+                            </svg>
                           </div>
                         </div>
+                        <div className="flex-1">
+                          <h4 className="font-bold text-gray-800 text-base sm:text-lg md:text-xl leading-tight">
+                            {prediction["Label terprediksi"]}
+                          </h4>
+                          <span
+                            className={`text-xs sm:text-sm ${riskInfo.color} font-semibold mt-0.5 sm:mt-1 block`}
+                          >
+                            {riskInfo.riskText}
+                          </span>
+                        </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
+
+                      {/* Probability Circle */}
+                      <div className="flex items-center justify-between mt-3 sm:mt-4">
+                        <div className="relative w-14 h-14 sm:w-16 sm:h-16">
+                          <svg className="w-full h-full transform -rotate-90">
+                            <circle
+                              cx="28"
+                              cy="28"
+                              r="24"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                              fill="none"
+                              className="text-gray-200"
+                            />
+                            <circle
+                              cx="28"
+                              cy="28"
+                              r="24"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                              fill="none"
+                              strokeDasharray={`${probability * 1.51} 151`}
+                              className={`${riskInfo.color}`}
+                            />
+                          </svg>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span
+                              className={`text-xs sm:text-sm font-bold ${riskInfo.color}`}
+                            >
+                              {probability}%
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Risk Label with Gradient */}
+                        <div
+                          className={`bg-gradient-to-r ${riskInfo.gradientFrom} ${riskInfo.gradientTo} text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold ml-2`}
+                        >
+                          Level {Math.ceil(probability / 33)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <div className="bg-white/90 backdrop-blur-sm p-3 md:p-4 rounded-lg md:rounded-xl border border-secondary/30 shadow-sm">
-              <div className="flex items-center gap-2 md:gap-3">
-                <div className="bg-red-100 p-1.5 md:p-2 rounded-md md:rounded-lg">
+
+            <div className="bg-white/90 backdrop-blur p-4 sm:p-5 md:p-6 border border-gray-200/80 rounded-lg sm:rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="bg-main p-2 sm:p-2.5 rounded-lg sm:rounded-xl shrink-0">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 md:h-5 md:w-5 text-red-500"
+                    className="h-5 w-5 sm:h-6 sm:w-6 text-secondary"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -312,10 +358,17 @@ const DiseasePrediction = () => {
                     />
                   </svg>
                 </div>
-                <span className="text-xs md:text-sm font-medium text-gray-600">
-                  Prediksi ini berdasarkan analisis nutrisi dari makanan yang
-                  Anda konsumsi hari ini
-                </span>
+                <div className="flex-1">
+                  <p className="text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed">
+                    Prediksi ini berdasarkan analisis nutrisi dari makanan yang
+                    Anda konsumsi hari ini. Hasil dapat berubah sesuai dengan
+                    pola makan Anda.
+                  </p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 mt-1.5 sm:mt-2">
+                    Konsultasikan dengan profesional kesehatan untuk informasi
+                    lebih lanjut.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
