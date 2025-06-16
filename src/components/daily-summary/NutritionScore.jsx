@@ -122,7 +122,7 @@ const NutritionScore = () => {
         </div>
       </h2>{" "}
       {error ? (
-        <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm min-h-[320px] md:min-h-[420px]">
+        <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm">
           <div className="flex items-center justify-center h-full">
             <div className="p-3 md:p-4 bg-red-50 text-red-700 rounded-lg animate-fade-in w-full">
               <div className="flex items-center gap-2">
