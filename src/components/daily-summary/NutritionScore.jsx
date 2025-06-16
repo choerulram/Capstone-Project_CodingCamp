@@ -93,7 +93,7 @@ const NutritionScore = () => {
     return "text-red-600";
   };
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
+    <div className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
       <h2 className="text-lg md:text-xl font-bold text-main mb-4 md:mb-6 flex items-center animate-float">
         <span className="bg-main p-2 md:p-3 rounded-lg md:rounded-xl mr-2 md:mr-3">
           {" "}
@@ -122,7 +122,7 @@ const NutritionScore = () => {
         </div>
       </h2>{" "}
       {error ? (
-        <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm">
+        <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
           <div className="flex items-center justify-center h-full">
             <div className="p-3 md:p-4 bg-red-50 text-red-700 rounded-lg animate-fade-in w-full">
               <div className="flex items-center gap-2">
@@ -146,7 +146,7 @@ const NutritionScore = () => {
           </div>
         </div>
       ) : loading ? (
-        <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm min-h-[320px] md:min-h-[420px]">
+        <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden min-h-[320px] md:min-h-[420px]">
           <div className="flex justify-center items-center h-full">
             <div className="flex flex-col items-center">
               <div className="animate-spin rounded-full h-8 w-8 md:h-10 md:w-10 border-b-2 border-main mb-2 md:mb-3"></div>
@@ -159,7 +159,7 @@ const NutritionScore = () => {
       ) : (
         score !== null &&
         !error && (
-          <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm min-h-[320px] md:min-h-[420px] flex items-center justify-center">
+          <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden min-h-[320px] md:min-h-[420px] flex items-center justify-center">
             <div className="flex flex-col items-center">
               <div className="relative mb-4 md:mb-6">
                 <svg className="w-32 h-32 md:w-40 md:h-40" viewBox="0 0 36 36">

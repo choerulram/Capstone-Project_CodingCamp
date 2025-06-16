@@ -56,7 +56,7 @@ const TotalNutritionSummary = () => {
     }
   }, [token]);
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
+    <div className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
       <h2 className="text-lg md:text-xl font-bold text-main mb-4 md:mb-6 flex items-center animate-float">
         <span className="bg-main p-2 md:p-3 rounded-lg md:rounded-xl mr-2 md:mr-3">
           <svg
@@ -83,11 +83,11 @@ const TotalNutritionSummary = () => {
           </div>
         </div>
       </h2>{" "}
-      <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm min-h-[320px] md:min-h-[420px]">
+      <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-200/80 shadow-sm min-h-[320px] md:min-h-[420px]">
         {/* Grid container dibagi menjadi 2 baris: 3-3-1 */}{" "}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
           {/* Kalori */}
-          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-secondary/30 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-100">
+          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-gray-200/80 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-100">
             <div className="flex items-center gap-1 md:gap-3 mb-1 md:mb-3">
               {" "}
               <span className="p-1 md:p-2 rounded-lg bg-orange-100/80 text-orange-600 group-hover:bg-orange-200/80 transition-colors">
@@ -122,7 +122,7 @@ const TotalNutritionSummary = () => {
             </div>
           </div>{" "}
           {/* Protein */}
-          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-secondary/30 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-200">
+          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-gray-200/80 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-200">
             {" "}
             <div className="flex items-center gap-1 md:gap-3 mb-1 md:mb-3">
               <span className="p-1 md:p-2 rounded-lg bg-blue-100/80 text-blue-600 group-hover:bg-blue-200/80 transition-colors">
@@ -157,7 +157,7 @@ const TotalNutritionSummary = () => {
             </div>
           </div>{" "}
           {/* Lemak total */}
-          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-secondary/30 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-300">
+          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-gray-200/80 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-300">
             {" "}
             <div className="flex items-center gap-1 md:gap-3 mb-1 md:mb-3">
               <span className="p-1 md:p-2 rounded-lg bg-yellow-100/80 text-yellow-600 group-hover:bg-yellow-200/80 transition-colors">
@@ -192,7 +192,7 @@ const TotalNutritionSummary = () => {
             </div>
           </div>{" "}
           {/* Karbohidrat */}
-          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-secondary/30 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-400">
+          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-gray-200/80 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-400">
             {" "}
             <div className="flex items-center gap-1 md:gap-3 mb-1 md:mb-3">
               <span className="p-1 md:p-2 rounded-lg bg-purple-100/80 text-purple-600 group-hover:bg-purple-200/80 transition-colors">
@@ -227,7 +227,7 @@ const TotalNutritionSummary = () => {
             </div>
           </div>{" "}
           {/* Serat */}
-          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-secondary/30 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-500">
+          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-gray-200/80 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-500">
             {" "}
             <div className="flex items-center gap-1 md:gap-3 mb-1 md:mb-3">
               <span className="p-1 md:p-2 rounded-lg bg-green-100/80 text-green-600 group-hover:bg-green-200/80 transition-colors">
@@ -262,7 +262,7 @@ const TotalNutritionSummary = () => {
             </div>
           </div>{" "}
           {/* Gula */}
-          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-secondary/30 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-600">
+          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-gray-200/80 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-600">
             {" "}
             <div className="flex items-center gap-1 md:gap-3 mb-1 md:mb-3">
               <span className="p-1 md:p-2 rounded-lg bg-pink-100/80 text-pink-600 group-hover:bg-pink-200/80 transition-colors">
@@ -297,7 +297,7 @@ const TotalNutritionSummary = () => {
             </div>
           </div>{" "}
           {/* Garam */}
-          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-secondary/30 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-700">
+          <div className="group bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-xl border border-gray-200/80 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 animate-scaleIn animate-delay-700">
             {" "}
             <div className="flex items-center gap-1 md:gap-3 mb-1 md:mb-3">
               <span className="p-1 md:p-2 rounded-lg bg-cyan-100/80 text-cyan-600 group-hover:bg-cyan-200/80 transition-colors">

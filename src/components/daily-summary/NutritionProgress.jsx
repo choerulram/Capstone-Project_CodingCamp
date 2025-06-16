@@ -130,7 +130,7 @@ const NutritionProgress = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
+    <div className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
       <h2 className="text-lg md:text-xl font-bold text-main mb-4 md:mb-6 flex items-center animate-float">
         <span className="bg-main p-2 md:p-3 rounded-lg md:rounded-xl mr-2 md:mr-3">
           {" "}
@@ -151,7 +151,7 @@ const NutritionProgress = () => {
         </span>
         Progress Kebutuhan Harian
       </h2>
-      <div className="bg-white/90 backdrop-blur-sm p-3 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm mb-4 md:mb-8">
+      <div className="bg-white/90 backdrop-blur-sm p-3 md:p-6 rounded-xl md:rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden mb-4 md:mb-8">
         <div className="flex flex-col sm:flex-row justify-center gap-2 md:gap-4">
           <div className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl bg-gradient-to-br from-red-50 to-white border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
             <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-gradient-to-r from-red-500 to-red-600 ring-2 ring-red-200 ring-offset-1"></div>
@@ -174,7 +174,7 @@ const NutritionProgress = () => {
         </div>
       </div>{" "}
       {/* Bar Chart Container */}
-      <div className="bg-white/90 backdrop-blur-sm p-3 md:p-6 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm">
+      <div className="bg-white/90 backdrop-blur-sm p-3 md:p-6 rounded-xl md:rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-xl">
         <div className="relative h-[200px] sm:h-[360px] w-full pt-[30px]">
           {/* Chart Area with Y-axis and Grid */}
           <div className="absolute inset-0 flex pt-[30px]">

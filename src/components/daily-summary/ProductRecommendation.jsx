@@ -127,7 +127,7 @@ const ProductRecommendation = () => {
   return (
     <div
       id="nutrition-recommendation"
-      className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24"
+      className="bg-gradient-to-br from-white to-gray-50 p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 animate-slide-in-bottom scroll-mt-24"
     >
       <div className="flex justify-between items-center mb-4 md:mb-6">
         <h2 className="text-lg md:text-xl font-bold text-main flex items-center animate-float">
@@ -240,7 +240,7 @@ const ProductRecommendation = () => {
           {/* Area Fokus Gizi */}
           {Array.isArray(recommendation.gizi_fokus) &&
             recommendation.gizi_fokus.length > 0 && (
-              <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-secondary shadow-sm">
+              <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
                 <h3 className="text-base md:text-lg font-bold text-main mb-3 md:mb-4 flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -304,7 +304,7 @@ const ProductRecommendation = () => {
                   {recommendation.rekomendasi.map((product, index) => (
                     <div
                       key={index}
-                      className="bg-white rounded-xl md:rounded-2xl border border-secondary overflow-hidden hover:shadow-lg transition-all duration-300 animate-fade-in-right transform hover:-translate-y-1"
+                      className="bg-white rounded-xl md:rounded-2xl border border-gray-200/80 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden"
                       style={{ animationDelay: `${index * 150}ms` }}
                     >
                       <div className="p-4 md:p-6">

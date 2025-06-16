@@ -183,7 +183,7 @@ const DiseasePrediction = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 p-3 sm:p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
+    <div className="bg-gradient-to-br from-white to-gray-50 p-3 sm:p-4 md:p-8 rounded-xl md:rounded-2xl border border-main/30 shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 animate-slide-in-bottom scroll-mt-24">
       <h2 className="text-base sm:text-lg md:text-xl font-bold text-main mb-4 sm:mb-6 md:mb-8 flex items-center animate-float">
         <span className="bg-main p-2 sm:p-2 md:p-3 rounded-lg md:rounded-xl mr-2 md:mr-3">
           <svg
