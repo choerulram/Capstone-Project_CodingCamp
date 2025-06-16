@@ -114,12 +114,24 @@ const Scanner = () => {
       }
       console.log("Response dari API upload:", result);
 
-      setNutritionData({
-        id: result.id, // Menambahkan ID dari response
+      // Menyimpan data nutrisi
+      const nutritionDataToSave = {
+        id: result.id,
         kandungan: result.kandungan_gizi || {},
         perbandingan: result.perbandingan || [],
         kebutuhan: result.kebutuhan_harian || {},
-      });
+      };
+
+      setNutritionData(nutritionDataToSave);
+
+      // Menyimpan rekomendasi setelah scan berhasil
+      try {
+        await api.saveRecommendation(token, nutritionDataToSave);
+        console.log("Rekomendasi berhasil disimpan");
+      } catch (saveError) {
+        console.error("Error saat menyimpan rekomendasi:", saveError);
+        // Tidak menghentikan proses meski gagal menyimpan rekomendasi
+      }
 
       // Scroll ke hasil analisis setelah data tersedia
       scrollToResult();
