@@ -112,9 +112,51 @@ const Scanner = () => {
       if (!isPremium) {
         dispatch(incrementScanCount());
       }
-      console.log("Response dari API upload:", result);
 
-      // Menyimpan data nutrisi
+      // Mengambil data target harian dari API
+      const dailyNutritionData = await api.getDailyNutrition(token);
+      if (!dailyNutritionData) {
+        throw new Error("Gagal mengambil data target harian");
+      }
+
+      // Mengambil riwayat scan hari ini untuk menghitung total nutrisi
+      const historyData = await api.getTodayScanHistory(token);
+      const todayHistory = historyData?.history || [];
+
+      // Mengambil target harian dari response API dengan pengecekan
+      const kebutuhanHarian = dailyNutritionData.kebutuhan_harian || {};
+
+      const targetHarian = {
+        energy_kal: Number(kebutuhanHarian.energi || 0),
+        protein_g: Number(kebutuhanHarian.protein || 0),
+        fat_g: Number(kebutuhanHarian["lemak total"] || 0),
+        carbohydrate_g: Number(kebutuhanHarian.karbohidrat || 0),
+        fiber_g: Number(kebutuhanHarian.serat || 0),
+        sugar_g: Number(kebutuhanHarian.gula || 0),
+        sodium_mg: Number(kebutuhanHarian.garam || 0),
+      };
+
+      // Menghitung total nutrisi termasuk hasil scan terbaru
+      const totalGizi = todayHistory.reduce((acc, item) => {
+        const gizi = item.kandungan_gizi || {};
+        return {
+          energy_kal: (acc.energy_kal || 0) + Number(gizi.energi || 0),
+          protein_g: (acc.protein_g || 0) + Number(gizi.protein || 0),
+          fat_g: (acc.fat_g || 0) + Number(gizi["lemak total"] || 0),
+          carbohydrate_g:
+            (acc.carbohydrate_g || 0) + Number(gizi.karbohidrat || 0),
+          fiber_g: (acc.fiber_g || 0) + Number(gizi.serat || 0),
+          sugar_g: (acc.sugar_g || 0) + Number(gizi.gula || 0),
+          sodium_mg: (acc.sodium_mg || 0) + Number(gizi.garam || 0),
+        };
+      }, {});
+
+      // Log informasi nutrisi
+      console.log("=== Informasi Nutrisi Harian ===");
+      console.log("Target Harian:", targetHarian);
+      console.log("Total Konsumsi:", totalGizi);
+
+      // Menyimpan data nutrisi untuk tampilan
       const nutritionDataToSave = {
         id: result.id,
         kandungan: result.kandungan_gizi || {},
@@ -124,9 +166,13 @@ const Scanner = () => {
 
       setNutritionData(nutritionDataToSave);
 
-      // Menyimpan rekomendasi setelah scan berhasil
+      // Menyimpan rekomendasi dengan data lengkap
       try {
-        await api.saveRecommendation(token, nutritionDataToSave);
+        const inputData = {
+          konsumsi: totalGizi,
+          target_harian: targetHarian,
+        };
+        await api.saveRecommendation(token, inputData);
         console.log("Rekomendasi berhasil disimpan");
       } catch (saveError) {
         console.error("Error saat menyimpan rekomendasi:", saveError);
