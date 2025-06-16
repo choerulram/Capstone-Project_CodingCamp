@@ -103,21 +103,34 @@ const api = {
     }
   },
 
-  getDailyNutrition: async (token) => {
+  getDailyNutrition: async (token, timestamp = new Date().getTime()) => {
     try {
-      const response = await fetch(`${BASE_URL}/daily-nutrition`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      console.log("[API] Memulai fetch daily nutrition");
+      const response = await fetch(
+        `${BASE_URL}/daily-nutrition?_t=${timestamp}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            ...defaultHeaders,
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
+        }
+      );
 
       if (!response.ok) {
-        throw new Error("Gagal mengambil data nutrisi harian");
+        const errorData = await response.json();
+        console.error("[API] Error fetch daily nutrition:", errorData);
+        throw new Error(errorData.detail || "Gagal mengambil data nutrisi");
       }
 
-      return response.json();
+      const responseData = await response.json();
+      console.log("[API] Response daily nutrition:", responseData);
+      return responseData;
     } catch (error) {
+      console.error("[API] Caught error in getDailyNutrition:", error);
       handleApiError(error);
     }
   },
@@ -186,7 +199,6 @@ const api = {
   },
   getProfile: async (token) => {
     try {
-      console.log("[API] Fetching profile data...");
       const response = await fetch(`${BASE_URL}/me`, {
         method: "GET",
         headers: {
@@ -203,22 +215,6 @@ const api = {
       }
 
       const data = await response.json();
-      console.log("[API] Profile data received:", {
-        email: data.email,
-        name: data.nama,
-        gender: data.gender,
-        timezone: data.timezone,
-        age: data.umur,
-        age_unit: data.umur_satuan,
-        weight: data.bb,
-        height: data.tinggi,
-        is_pregnant: data.hamil,
-        pregnancy_age: data.usia_kandungan,
-        is_nursing: data.menyusui,
-        child_age: data.umur_anak,
-        created_at: data.created_at,
-        updated_at: data.updated_at,
-      });
       return data;
     } catch (error) {
       handleApiError(error);
@@ -226,7 +222,7 @@ const api = {
   },
   updateProfile: async (token, profileData) => {
     try {
-      console.log("Data yang akan dikirim ke backend:", profileData);
+      console.log("[API] Mengirim update profil:", profileData);
       const response = await fetch(`${BASE_URL}/me`, {
         method: "PUT",
         headers: {
@@ -239,7 +235,7 @@ const api = {
           tinggi: profileData.tinggi ? Number(profileData.tinggi) : null,
           gender: profileData.gender,
           umur: profileData.umur ? Number(profileData.umur) : null,
-          umur_satuan: profileData.umur_satuan || "tahun", // Menambahkan field umur_satuan
+          umur_satuan: profileData.umur_satuan || "tahun",
           hamil: profileData.hamil,
           usia_kandungan: profileData.usia_kandungan
             ? Number(profileData.usia_kandungan)
@@ -253,18 +249,16 @@ const api = {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({
-          detail: "Gagal memperbarui profil",
-        }));
-        throw new Error(
-          errorData.detail || errorData.message || "Gagal memperbarui profil"
-        );
+        const errorData = await response.json();
+        console.error("[API] Error update profil:", errorData);
+        throw new Error(errorData.detail || "Gagal memperbarui profil");
       }
 
       const responseData = await response.json();
-      console.log("Response dari backend:", responseData);
+      console.log("[API] Response update profil:", responseData);
       return responseData;
     } catch (error) {
+      console.error("[API] Caught error in updateProfile:", error);
       handleApiError(error);
     }
   },

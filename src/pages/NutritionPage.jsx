@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import api from "../utils/api.js";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
@@ -9,24 +10,47 @@ import CalculationInfoCard from "../components/nutrition/CalculationInfoCard";
 import NutritionTipsCard from "../components/nutrition/NutritionTipsCard";
 import AdditionalRecommendations from "../components/nutrition/AdditionalRecommendations";
 
+// Event bus sederhana untuk komunikasi antar komponen
+const NUTRITION_UPDATE_EVENT = "nutritionUpdate";
+
 const NutritionPage = () => {
   const navigate = useNavigate();
   const [nutritionData, setNutritionData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { token } = useSelector((state) => state.auth);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  // Handler untuk update nutrisi
+  const handleNutritionUpdate = React.useCallback(() => {
+    console.log("[NutritionPage] Memulai refresh data nutrisi...");
+    setRefreshTrigger((prev) => prev + 1);
+  }, []);
+
+  useEffect(() => {
+    // Menambahkan event listener
+    window.addEventListener(NUTRITION_UPDATE_EVENT, handleNutritionUpdate);
+
+    // Cleanup event listener
+    return () => {
+      window.removeEventListener(NUTRITION_UPDATE_EVENT, handleNutritionUpdate);
+    };
+  }, [handleNutritionUpdate]);
 
   useEffect(() => {
     const fetchNutritionData = async () => {
       try {
-        const token = localStorage.getItem("token");
         if (!token) {
           navigate("/login");
           return;
         }
 
+        console.log("[NutritionPage] Memulai fetch data nutrisi...");
         const response = await api.getDailyNutrition(token);
+        console.log("[NutritionPage] Data nutrisi diterima:", response);
         setNutritionData(response.kebutuhan_harian || {});
       } catch (err) {
+        console.error("[NutritionPage] Error saat fetch data nutrisi:", err);
         setError(err.message || "Failed to fetch nutrition data");
       } finally {
         setLoading(false);
@@ -34,7 +58,7 @@ const NutritionPage = () => {
     };
 
     fetchNutritionData();
-  }, [navigate]);
+  }, [navigate, token, refreshTrigger]);
 
   if (loading) {
     return (

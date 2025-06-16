@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import api from "../../utils/api";
 import { useSelector } from "react-redux";
 
+const NUTRITION_UPDATE_EVENT = "nutritionUpdate";
+
 const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
   const { token } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
@@ -146,18 +148,17 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-    setValidationErrors({});
-
-    if (!validateForm()) {
-      setError("Mohon isi semua field yang diperlukan dengan benar");
-      return;
-    }
-
-    setIsSubmitting(true);
 
     try {
-      // Konversi format data sesuai dengan API
+      setIsSubmitting(true);
+      setError(null);
+      setValidationErrors({});
+
+      if (!validateForm()) {
+        setError("Mohon isi semua field yang diperlukan dengan benar");
+        return;
+      }
+
       const dataToUpdate = {
         nama: formData.nama,
         email: userData.email,
@@ -170,22 +171,34 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
         usia_kandungan: formData.hamil ? Number(formData.usia_kandungan) : null,
         menyusui: formData.menyusui ? 1 : 0,
         umur_anak: formData.menyusui ? Number(formData.umur_anak) : null,
-        timezone: formData.timezone, // Menambahkan timezone ke data yang dikirim
+        timezone: formData.timezone,
       };
 
-      console.log("Data yang akan dikirim ke API:", dataToUpdate);
+      console.log(
+        "[EditProfileModal] Data yang akan dikirim ke API:",
+        dataToUpdate
+      );
 
+      // Update profil
       const updatedProfile = await api.updateProfile(token, dataToUpdate);
+      console.log(
+        "[EditProfileModal] Profile berhasil diupdate:",
+        updatedProfile
+      );
 
-      console.log("Response dari API:", updatedProfile);
+      // Tunggu sebentar untuk memastikan backend selesai memproses
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      if (updatedProfile) {
-        onUpdate(); // Refresh profile data
-        onClose(); // Close the modal
-      }
-    } catch (err) {
-      console.error("Error updating profile:", err);
-      setError(err.message || "Gagal memperbarui profil");
+      // Memicu event update nutrisi
+      window.dispatchEvent(new CustomEvent(NUTRITION_UPDATE_EVENT));
+      console.log("[EditProfileModal] Event nutrition update telah dipicu");
+
+      // Update parent component
+      onUpdate(updatedProfile);
+      onClose();
+    } catch (error) {
+      console.error("[EditProfileModal] Error updating profile:", error);
+      setError(error.message || "Terjadi kesalahan saat memperbarui profil");
     } finally {
       setIsSubmitting(false);
     }

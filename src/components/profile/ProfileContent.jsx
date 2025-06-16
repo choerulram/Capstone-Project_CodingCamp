@@ -29,7 +29,6 @@ const ProfileContent = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        console.log("[ProfileContent] Starting to fetch profile data...");
         setIsLoading(true);
         const data = await api.getProfile(token);
 
@@ -41,8 +40,6 @@ const ProfileContent = () => {
           ...data,
           umur_satuan: data.umur_satuan || "tahun",
         };
-
-        console.log("[ProfileContent] Processed profile data:", processedData);
 
         setUserData(processedData);
         setIsLoading(false);
