@@ -21,13 +21,8 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
         return "g";
     }
   };
-
   // Helper untuk memformat nilai nutrisi sesuai satuannya
-  const formatNutritionValue = (value, unit) => {
-    if (unit === "mg") {
-      // Konversi dari gram ke miligram
-      return (parseFloat(value) * 1000).toFixed(1);
-    }
+  const formatNutritionValue = (value) => {
     return value;
   };
 
@@ -41,21 +36,22 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
     setIsEditing(true);
     setError(null);
     setSuccessMessage(null);
-  };
-
-  // Handle perubahan nilai input
+  }; // Handle perubahan nilai input
   const handleInputChange = (key, value) => {
-    // Konversi nilai untuk garam dari mg ke g saat menyimpan
-    let processedValue = value;
-    if (key.toLowerCase() === "garam") {
-      processedValue = (parseFloat(value) / 1000).toString();
+    // Jika input kosong, izinkan untuk dihapus
+    if (value === "") {
+      setUpdatedValues((prev) => ({
+        ...prev,
+        [key]: "",
+      }));
+      return;
     }
 
     // Validasi input: tidak boleh negatif dan maksimal sesuai satuan
-    const numValue = parseFloat(processedValue);
+    const numValue = parseFloat(value);
     if (isNaN(numValue) || numValue < 0) return;
 
-    const maxValue = key.toLowerCase() === "garam" ? 100 : 999.9; // 100g garam = 100000mg
+    const maxValue = 999.9;
     if (numValue > maxValue) return;
 
     setUpdatedValues((prev) => ({
@@ -63,10 +59,15 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
       [key]: numValue,
     }));
   };
-
   // Validasi semua nilai sebelum submit
   const validateValues = () => {
     for (const [key, value] of Object.entries(updatedValues)) {
+      // Validasi untuk nilai kosong
+      if (value === "" || value === null || value === undefined) {
+        setError(`Nilai ${key} tidak boleh kosong`);
+        return false;
+      }
+      // Validasi untuk nilai tidak valid
       if (value < 0 || value > 999.9 || isNaN(value)) {
         setError(`Nilai ${key} tidak valid. Pastikan antara 0 dan 999.9`);
         return false;
