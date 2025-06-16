@@ -38,14 +38,14 @@ const DailySummaryPage = () => {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <NutritionScore />
-                <DiseasePrediction />
+                <TotalNutritionSummary />
               </div>
             </div>
             <div
               className="opacity-0 animate-fade-in"
               style={{ animationDelay: "600ms", animationFillMode: "forwards" }}
             >
-              <TotalNutritionSummary />
+                <DiseasePrediction />
             </div>
             <div
               className="opacity-0 animate-fade-in"

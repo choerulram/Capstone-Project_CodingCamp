@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import api, { BASE_URL } from "../../utils/api";
 
 const DiseasePrediction = () => {
-  const [status, setStatus] = useState(null);
+  const [predictions, setPredictions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
@@ -79,8 +79,10 @@ const DiseasePrediction = () => {
           },
           body: JSON.stringify(inputData),
         });
-
         const data = await response.json();
+        console.log("=== Disease Prediction Response ===");
+        console.log("Full response data:", data);
+        console.log("Hasil array:", data.hasil);
 
         if (!response.ok) {
           throw new Error(
@@ -90,7 +92,10 @@ const DiseasePrediction = () => {
           );
         }
 
-        setStatus(data.labels[0][0]);
+        console.log("=== Setting Predictions State ===");
+        console.log("Predictions before setting:", data.hasil);
+        setPredictions(data.hasil || []);
+        console.log("State updated with predictions");
       } catch (err) {
         setError(err.message);
       } finally {
@@ -100,78 +105,74 @@ const DiseasePrediction = () => {
 
     predictDiseaseRisk();
   }, [token]);
-
-  // Fungsi untuk menentukan warna, ikon, dan pesan berdasarkan status
-  const getStatusInfo = (status) => {
-    switch (status) {
-      case "Normal":
-        return {
-          color: "text-green-600",
-          bgColor: "bg-green-100",
-          message: "Risiko penyakit rendah. Tetap jaga pola makan sehat Anda!",
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          ),
-        };
-      case "Overweight":
-        return {
-          color: "text-yellow-600",
-          bgColor: "bg-yellow-100",
-          message:
-            "Risiko penyakit moderat. Pertimbangkan untuk mengubah pola makan.",
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </svg>
-          ),
-        };
-      default:
-        return {
-          color: "text-red-600",
-          bgColor: "bg-red-100",
-          message:
-            "Risiko penyakit tinggi. Segera konsultasikan dengan dokter.",
-          icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          ),
-        };
+  // Fungsi untuk menentukan warna dan ikon berdasarkan probabilitas
+  const getRiskLevel = (probability) => {
+    if (probability < 0.4) {
+      return {
+        color: "text-green-600",
+        bgColor: "bg-green-100",
+        riskText: "Risiko Rendah",
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        ),
+      };
+    } else if (probability < 0.7) {
+      return {
+        color: "text-yellow-600",
+        bgColor: "bg-yellow-100",
+        riskText: "Risiko Sedang",
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+        ),
+      };
+    } else {
+      return {
+        color: "text-red-600",
+        bgColor: "bg-red-100",
+        riskText: "Risiko Tinggi",
+        icon: (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        ),
+      };
     }
   };
 
@@ -223,7 +224,7 @@ const DiseasePrediction = () => {
             <span className="text-sm md:text-base">{error}</span>
           </div>
         </div>
-      )}
+      )}{" "}
       {loading ? (
         <div className="flex justify-center items-center h-32 md:h-40">
           <div className="flex flex-col items-center">
@@ -234,48 +235,62 @@ const DiseasePrediction = () => {
           </div>
         </div>
       ) : (
-        status &&
+        predictions.length > 0 &&
         !error &&
         userData &&
         totalGizi && (
           <div className="animate-fade-in space-y-4 md:space-y-6">
             <div className="bg-white/90 backdrop-blur-sm p-4 md:p-8 rounded-xl md:rounded-2xl border border-secondary/30 shadow-sm">
-              <div className="flex flex-col items-center">
-                <div
-                  className={`${
-                    getStatusInfo(status).color
-                  } transform transition-all duration-300 hover:scale-105 p-3 md:p-5 rounded-xl md:rounded-2xl ${
-                    getStatusInfo(status).bgColor
-                  } bg-opacity-20 mb-4 md:mb-6`}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-12 w-12 md:h-16 md:w-16"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                  >
-                    {getStatusInfo(status).icon.props.children}
-                  </svg>
-                </div>
-                <div className="flex flex-col items-center space-y-3 md:space-y-4">
-                  <div
-                    className={`${
-                      getStatusInfo(status).color
-                    } text-3xl md:text-5xl font-bold animate-fade-in`}
-                  >
-                    {status}
-                  </div>
-                  <div
-                    className={`${
-                      getStatusInfo(status).color
-                    } text-sm md:text-base font-medium px-4 md:px-6 py-1.5 md:py-2 rounded-lg md:rounded-xl ${
-                      getStatusInfo(status).bgColor
-                    } bg-opacity-20 max-w-md text-center`}
-                  >
-                    {getStatusInfo(status).message}
-                  </div>
+              <div className="space-y-4">
+                <h3 className="text-lg md:text-xl font-semibold text-main mb-4">
+                  Hasil Analisis Risiko Penyakit:
+                </h3>
+                <div className="grid gap-4">
+                  {predictions.map((prediction, index) => {
+                    const riskInfo = getRiskLevel(prediction.probabilitas);
+                    return (
+                      <div
+                        key={index}
+                        className={`${riskInfo.bgColor} bg-opacity-10 p-4 rounded-lg border border-${riskInfo.color} flex items-center justify-between`}
+                      >
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`${riskInfo.color} p-1 rounded-md`}
+                            >
+                              {riskInfo.icon}
+                            </span>
+                            <h4 className="font-medium text-gray-800">
+                              {prediction["Label terprediksi"]}
+                            </h4>
+                          </div>
+                          <div className="mt-2">
+                            <div className="flex items-center justify-between">
+                              <span
+                                className={`text-sm ${riskInfo.color} font-medium`}
+                              >
+                                {riskInfo.riskText}
+                              </span>
+                              <span className="text-sm font-medium text-gray-600">
+                                {Math.round(prediction.probabilitas * 100)}%
+                              </span>
+                            </div>
+                            <div className="mt-1 w-full bg-gray-200 rounded-full h-2">
+                              <div
+                                className={`h-2 rounded-full ${riskInfo.color.replace(
+                                  "text-",
+                                  "bg-"
+                                )}`}
+                                style={{
+                                  width: `${prediction.probabilitas * 100}%`,
+                                }}
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
