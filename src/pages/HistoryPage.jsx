@@ -29,9 +29,6 @@ const HistoryPage = () => {
       setError(null);
       const response = await api.getAllScanHistory(token);
 
-      // Debug: Lihat struktur response
-      console.log("API Response:", response);
-
       // Pastikan kita mengambil data dengan benar
       let scanData;
 
@@ -46,9 +43,6 @@ const HistoryPage = () => {
       } else {
         scanData = response || [];
       }
-
-      // Debug: Lihat data yang akan diproses
-      console.log("Scan Data:", scanData);
 
       if (!Array.isArray(scanData)) {
         console.error("Invalid scan data format:", scanData);

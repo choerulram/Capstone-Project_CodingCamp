@@ -126,7 +126,6 @@ const api = {
       }
 
       const responseData = await response.json();
-      console.log("[API] Response daily nutrition:", responseData);
       return responseData;
     } catch (error) {
       console.error("[API] Caught error in getDailyNutrition:", error);
