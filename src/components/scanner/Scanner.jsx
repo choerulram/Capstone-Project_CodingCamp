@@ -411,10 +411,22 @@ const Scanner = () => {
           ref={analysisResultRef}
           nutritionData={nutritionData}
           currentTime={currentTime}
-          onUpdateSuccess={(updatedData) => {
+          onUpdateSuccess={async (updatedData) => {
             console.log("Data nutrisi diperbarui:", updatedData);
             // Update state dengan data terbaru
             setNutritionData(updatedData);
+
+            // Menyimpan rekomendasi setelah update nutrisi
+            try {
+              await api.saveRecommendation(token, updatedData);
+              console.log("Rekomendasi berhasil disimpan setelah update");
+            } catch (saveError) {
+              console.error(
+                "Error saat menyimpan rekomendasi setelah update:",
+                saveError
+              );
+              // Tidak menghentikan proses meski gagal menyimpan rekomendasi
+            }
           }}
         />
       )}
