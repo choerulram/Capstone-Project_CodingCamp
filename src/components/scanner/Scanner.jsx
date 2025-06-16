@@ -158,10 +158,15 @@ const Scanner = () => {
         perbandingan: result.perbandingan || [],
         kebutuhan: result.kebutuhan_harian || {},
       };
-
       setNutritionData(nutritionDataToSave);
 
-      // Menyimpan rekomendasi dengan data lengkap
+      // Set loading false sebelum menyimpan rekomendasi
+      setIsLoading(false);
+
+      // Scroll ke hasil analisis setelah data tersedia
+      scrollToResult();
+
+      // Menyimpan rekomendasi dengan data lengkap di background
       try {
         const inputData = {
           konsumsi: totalGizi,
@@ -172,13 +177,9 @@ const Scanner = () => {
         console.error("Error saat menyimpan rekomendasi:", saveError);
         // Tidak menghentikan proses meski gagal menyimpan rekomendasi
       }
-
-      // Scroll ke hasil analisis setelah data tersedia
-      scrollToResult();
     } catch (err) {
       console.error("Error:", err);
       setError(err.message || "Terjadi kesalahan saat menganalisis gambar");
-    } finally {
       setIsLoading(false);
     }
   };
@@ -452,9 +453,11 @@ const Scanner = () => {
           nutritionData={nutritionData}
           currentTime={currentTime}
           onUpdateSuccess={async (updatedData) => {
-            // Update state dengan data terbaru
+            // Update state dengan data terbaru langsung
             setNutritionData(updatedData);
+            setIsLoading(false);
 
+            // Proses update rekomendasi di background
             try {
               // Mengambil data target harian dari API
               const dailyNutritionData = await api.getDailyNutrition(token);
