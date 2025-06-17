@@ -14,10 +14,32 @@ const handleApiError = (error) => {
   throw error;
 };
 
+const fetchWithTimeout = async (url, options = {}) => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+    return response;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error.name === "AbortError") {
+      throw new Error("Request timeout setelah 45 detik. Silakan coba lagi.");
+    }
+    throw error;
+  }
+};
+
+const timeout = 45000; // 45 detik timeout
+
 const api = {
   login: async ({ email, password }) => {
     try {
-      const response = await fetch(`${BASE_URL}/login`, {
+      const response = await fetchWithTimeout(`${BASE_URL}/login`, {
         method: "POST",
         headers: {
           ...defaultHeaders,
@@ -62,7 +84,7 @@ const api = {
     child_age = null,
   }) => {
     try {
-      const response = await fetch(`${BASE_URL}/register`, {
+      const response = await fetchWithTimeout(`${BASE_URL}/register`, {
         method: "POST",
         headers: {
           ...defaultHeaders,
@@ -105,7 +127,7 @@ const api = {
 
   getDailyNutrition: async (token, timestamp = new Date().getTime()) => {
     try {
-      const response = await fetch(
+      const response = await fetchWithTimeout(
         `${BASE_URL}/daily-nutrition?_t=${timestamp}`,
         {
           method: "GET",
@@ -137,7 +159,7 @@ const api = {
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await fetch(`${BASE_URL}/upload/`, {
+      const response = await fetchWithTimeout(`${BASE_URL}/upload/`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -159,7 +181,7 @@ const api = {
   },
   getAllScanHistory: async (token) => {
     try {
-      const response = await fetch(`${BASE_URL}/scan-history-all`, {
+      const response = await fetchWithTimeout(`${BASE_URL}/scan-history-all`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -178,7 +200,7 @@ const api = {
   },
   getTodayScanHistory: async (token) => {
     try {
-      const response = await fetch(`${BASE_URL}/scan-history`, {
+      const response = await fetchWithTimeout(`${BASE_URL}/scan-history`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -197,7 +219,7 @@ const api = {
   },
   getProfile: async (token) => {
     try {
-      const response = await fetch(`${BASE_URL}/me`, {
+      const response = await fetchWithTimeout(`${BASE_URL}/me`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -221,7 +243,7 @@ const api = {
   updateProfile: async (token, profileData) => {
     try {
       console.log("[API] Mengirim update profil:", profileData);
-      const response = await fetch(`${BASE_URL}/me`, {
+      const response = await fetchWithTimeout(`${BASE_URL}/me`, {
         method: "PUT",
         headers: {
           ...defaultHeaders,
@@ -264,7 +286,7 @@ const api = {
   // Fungsi untuk mendapatkan rekomendasi produk
   getRecommendation: async (token, nutritionData) => {
     try {
-      const response = await fetch(`${BASE_URL}/recommendation`, {
+      const response = await fetchWithTimeout(`${BASE_URL}/recommendation`, {
         method: "POST",
         headers: {
           ...defaultHeaders,
@@ -289,14 +311,17 @@ const api = {
   // Fungsi untuk menyimpan rekomendasi
   saveRecommendation: async (token, nutritionData) => {
     try {
-      const response = await fetch(`${BASE_URL}/recommendation/save`, {
-        method: "POST",
-        headers: {
-          ...defaultHeaders,
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(nutritionData),
-      });
+      const response = await fetchWithTimeout(
+        `${BASE_URL}/recommendation/save`,
+        {
+          method: "POST",
+          headers: {
+            ...defaultHeaders,
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(nutritionData),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({
@@ -314,12 +339,15 @@ const api = {
   // Fungsi untuk mendapatkan riwayat rekomendasi
   getRecommendationHistory: async (token) => {
     try {
-      const response = await fetch(`${BASE_URL}/recommendation/history`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetchWithTimeout(
+        `${BASE_URL}/recommendation/history`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({
@@ -339,14 +367,17 @@ const api = {
   // Fungsi untuk mengupdate kandungan gizi hasil OCR
   updateNutrition: async (token, id, nutritionData) => {
     try {
-      const response = await fetch(`${BASE_URL}/update-nutrition/${id}`, {
-        method: "PUT",
-        headers: {
-          ...defaultHeaders,
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(nutritionData),
-      });
+      const response = await fetchWithTimeout(
+        `${BASE_URL}/update-nutrition/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            ...defaultHeaders,
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(nutritionData),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({
