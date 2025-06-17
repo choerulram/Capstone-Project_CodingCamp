@@ -294,12 +294,14 @@ const DiseasePrediction = () => {
                             {riskInfo.riskText}
                           </span>
                         </div>
-                      </div>
-
+                      </div>{" "}
                       {/* Probability Circle */}
                       <div className="flex items-center justify-between mt-3 sm:mt-4">
                         <div className="relative w-14 h-14 sm:w-16 sm:h-16">
-                          <svg className="w-full h-full transform -rotate-90">
+                          <svg
+                            viewBox="0 0 56 56"
+                            className="w-full h-full transform -rotate-90"
+                          >
                             <circle
                               cx="28"
                               cy="28"
@@ -320,12 +322,20 @@ const DiseasePrediction = () => {
                               className={`${riskInfo.color}`}
                             />
                           </svg>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span
-                              className={`text-xs sm:text-sm font-bold ${riskInfo.color}`}
-                            >
-                              {probability}%
-                            </span>
+                          <div className="absolute inset-0">
+                            <div className="flex items-center justify-center w-full h-full">
+                              {" "}
+                              <span
+                                className={`text-xs sm:text-sm font-bold ${riskInfo.color} select-none text-center`}
+                                style={{
+                                  transform: "translate(-0.1px, 0.5px)",
+                                  minWidth: "100%",
+                                  display: "inline-block",
+                                }}
+                              >
+                                {probability}%
+                              </span>
+                            </div>
                           </div>
                         </div>
 
@@ -333,7 +343,7 @@ const DiseasePrediction = () => {
                         <div
                           className={`bg-gradient-to-r ${riskInfo.gradientFrom} ${riskInfo.gradientTo} text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold ml-2`}
                         >
-                          Level {Math.ceil(probability / 33)}
+                          Level {Math.min(Math.ceil(probability / 33), 3)}
                         </div>
                       </div>
                     </div>
