@@ -17,17 +17,23 @@ const DiseasePrediction = () => {
       try {
         if (!token) {
           throw new Error("Anda harus login terlebih dahulu.");
+        } // Mendapatkan data user dari API getProfile
+        const profileResponse = await api.getProfile(token);
+
+        if (!profileResponse) {
+          throw new Error("Gagal mengambil data profil pengguna");
         }
 
-        // Mendapatkan data user dari token
-        const tokenData = JSON.parse(atob(token.split(".")[1]));
-        const userDataFromToken = {
-          umur: parseFloat(tokenData.age || tokenData.umur) || 0,
-          gender: tokenData.gender?.toLowerCase() || "female",
-          tinggi: parseFloat(tokenData.height || tokenData.tinggi) || 0,
-          berat: parseFloat(tokenData.weight || tokenData.berat) || 0,
+        // Menggunakan data langsung dari response karena tidak ada property .data
+        const profile = profileResponse;
+        const userDataFromProfile = {
+          umur: parseFloat(profile.umur) || 0,
+          gender: profile.gender,
+          tinggi: parseFloat(profile.tinggi) || 0,
+          berat: parseFloat(profile.bb) || 0,
         };
-        setUserData(userDataFromToken);
+
+        setUserData(userDataFromProfile);
 
         // Mengambil riwayat pemindaian hari ini
         const historyData = await api.getTodayScanHistory(token);
@@ -53,14 +59,16 @@ const DiseasePrediction = () => {
             Sodium: (acc.Sodium || 0) + parseFloat(gizi.garam || 0),
           };
         }, {});
-        setTotalGizi(totalNutrisi);
-
-        // Menyiapkan payload sesuai format API dengan explicit arrays dan default values
+        setTotalGizi(totalNutrisi); // Menyiapkan payload sesuai format API dengan explicit arrays dan default values
         const inputData = {
-          Ages: [Math.max(1, userDataFromToken.umur)],
-          Gender: [userDataFromToken.gender === "male" ? "Male" : "Female"],
-          Height: [Math.max(1, userDataFromToken.tinggi)],
-          Weight: [Math.max(1, userDataFromToken.berat)],
+          Ages: [Math.max(1, userDataFromProfile.umur)],
+          Gender: [
+            userDataFromProfile.gender === "Laki-laki"
+              ? "Laki-laki"
+              : "Perempuan",
+          ],
+          Height: [Math.max(1, userDataFromProfile.tinggi)],
+          Weight: [Math.max(1, userDataFromProfile.berat)],
           Calories: [Math.max(0, totalNutrisi.Calories || 0)],
           Protein: [Math.max(0, totalNutrisi.Protein || 0)],
           Fat: [Math.max(0, totalNutrisi.Fat || 0)],
@@ -80,9 +88,6 @@ const DiseasePrediction = () => {
           body: JSON.stringify(inputData),
         });
         const data = await response.json();
-        console.log("=== Disease Prediction Response ===");
-        console.log("Full response data:", data);
-        console.log("Hasil array:", data.hasil);
 
         if (!response.ok) {
           throw new Error(
@@ -92,10 +97,7 @@ const DiseasePrediction = () => {
           );
         }
 
-        console.log("=== Setting Predictions State ===");
-        console.log("Predictions before setting:", data.hasil);
         setPredictions(data.hasil || []);
-        console.log("State updated with predictions");
       } catch (err) {
         setError(err.message);
       } finally {
