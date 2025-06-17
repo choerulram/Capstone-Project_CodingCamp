@@ -33,13 +33,12 @@ const PricingModal = ({ isOpen, onClose }) => {
     },
     {
       name: "Premium Bulanan",
-      price: "Rp 49.000",
+      price: "Rp 25.000",
       period: "/bulan",
       features: [
         "Scan tanpa batas",
         "Analisis nutrisi lengkap",
         "Riwayat scan tak terbatas",
-        "Export data nutrisi",
         "Tips nutrisi personal",
         "Rekomendasi produk",
         "Prioritas dukungan",
@@ -51,11 +50,11 @@ const PricingModal = ({ isOpen, onClose }) => {
     },
     {
       name: "Premium Tahunan",
-      price: "Rp 449.000",
+      price: "Rp 250.000",
       period: "/tahun",
       features: [
         "Semua fitur Premium Bulanan",
-        "Hemat Rp 139.000/tahun",
+        "Hemat Rp 50.000/tahun",
         "Konsultasi ahli gizi 2x",
         "Panduan meal planning",
         "Akses webinar nutrisi",
