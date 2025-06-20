@@ -308,30 +308,49 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
               ).map(([key, value]) => (
                 <div
                   key={key}
-                  className="flex justify-between p-2 lg:p-3 bg-white rounded-lg hover:bg-gray-100 transition-colors border border-gray-100"
+                  className={
+                    isEditing
+                      ? "flex flex-col gap-1 p-2.5 lg:p-4 bg-white rounded-xl border-2 border-main/30 shadow-md animate-pulse-slow"
+                      : "flex flex-col gap-1 p-2 lg:p-3 bg-white rounded-lg hover:bg-gray-100 transition-colors border border-gray-100 shadow-sm"
+                  }
                 >
-                  <span className="text-gray-600">
+                  <label
+                    className={
+                      isEditing
+                        ? "text-main text-xs sm:text-base lg:text-sm font-bold mb-1 capitalize tracking-wide"
+                        : "text-gray-600 text-xs sm:text-sm font-medium mb-1 capitalize tracking-wide"
+                    }
+                    style={{ fontSize: isEditing ? "1rem" : undefined }}
+                  >
                     {key
                       .replace("_", " ")
                       .replace(/\b\w/g, (c) => c.toUpperCase())}
-                  </span>
+                  </label>
                   {isEditing ? (
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
                       <input
                         type="number"
                         value={value}
                         onChange={(e) => handleInputChange(key, e.target.value)}
-                        className="w-20 text-right border border-gray-200 rounded px-2 py-1 text-sm focus:outline-none focus:border-main"
+                        className="w-full text-right border-2 border-main focus:border-main/80 rounded-xl px-3 py-3 sm:py-2 text-lg sm:text-base font-semibold focus:outline-none transition-all duration-200 shadow focus:shadow-lg bg-main/5 focus:bg-main/10 ring-2 ring-main/10"
                         step="0.1"
                         min="0"
                         max="999.9"
+                        placeholder={`Masukkan ${key.replace("_", " ")}`}
+                        aria-label={`Input ${key}`}
+                        autoFocus={false}
+                        style={{
+                          fontSize: "1.1rem",
+                          paddingTop: "0.7rem",
+                          paddingBottom: "0.7rem",
+                        }}
                       />
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs sm:text-sm text-main font-bold">
                         {getNutritionUnit(key)}
                       </span>
                     </div>
                   ) : (
-                    <span className="font-medium text-main">
+                    <span className="font-medium text-main text-base">
                       {formatNutritionValue(value, getNutritionUnit(key))}{" "}
                       {getNutritionUnit(key)}
                     </span>
