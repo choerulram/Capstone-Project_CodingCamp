@@ -14,27 +14,10 @@ const handleApiError = (error) => {
   throw error;
 };
 
+// Tidak ada timeout, biarkan fetch berjalan selama apapun
 const fetchWithTimeout = async (url, options = {}) => {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-  try {
-    const response = await fetch(url, {
-      ...options,
-      signal: controller.signal,
-    });
-    clearTimeout(timeoutId);
-    return response;
-  } catch (error) {
-    clearTimeout(timeoutId);
-    if (error.name === "AbortError") {
-      throw new Error("Request timeout setelah 45 detik. Silakan coba lagi.");
-    }
-    throw error;
-  }
+  return fetch(url, options);
 };
-
-const timeout = 45000; // 45 detik timeout
 
 const api = {
   login: async ({ email, password }) => {
