@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { BASE_URL } from "../../utils/api";
 
@@ -29,11 +29,159 @@ const ScanDetailModal = ({ isOpen, onClose, scan }) => {
     return val;
   };
 
+  // State untuk modal zoom gambar
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
+  const dragStart = useRef({ x: 0, y: 0 });
+  const lastOffset = useRef({ x: 0, y: 0 });
+
+  const handleImageClick = (e) => {
+    e.stopPropagation();
+    setShowImageModal(true);
+    setZoom(1);
+    setOffset({ x: 0, y: 0 });
+  };
+
+  const handleZoomIn = () => setZoom((z) => Math.min(z + 0.2, 5));
+  const handleZoomOut = () => setZoom((z) => Math.max(z - 0.2, 1));
+  const handleCloseImageModal = () => setShowImageModal(false);
+
+  // Drag logic
+  const handleMouseDown = (e) => {
+    e.preventDefault();
+    setDragging(true);
+    dragStart.current = {
+      x: e.clientX,
+      y: e.clientY,
+    };
+    lastOffset.current = { ...offset };
+  };
+  const handleMouseMove = (e) => {
+    if (!dragging) return;
+    setOffset({
+      x: lastOffset.current.x + (e.clientX - dragStart.current.x),
+      y: lastOffset.current.y + (e.clientY - dragStart.current.y),
+    });
+  };
+  const handleMouseUp = () => setDragging(false);
+
+  // Touch events for mobile
+  const handleTouchStart = (e) => {
+    if (e.touches.length !== 1) return;
+    setDragging(true);
+    dragStart.current = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+    };
+    lastOffset.current = { ...offset };
+  };
+  const handleTouchMove = (e) => {
+    if (!dragging || e.touches.length !== 1) return;
+    setOffset({
+      x: lastOffset.current.x + (e.touches[0].clientX - dragStart.current.x),
+      y: lastOffset.current.y + (e.touches[0].clientY - dragStart.current.y),
+    });
+  };
+  const handleTouchEnd = () => setDragging(false);
+
+  React.useEffect(() => {
+    if (showImageModal) {
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+      window.addEventListener("touchmove", handleTouchMove);
+      window.addEventListener("touchend", handleTouchEnd);
+    } else {
+      setDragging(false);
+    }
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+    // eslint-disable-next-line
+  }, [showImageModal, dragging]);
+
   if (!isOpen) return null;
 
   // Render modal dalam Portal
   return createPortal(
     <>
+      {/* Modal Zoom Gambar */}
+      {showImageModal && (
+        <div
+          className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in"
+          onClick={handleCloseImageModal}
+        >
+          <div
+            className="relative max-w-3xl w-full flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={`${BASE_URL}/images/${scan.filename}`}
+              alt="Zoom Foto Produk"
+              style={{
+                transform: `scale(${zoom}) translate(${offset.x / zoom}px, ${
+                  offset.y / zoom
+                }px)`,
+                transition: dragging ? "none" : "transform 0.2s",
+                cursor: dragging ? "grabbing" : "grab",
+                maxHeight: "80vh",
+                maxWidth: "100%",
+                userSelect: "none",
+              }}
+              draggable={false}
+              onMouseDown={handleMouseDown}
+              onTouchStart={handleTouchStart}
+            />
+            {/* Kontrol Zoom */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 bg-white/80 rounded-full px-4 py-2 shadow-lg">
+              <button
+                onClick={handleZoomOut}
+                className="text-2xl font-bold px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 transition"
+                aria-label="Zoom Out"
+                disabled={zoom <= 1}
+              >
+                –
+              </button>
+              <span className="px-2 text-lg font-medium select-none">
+                {Math.round(zoom * 100)}%
+              </span>
+              <button
+                onClick={handleZoomIn}
+                className="text-2xl font-bold px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 transition"
+                aria-label="Zoom In"
+                disabled={zoom >= 5}
+              >
+                +
+              </button>
+            </div>
+            {/* Tombol Tutup */}
+            <button
+              onClick={handleCloseImageModal}
+              className="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray-700 rounded-full p-2 shadow"
+              aria-label="Tutup"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
       {/* Overlay */}{" "}
       <div
         className="fixed inset-0 bg-black/70 backdrop-blur-[2px] z-[9998] animate-fade-in transition-opacity duration-300"
@@ -76,11 +224,16 @@ const ScanDetailModal = ({ isOpen, onClose, scan }) => {
               <div className="grid md:grid-cols-2 gap-4 md:gap-8">
                 {/* Product Image */}
                 <div className="md:col-span-1">
-                  <div className="aspect-square rounded-lg md:rounded-xl overflow-hidden bg-gray-50 shadow-md border border-gray-100 group">
+                  <div
+                    className="rounded-lg md:rounded-xl overflow-hidden bg-gray-50 shadow-md border border-gray-100 group flex items-center justify-center cursor-zoom-in"
+                    onClick={handleImageClick}
+                    title="Klik untuk perbesar dan zoom"
+                  >
                     <img
                       src={`${BASE_URL}/images/${scan.filename}`}
                       alt="Foto Produk"
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="w-full h-auto max-h-100 object-contain transition-transform duration-300 group-hover:scale-105 select-none"
+                      draggable={false}
                     />
                   </div>{" "}
                   <div className="mt-4 md:mt-5 bg-gray-50 rounded-lg md:rounded-xl p-3 md:p-4 border border-gray-100">
