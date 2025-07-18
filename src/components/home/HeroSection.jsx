@@ -61,12 +61,14 @@ const HeroSection = () => {
               instan.
             </motion.p>
             <motion.p
-              className="text-lg sm:text-xl text-gray-100 mb-8"
+              className="text-base sm:text-lg md:text-xl text-gray-100 mb-8 max-w-xl md:max-w-2xl mx-auto md:mx-0 text-center md:text-left"
+              style={{ wordBreak: "break-word" }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
             >
-              Data yang di pindai merupakan kemasan yang dikonsumsi pada hari ini per sajian.
+              Data yang dipindai adalah informasi gizi dari kemasan makanan yang
+              Anda konsumsi hari ini, dihitung per sajian.
             </motion.p>
             <motion.button
               onClick={handleScanClick}
