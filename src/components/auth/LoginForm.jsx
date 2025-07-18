@@ -27,7 +27,7 @@ const LoginForm = () => {
     e.preventDefault();
     setError("");
     if (!formData.email || !formData.password) {
-      setError("Email and password are required");
+      setError("Email dan kata sandi wajib diisi");
       return;
     }
 
@@ -37,15 +37,15 @@ const LoginForm = () => {
         // Login successful
         navigate("/");
       } else {
-        setError("Incorrect email or password");
+        setError("Email atau kata sandi salah");
       }
     } catch (err) {
       if (err.response?.status === 401) {
-        setError("Incorrect email or password");
+        setError("Email atau kata sandi salah");
       } else if (err.response?.status === 404) {
-        setError("Email not found. Please register first");
+        setError("Email tidak ditemukan. Silakan daftar terlebih dahulu");
       } else {
-        setError("An error occurred. Please try again later");
+        setError("Terjadi kesalahan. Silakan coba lagi nanti");
       }
     }
   };
@@ -55,10 +55,10 @@ const LoginForm = () => {
       <div className="w-full max-w-xl">
         <div className="bg-white p-5 sm:p-6 md:p-12 rounded-lg sm:rounded-xl md:rounded-3xl shadow-lg sm:shadow-xl md:shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300">
           <h2 className="text-dark text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 font-bold">
-            Welcome Back!
+            Selamat Datang Kembali!
           </h2>
           <p className="text-gray-500 mb-6 sm:mb-8 md:mb-10 text-base sm:text-lg">
-            Please sign in to your account
+            Silakan masuk ke akun Anda
           </p>
 
           <form
@@ -100,7 +100,7 @@ const LoginForm = () => {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="Enter your email"
+                placeholder="Masukkan email Anda"
                 className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
               />
             </div>
@@ -109,7 +109,7 @@ const LoginForm = () => {
                 htmlFor="password"
                 className="block text-xs sm:text-sm font-medium text-gray-700"
               >
-                Password
+                Kata Sandi
               </label>
               <div className="relative">
                 <input
@@ -119,7 +119,7 @@ const LoginForm = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Enter your password"
+                  placeholder="Masukkan kata sandi Anda"
                   className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
                 <button
@@ -194,10 +194,10 @@ const LoginForm = () => {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>{" "}
-                  Logging in...
+                  Sedang masuk...
                 </span>
               ) : (
-                "Login"
+                "Masuk"
               )}
             </button>
           </form>
@@ -209,7 +209,7 @@ const LoginForm = () => {
               </div>{" "}
               <div className="relative flex justify-center text-xs sm:text-sm">
                 <span className="px-3 sm:px-4 bg-white text-gray-500">
-                  New to NuTrack?
+                  Belum punya akun NuTrack?
                 </span>
               </div>
             </div>
@@ -219,7 +219,7 @@ const LoginForm = () => {
                 to="/register"
                 className="w-full flex justify-center py-2.5 sm:py-3 px-3 sm:px-4 border-2 border-main text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl text-main bg-white hover:bg-main hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main transition-all duration-300"
               >
-                Create an account
+                Daftar akun baru
               </Link>
             </div>
           </div>

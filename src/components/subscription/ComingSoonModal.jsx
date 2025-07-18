@@ -40,12 +40,12 @@ const ComingSoonModal = ({ isOpen, onClose, planName }) => {
           {/* Content */}
           <div className="mt-4 md:mt-6">
             <h3 className="text-xl md:text-2xl font-bold text-gray-900">
-              Coming Soon!
+              Segera Hadir!
             </h3>
             <p className="mt-3 md:mt-4 text-sm md:text-base text-gray-500">
               Paket <span className="font-bold text-highlight">{planName}</span>{" "}
               sedang dalam pengembangan. Kami sedang mempersiapkan sesuatu yang
-              spesial untuk Anda. Nantikan peluncurannya segera!
+              spesial untuk Anda. Nantikan peluncurannya dalam waktu dekat!
             </p>
           </div>
 

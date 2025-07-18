@@ -2,7 +2,7 @@ export const BASE_URL = "/api";
 
 const defaultHeaders = {
   "Content-Type": "application/json",
-  "Time-Zone": "Asia/Jakarta",
+  "Time-Zone": "Asia/Jayapura",
 };
 
 const handleApiError = (error) => {

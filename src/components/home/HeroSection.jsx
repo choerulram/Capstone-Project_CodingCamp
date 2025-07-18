@@ -39,7 +39,9 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              {user ? `Welcome back, ${user.name}!` : "Welcome to"}
+              {user
+                ? `Selamat datang kembali, ${user.name}!`
+                : "Selamat datang di"}
               <motion.span
                 className="text-highlight block mt-1 sm:mt-2"
                 initial={{ opacity: 0 }}
@@ -50,13 +52,21 @@ const HeroSection = () => {
               </motion.span>
             </motion.h1>
             <motion.p
+              className="text-lg sm:text-xl text-gray-100"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+            >
+              Pindai kemasan makanan Anda dan dapatkan informasi gizi secara
+              instan.
+            </motion.p>
+            <motion.p
               className="text-lg sm:text-xl text-gray-100 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
             >
-              Scan kemasan makanan Anda dan dapatkan informasi gizi secara
-              instan
+              Data yang di pindai merupakan kemasan yang dikonsumsi pada hari ini per sajian.
             </motion.p>
             <motion.button
               onClick={handleScanClick}
@@ -67,7 +77,7 @@ const HeroSection = () => {
               whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.4, delay: 1 }}
             >
-              Mulai Scan
+              Mulai Pindai
             </motion.button>
           </motion.div>{" "}
           <motion.div
@@ -110,7 +120,7 @@ const HeroSection = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-main text-sm sm:text-base">
-                      Scan Instan
+                      Pindai Instan
                     </h3>
                     <p className="text-gray-600 text-xs sm:text-sm">
                       Informasi gizi dalam hitungan detik

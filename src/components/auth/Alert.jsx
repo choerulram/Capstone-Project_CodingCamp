@@ -48,7 +48,7 @@ const Alert = ({ isOpen, message, type = "success", onClose }) => {
           </div>
           <div className="ml-3 w-0 flex-1">
             <h3 className={`text-sm font-medium ${textColor}`}>
-              {type === "success" ? "Success!" : "Error"}
+              {type === "success" ? "Berhasil!" : "Kesalahan"}
             </h3>
             <div className={`mt-2 text-sm ${textColor}`}>{message}</div>
           </div>
@@ -57,7 +57,7 @@ const Alert = ({ isOpen, message, type = "success", onClose }) => {
               onClick={onClose}
               className={`inline-flex ${textColor} hover:${textColor} focus:outline-none`}
             >
-              <span className="sr-only">Close</span>
+              <span className="sr-only">Tutup</span>
               <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fillRule="evenodd"
@@ -73,7 +73,7 @@ const Alert = ({ isOpen, message, type = "success", onClose }) => {
             onClick={onClose}
             className="w-full inline-flex justify-center rounded-xl border border-transparent px-4 py-2 bg-main text-base font-medium text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main transition-colors duration-300"
           >
-            Got it
+            Mengerti
           </button>
         </div>
       </div>

@@ -5,8 +5,10 @@ const RegisterBranding = () => {
     <div className="w-full md:w-[35%] bg-main p-4 sm:p-8 md:p-12 md:rounded-l-[15px] flex flex-col justify-center relative overflow-hidden min-h-[220px] sm:min-h-[300px] md:min-h-0 shadow-[-15px_0_15px_-15px_rgba(0,0,0,0.4)] md:shadow-[8px_0_25px_-5px_rgba(0,0,0,0.4)]">
       <div className="max-w-xl mx-auto">
         <h1 className="text-3xl sm:text-5xl md:text-7xl text-white mb-4 sm:mb-8 font-bold tracking-tight leading-tight animate-fade-in">
-          Join the
-          <span className="text-highlight block mt-1 sm:mt-2">Journey</span>
+          Gabung dalam
+          <span className="text-highlight block mt-1 sm:mt-2">
+            Perjalanan Sehat
+          </span>
         </h1>
         <div className="overflow-hidden mb-4 sm:mb-10">
           <div className="flex items-center mb-3 sm:mb-6 animate-slide-up opacity-0 [animation-delay:0.3s] [animation-fill-mode:forwards]">
@@ -75,7 +77,7 @@ const RegisterBranding = () => {
         </div>
         <div className="mt-4 sm:mt-8 bg-highlight/20 px-3 sm:px-8 py-2.5 sm:py-4 rounded-full inline-block animate-bounce-slow">
           <p className="text-white text-xs sm:text-base font-medium tracking-wide">
-            Mulai Perjalanan Sehatmu Hari Ini
+            Mulai perjalanan sehatmu hari ini
           </p>
         </div>
       </div>

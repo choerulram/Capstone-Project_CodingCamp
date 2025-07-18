@@ -105,13 +105,13 @@ const ProfileContent = () => {
                   </svg>
                   <span>
                     {userData?.role === "Premium"
-                      ? "Premium Member"
-                      : "Free Member"}
+                      ? "Member Premium"
+                      : "Member Gratis"}
                   </span>
                 </span>
                 {userData?.created_at && (
                   <p className="text-white/80 text-sm">
-                    Member since {convertToLocalTime(userData.created_at)}
+                    Member sejak {convertToLocalTime(userData.created_at)}
                   </p>
                 )}
               </div>
@@ -169,7 +169,7 @@ const ProfileContent = () => {
                       >
                         <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-2.207 2.207L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                       </svg>
-                      Edit Profile
+                      Edit Profil
                     </button>
                   </div>
                 </div>
@@ -401,7 +401,7 @@ const ProfileContent = () => {
                             />
                           </svg>
                         </span>
-                        <h3 className="text-gray-700 font-medium">BMI</h3>
+                        <h3 className="text-gray-700 font-medium">IMT</h3>
                       </div>{" "}
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${bmiStatus?.color.replace(
@@ -414,7 +414,7 @@ const ProfileContent = () => {
                     </div>
                     <div className="mt-4">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-gray-600">BMI Value</span>
+                        <span className="text-gray-600">Nilai IMT</span>
                         <span className="text-2xl font-bold text-gray-800">
                           {bmi}
                         </span>
@@ -460,7 +460,7 @@ const ProfileContent = () => {
                     d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                   />
                 </svg>
-                Health Status
+                Status Kesehatan
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Pregnancy Status */}

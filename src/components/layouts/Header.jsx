@@ -110,7 +110,7 @@ const Header = () => {
                   : "text-main hover:bg-highlight/10 hover:text-highlight"
               }`}
             >
-              Home
+              Beranda
             </Link>
             {/* Protected Routes */}
             <a
@@ -122,7 +122,7 @@ const Header = () => {
                   : "text-main hover:bg-highlight/10 hover:text-highlight"
               }`}
             >
-              Scan
+              Pindai
             </a>
             <a
               href="/history"
@@ -133,7 +133,7 @@ const Header = () => {
                   : "text-main hover:bg-highlight/10 hover:text-highlight"
               }`}
             >
-              History
+              Riwayat
             </a>
             <a
               href="/nutrition"
@@ -144,7 +144,7 @@ const Header = () => {
                   : "text-main hover:bg-highlight/10 hover:text-highlight"
               }`}
             >
-              Daily Nutrition
+              Nutrisi Harian
             </a>
             <a
               href="/daily-summary"
@@ -155,7 +155,7 @@ const Header = () => {
                   : "text-main hover:bg-highlight/10 hover:text-highlight"
               }`}
             >
-              Daily Summary
+              Ringkasan Harian
             </a>
           </nav>
           {/* Desktop Auth Buttons */}
@@ -167,7 +167,7 @@ const Header = () => {
                   onClick={handleLogout}
                   className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
                 >
-                  Sign Out
+                  Keluar
                 </button>
                 <div className="border-l border-gray-200 h-6 mx-2"></div>
                 <button
@@ -199,7 +199,7 @@ const Header = () => {
                 to="/login"
                 className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
               >
-                Sign In
+                Masuk
               </Link>
             )}
           </div>
@@ -224,7 +224,7 @@ const Header = () => {
                   : "text-main hover:bg-highlight/10 hover:text-highlight"
               }`}
             >
-              Home
+              Beranda
             </Link>
             {/* Protected Mobile Routes */}
             <a
@@ -239,7 +239,7 @@ const Header = () => {
                   : "text-main hover:bg-highlight/10 hover:text-highlight"
               }`}
             >
-              Scan
+              Pindai
             </a>
             <a
               href="/history"
@@ -253,7 +253,7 @@ const Header = () => {
                   : "text-main hover:bg-highlight/10 hover:text-highlight"
               }`}
             >
-              History
+              Riwayat
             </a>
             <a
               href="/nutrition"
@@ -267,7 +267,7 @@ const Header = () => {
                   : "text-main hover:bg-highlight/10 hover:text-highlight"
               }`}
             >
-              Daily Nutrition
+              Nutrisi Harian
             </a>
             <a
               href="/daily-summary"
@@ -281,7 +281,7 @@ const Header = () => {
                   : "text-main hover:bg-highlight/10 hover:text-highlight"
               }`}
             >
-              Daily Summary
+              Ringkasan Harian
             </a>{" "}
             {/* Mobile Auth Buttons */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
@@ -291,7 +291,7 @@ const Header = () => {
                     onClick={handleLogout}
                     className="px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
                   >
-                    Sign Out
+                    Keluar
                   </button>
                   <div className="flex items-center">
                     <div className="border-l border-gray-200 h-6 mr-4"></div>
@@ -329,7 +329,7 @@ const Header = () => {
                   className="w-full text-center px-4 py-2 text-main hover:text-highlight transition-colors duration-300"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Sign In
+                  Masuk
                 </Link>
               )}
             </div>

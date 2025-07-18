@@ -28,19 +28,19 @@ const RegisterForm = () => {
 
   const validateForm = () => {
     if (!formData.name.trim()) {
-      setError("Name is required");
+      setError("Nama wajib diisi");
       return false;
     }
     if (!formData.email.trim()) {
-      setError("Email is required");
+      setError("Email wajib diisi");
       return false;
     }
     if (!formData.email.includes("@")) {
-      setError("Please enter a valid email address");
+      setError("Masukkan alamat email yang valid");
       return false;
     }
     if (formData.password.length < 8) {
-      setError("Password must be at least 8 characters long");
+      setError("Kata sandi minimal 8 karakter");
       return false;
     }
     return true;
@@ -124,13 +124,11 @@ const RegisterForm = () => {
     try {
       const response = await api.register(formData);
       if (!response.error) {
-        setAlertMessage(
-          "Registration successful! You can now login to your account."
-        );
+        setAlertMessage("Registrasi berhasil! Anda dapat masuk ke akun Anda.");
         setShowAlert(true);
       }
     } catch (err) {
-      setError(err.message || "An error occurred during registration");
+      setError(err.message || "Terjadi kesalahan saat registrasi");
     } finally {
       setIsLoading(false);
     }
@@ -147,10 +145,10 @@ const RegisterForm = () => {
         <div className="bg-white p-4 sm:p-8 md:p-12 rounded-lg sm:rounded-xl md:rounded-3xl shadow-lg sm:shadow-xl md:shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-300">
           {" "}
           <h2 className="text-dark text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 font-bold">
-            Join NuTrack
+            Daftar NuTrack
           </h2>
           <p className="text-gray-500 mb-6 sm:mb-8 md:mb-10 text-base sm:text-lg">
-            Create your account to get started
+            Buat akun Anda untuk mulai menggunakan aplikasi
           </p>
           <form onSubmit={handleSubmit} className="w-full space-y-6">
             {error && (
@@ -168,7 +166,7 @@ const RegisterForm = () => {
                   htmlFor="name"
                   className="block text-xs sm:text-sm font-medium text-gray-700"
                 >
-                  Full Name
+                  Nama Lengkap
                 </label>
                 <input
                   id="name"
@@ -177,7 +175,7 @@ const RegisterForm = () => {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Enter your full name"
+                  placeholder="Masukkan nama lengkap Anda"
                   className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
               </div>{" "}
@@ -186,7 +184,7 @@ const RegisterForm = () => {
                   htmlFor="email"
                   className="block text-xs sm:text-sm font-medium text-gray-700"
                 >
-                  Email Address
+                  Alamat Email
                 </label>
                 <input
                   id="email"
@@ -195,7 +193,7 @@ const RegisterForm = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="Enter your email"
+                  placeholder="Masukkan email Anda"
                   className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
               </div>
@@ -203,7 +201,7 @@ const RegisterForm = () => {
             {/* Health Information Section */}{" "}
             <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
               <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-3 sm:mb-4">
-                Health Information
+                Informasi Kesehatan
               </h3>
               <div className="grid grid-cols-2 gap-6 mb-6">
                 <div className="space-y-2">
@@ -211,7 +209,7 @@ const RegisterForm = () => {
                     htmlFor="gender"
                     className="block text-xs sm:text-sm font-medium text-gray-700"
                   >
-                    Gender
+                    Jenis Kelamin
                   </label>{" "}
                   <select
                     id="gender"
@@ -220,9 +218,9 @@ const RegisterForm = () => {
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                   >
-                    <option value="">Select Gender</option>
-                    <option value="Laki-laki">Male</option>
-                    <option value="Perempuan">Female</option>
+                    <option value="">Pilih Jenis Kelamin</option>
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
                   </select>
                 </div>
                 <div className="space-y-2">
@@ -230,7 +228,7 @@ const RegisterForm = () => {
                     htmlFor="age"
                     className="block text-xs sm:text-sm font-medium text-gray-700"
                   >
-                    Age
+                    Usia
                   </label>{" "}
                   <div className="flex gap-2">
                     <div className="relative flex-1">
@@ -254,8 +252,8 @@ const RegisterForm = () => {
                       onChange={handleChange}
                       className="w-28 border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                     >
-                      <option value="years">Years</option>
-                      <option value="months">Months</option>
+                      <option value="years">Tahun</option>
+                      <option value="months">Bulan</option>
                     </select>
                   </div>
                 </div>
@@ -266,7 +264,7 @@ const RegisterForm = () => {
                     htmlFor="height"
                     className="block text-xs sm:text-sm font-medium text-gray-700"
                   >
-                    Height
+                    Tinggi Badan
                   </label>
                   <div className="relative">
                     <input
@@ -275,7 +273,7 @@ const RegisterForm = () => {
                       type="number"
                       value={formData.height}
                       onChange={handleChange}
-                      placeholder="Enter your height"
+                      placeholder="Masukkan tinggi badan Anda"
                       className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 pr-10 sm:pr-12 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
@@ -288,7 +286,7 @@ const RegisterForm = () => {
                     htmlFor="weight"
                     className="block text-xs sm:text-sm font-medium text-gray-700"
                   >
-                    Weight
+                    Berat Badan
                   </label>
                   <div className="relative">
                     <input
@@ -297,7 +295,7 @@ const RegisterForm = () => {
                       type="number"
                       value={formData.weight}
                       onChange={handleChange}
-                      placeholder="Enter your weight"
+                      placeholder="Masukkan berat badan Anda"
                       className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 pr-10 sm:pr-12 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
@@ -311,7 +309,7 @@ const RegisterForm = () => {
                   htmlFor="timezone"
                   className="block text-xs sm:text-sm font-medium text-gray-700"
                 >
-                  Timezone
+                  Zona Waktu
                 </label>
                 <select
                   id="timezone"
@@ -341,7 +339,7 @@ const RegisterForm = () => {
                         htmlFor="is_pregnant"
                         className="ml-2 text-sm text-gray-700"
                       >
-                        Pregnant
+                        Hamil
                       </label>
                     </div>
                     <div className="flex items-center">
@@ -357,7 +355,7 @@ const RegisterForm = () => {
                         htmlFor="is_nursing"
                         className="ml-2 text-sm text-gray-700"
                       >
-                        Nursing
+                        Menyusui
                       </label>
                     </div>
                   </div>
@@ -377,10 +375,10 @@ const RegisterForm = () => {
                         onChange={handleChange}
                         className="mt-1 w-48 border border-gray-300 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
                       >
-                        <option value="">Select Trimester</option>
-                        <option value="1">First Trimester</option>
-                        <option value="2">Second Trimester</option>
-                        <option value="3">Third Trimester</option>
+                        <option value="">Pilih Trimester</option>
+                        <option value="1">Trimester 1</option>
+                        <option value="2">Trimester 2</option>
+                        <option value="3">Trimester 3</option>
                       </select>
                     </div>
                   )}
@@ -391,7 +389,7 @@ const RegisterForm = () => {
                         htmlFor="child_age"
                         className="block text-sm text-gray-700"
                       >
-                        Baby Age
+                        Usia Bayi
                       </label>
                       <div className="relative">
                         <input
@@ -402,11 +400,11 @@ const RegisterForm = () => {
                           max="12"
                           value={formData.child_age}
                           onChange={handleChange}
-                          placeholder="1-12 months"
+                          placeholder="1-12 bulan"
                           className="mt-1 w-32 border border-gray-300 rounded-xl p-2.5 pr-16 text-sm focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
                         />
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
-                          months
+                          bulan
                         </span>
                       </div>
                     </div>
@@ -421,7 +419,7 @@ const RegisterForm = () => {
                 htmlFor="password"
                 className="block text-xs sm:text-sm font-medium text-gray-700"
               >
-                Password
+                Kata Sandi
               </label>
               <div className="relative">
                 <input
@@ -431,7 +429,7 @@ const RegisterForm = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Minimum 8 characters"
+                  placeholder="Minimal 8 karakter"
                   className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
                 <button
@@ -479,7 +477,7 @@ const RegisterForm = () => {
                 </button>
               </div>{" "}
               <p className="text-[10px] sm:text-xs text-gray-500 mt-1 sm:mt-1.5">
-                Must be at least 8 characters long
+                Minimal 8 karakter
               </p>
             </div>{" "}
             <button
@@ -509,10 +507,10 @@ const RegisterForm = () => {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Creating account...
+                  Membuat akun...
                 </span>
               ) : (
-                "Create Account"
+                "Buat Akun"
               )}
             </button>
           </form>
@@ -523,7 +521,7 @@ const RegisterForm = () => {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-4 bg-white text-gray-500">
-                  Already have an account?
+                  Sudah punya akun?
                 </span>
               </div>
             </div>
@@ -534,7 +532,7 @@ const RegisterForm = () => {
                 to="/login"
                 className="w-full flex justify-center py-2.5 sm:py-3 px-3 sm:px-4 border-2 border-main text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl text-main bg-white hover:bg-main hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main transition-all duration-300"
               >
-                Sign in to your account
+                Masuk ke akun Anda
               </Link>
             </div>
           </div>

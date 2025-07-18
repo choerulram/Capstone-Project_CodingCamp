@@ -240,10 +240,10 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                 </div>
                 <div>
                   <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-                    Edit Profile
+                    Edit Profil
                   </h2>
                   <p className="text-sm sm:text-base text-gray-500">
-                    Update your profile information
+                    Perbarui informasi profil Anda
                   </p>
                 </div>
               </div>
@@ -293,7 +293,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                     </svg>
                   </div>
                   <h3 className="text-base sm:text-lg font-semibold text-gray-900">
-                    Basic Information
+                    Informasi Dasar
                   </h3>
                 </div>
                 <div className="space-y-4 sm:space-y-6">
@@ -321,7 +321,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                   </div>
                   <div className="space-y-1.5 sm:space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
-                      Gender
+                      Jenis Kelamin
                     </label>
                     <select
                       name="gender"
@@ -418,13 +418,13 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                     </svg>
                   </div>
                   <h3 className="text-base sm:text-lg font-semibold text-gray-900">
-                    Body Measurements
+                    Pengukuran Tubuh
                   </h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   <div className="space-y-1.5 sm:space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
-                      Height
+                      Tinggi Badan
                     </label>
                     <div className="relative">
                       <input
@@ -432,7 +432,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                         name="tinggi"
                         value={formData.tinggi}
                         onChange={handleChange}
-                        placeholder="Enter your height"
+                        placeholder="Masukkan tinggi badan Anda"
                         className={`w-full border ${
                           validationErrors.tinggi
                             ? "border-red-500"
@@ -451,7 +451,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                   </div>{" "}
                   <div className="space-y-1.5 sm:space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
-                      Weight
+                      Berat Badan
                     </label>
                     <div className="relative">
                       <input
@@ -459,7 +459,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                         name="bb"
                         value={formData.bb}
                         onChange={handleChange}
-                        placeholder="Enter your weight"
+                        placeholder="Masukkan berat badan Anda"
                         className={`w-full border ${
                           validationErrors.bb
                             ? "border-red-500"
@@ -498,7 +498,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                       </svg>
                     </div>
                     <h3 className="text-base sm:text-lg font-semibold text-gray-900">
-                      Health Status
+                      Status Kesehatan
                     </h3>
                   </div>
                   <div className="space-y-4 sm:space-y-6">
@@ -605,14 +605,14 @@ const EditProfileModal = ({ isOpen, onClose, userData, onUpdate }) => {
                   onClick={onClose}
                   className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base text-gray-700 bg-gray-100 rounded-lg sm:rounded-xl hover:bg-gray-200 transition-colors font-medium"
                 >
-                  Cancel
+                  Batal
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base text-white bg-main rounded-lg sm:rounded-xl hover:bg-main/90 transition-colors disabled:opacity-50 font-medium"
                 >
-                  {isSubmitting ? "Saving..." : "Save Changes"}
+                  {isSubmitting ? "Menyimpan..." : "Simpan Perubahan"}
                 </button>
               </div>
             </form>
