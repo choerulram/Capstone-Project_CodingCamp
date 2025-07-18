@@ -199,12 +199,12 @@ const NutritionScore = () => {
                 </div>
               </div>
               <div
-                className={`text-lg md:text-xl font-bold mb-2 md:mb-3 ${getScoreColor(
+                className={`text-2xl md:text-3xl font-extrabold mb-2 md:mb-3 ${getScoreColor(
                   score
                 )} animate-fade-in`}
               >
                 {score >= 8
-                  ? "Excellent!"
+                  ? "Sangat Baik!"
                   : score >= 6
                   ? "Baik"
                   : "Perlu Perhatian"}
