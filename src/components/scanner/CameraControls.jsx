@@ -22,20 +22,30 @@ const CameraControls = ({
         <>
           {!selectedImage ? (
             <>
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md text-sm sm:text-base"
-                disabled={isLoading}
-              >
-                <FaUpload className="text-base sm:text-lg" /> Upload Foto
-              </button>
-              <button
-                onClick={handleStartCamera}
-                className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md text-sm sm:text-base"
-                disabled={isLoading}
-              >
-                <FaCamera className="text-base sm:text-lg" /> Buka Kamera
-              </button>
+              <div className="flex flex-col w-full items-center">
+                <div className="flex flex-row w-full justify-center gap-2 sm:gap-4">
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-main text-white rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md text-sm sm:text-base"
+                    disabled={isLoading}
+                  >
+                    <FaUpload className="text-base sm:text-lg" /> Upload Foto
+                  </button>
+                  <button
+                    onClick={handleStartCamera}
+                    className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-highlight text-main rounded-lg hover:bg-opacity-90 transition-all duration-200 shadow-md text-sm sm:text-base"
+                    disabled={isLoading}
+                  >
+                    <FaCamera className="text-base sm:text-lg" /> Buka Kamera
+                  </button>
+                </div>
+                <div className="text-xs text-gray-500 mt-2 text-center w-full">
+                  Maksimal ukuran foto{" "}
+                  <span className="font-semibold text-main">2MB</span>{" "}
+                  <span className="hidden sm:inline">(JPG, JPEG, PNG)</span>
+                  <span className="sm:hidden">(JPG/JPEG/PNG)</span>
+                </div>
+              </div>
             </>
           ) : (
             <>

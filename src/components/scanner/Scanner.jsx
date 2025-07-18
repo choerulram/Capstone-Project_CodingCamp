@@ -189,6 +189,15 @@ const Scanner = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    // Validasi ukuran file maksimal 2MB
+    if (file.size > 2 * 1024 * 1024) {
+      setError(
+        "Ukuran foto melebihi 2MB. Silakan pilih foto lain dengan ukuran maksimal 2MB untuk melanjutkan."
+      );
+      setIsErrorVisible(true);
+      return;
+    }
+
     try {
       setError(null);
       setNutritionData(null);
@@ -211,6 +220,7 @@ const Scanner = () => {
     } catch (err) {
       console.error("Error handling file:", err);
       setError("Gagal memuat file: " + err.message);
+      setIsErrorVisible(true);
     }
   };
 
@@ -442,7 +452,8 @@ const Scanner = () => {
         {/* Hidden label for accessibility */}
         <label htmlFor="file-upload" className="sr-only">
           Upload gambar makanan
-        </label>{" "}
+        </label>
+        {/* Info batasan size foto dipindahkan ke CameraControls agar lebih mudah terbaca */}
         {/* Loading Modal */}
         <LoadingModal isLoading={isLoading} />
       </div>{" "}
