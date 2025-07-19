@@ -17,31 +17,70 @@ const NutritionDataCard = ({ nutritionData }) => {
         <h2 className="text-lg md:text-xl font-semibold">Kebutuhan Nutrisi</h2>
       </div>
       <div className="p-4 md:p-6">
-        <div className="space-y-3 md:space-y-4">
-          {Object.entries(nutritionData || {}).map(([key, value], index) => (
-            <div
-              key={key}
-              className="flex justify-between items-center p-2.5 md:p-3 bg-gray-50 rounded-lg hover:bg-main/5 transition-all duration-300 transform hover:scale-102 hover:shadow-md"
-              style={{
-                animationDelay: `${index * 100}ms`,
-                animation: "fadeInUp 0.5s ease-out forwards",
-              }}
-            >
-              <span className="text-gray-700 font-medium">
-                {key
-                  .split("_")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ")}
-              </span>
-              <span className="text-main font-bold">
-                {typeof value === "number"
-                  ? `${value.toFixed(1)} ${
-                      nutritionUnits[key.toLowerCase()] || ""
-                    }`
-                  : value}
-              </span>
-            </div>
-          ))}
+        <div
+          className="overflow-x-auto animate-fade-in"
+          style={{ animationDelay: "100ms" }}
+        >
+          <table className="min-w-full border border-gray-200 rounded-lg">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="py-2 px-3 text-left text-gray-700 font-semibold">
+                  Nutrisi
+                </th>
+                <th className="py-2 px-3 text-center text-main font-semibold">
+                  Per Hari
+                </th>
+                <th className="py-2 px-3 text-center text-main font-semibold">
+                  Per Minggu
+                </th>
+                <th className="py-2 px-3 text-center text-main font-semibold">
+                  Per Bulan
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(nutritionData || {}).map(
+                ([key, value], index) => {
+                  const unit = nutritionUnits[key.toLowerCase()] || "";
+                  return (
+                    <tr
+                      key={key}
+                      className="hover:bg-main/5 transition-all duration-300"
+                      style={{
+                        animationDelay: `${index * 100}ms`,
+                        animation: "fadeInUp 0.5s ease-out forwards",
+                      }}
+                    >
+                      <td className="py-2 px-3 text-gray-700 font-medium">
+                        {key
+                          .split("_")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join(" ")}
+                      </td>
+                      <td className="py-2 px-3 text-main font-bold text-center">
+                        {typeof value === "number"
+                          ? `${value.toFixed(1)} ${unit}`
+                          : value}
+                      </td>
+                      <td className="py-2 px-3 text-main font-bold text-center">
+                        {typeof value === "number"
+                          ? `${(value * 7).toFixed(1)} ${unit}`
+                          : "-"}
+                      </td>
+                      <td className="py-2 px-3 text-main font-bold text-center">
+                        {typeof value === "number"
+                          ? `${(value * 30).toFixed(1)} ${unit}`
+                          : "-"}
+                      </td>
+                    </tr>
+                  );
+                }
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
