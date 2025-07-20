@@ -2,7 +2,84 @@ import React, { useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { BASE_URL } from "../../utils/api";
 
-const ScanDetailModal = ({ isOpen, onClose, scan }) => {
+// Logika status scan dari ScanHistoryCard
+function getScanStatus(scan, dailyNeeds) {
+  if (!scan.kandungan_gizi || !dailyNeeds)
+    return { status: "-", details: [], persentase: {} };
+  let needs = dailyNeeds;
+  if (needs.kebutuhan_harian) needs = needs.kebutuhan_harian;
+  const gizi = {
+    energi: scan.kandungan_gizi.energi,
+    gula: scan.kandungan_gizi.gula,
+    garam: scan.kandungan_gizi.garam,
+    lemak:
+      scan.kandungan_gizi.lemak !== undefined
+        ? scan.kandungan_gizi.lemak
+        : scan.kandungan_gizi["lemak total"] !== undefined
+        ? scan.kandungan_gizi["lemak total"]
+        : 0,
+    protein: scan.kandungan_gizi.protein,
+    serat: scan.kandungan_gizi.serat,
+  };
+  const needsMap = {
+    energi: needs.energi,
+    gula: needs.gula,
+    garam: needs.garam,
+    lemak:
+      needs.lemak !== undefined
+        ? needs.lemak
+        : needs["lemak total"] !== undefined
+        ? needs["lemak total"]
+        : 0,
+    protein: needs.protein,
+    serat: needs.serat,
+  };
+  const persentase = {
+    energi: needsMap.energi ? (gizi.energi / needsMap.energi) * 100 : 0,
+    gula: needsMap.gula ? (gizi.gula / needsMap.gula) * 100 : 0,
+    garam: needsMap.garam ? (gizi.garam / needsMap.garam) * 100 : 0,
+    lemak: needsMap.lemak ? (gizi.lemak / needsMap.lemak) * 100 : 0,
+    protein: needsMap.protein ? (gizi.protein / needsMap.protein) * 100 : 0,
+    serat: needsMap.serat ? (gizi.serat / needsMap.serat) * 100 : 0,
+  };
+  let status = "Baik";
+  const details = [];
+  if (
+    persentase.energi > 100 ||
+    persentase.gula > 100 ||
+    persentase.garam > 100 ||
+    persentase.lemak > 100
+  ) {
+    status = "Berlebihan";
+    if (persentase.energi > 100) details.push("Kalori");
+    if (persentase.gula > 100) details.push("Gula");
+    if (persentase.garam > 100) details.push("Garam");
+    if (persentase.lemak > 100) details.push("Lemak");
+  } else if (
+    persentase.energi > 80 ||
+    persentase.gula > 80 ||
+    persentase.garam > 80 ||
+    persentase.lemak > 80
+  ) {
+    status = "Cukup";
+    if (persentase.energi > 80) details.push("Kalori");
+    if (persentase.gula > 80) details.push("Gula");
+    if (persentase.garam > 80) details.push("Garam");
+    if (persentase.lemak > 80) details.push("Lemak");
+  } else if (
+    (persentase.gula > 50 && persentase.gula <= 100) ||
+    (persentase.garam > 50 && persentase.garam <= 100) ||
+    (persentase.lemak > 50 && persentase.lemak <= 100)
+  ) {
+    status = "Perlu Dibatasi";
+    if (persentase.gula > 50 && persentase.gula <= 100) details.push("Gula");
+    if (persentase.garam > 50 && persentase.garam <= 100) details.push("Garam");
+    if (persentase.lemak > 50 && persentase.lemak <= 100) details.push("Lemak");
+  }
+  return { status, details, persentase };
+}
+
+const ScanDetailModal = ({ isOpen, onClose, scan, dailyNeeds }) => {
   React.useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -104,6 +181,8 @@ const ScanDetailModal = ({ isOpen, onClose, scan }) => {
     // eslint-disable-next-line
   }, [showImageModal, dragging]);
 
+  // Hitung status scan
+  const { status, details } = getScanStatus(scan, dailyNeeds || {});
   if (!isOpen) return null;
 
   // Render modal dalam Portal
@@ -268,7 +347,7 @@ const ScanDetailModal = ({ isOpen, onClose, scan }) => {
 
                 {/* Nutrition Details */}
                 <div className="md:col-span-1 space-y-6">
-                  {/* Kandungan Gizi */}{" "}
+                  {/* Kandungan Gizi */}
                   <div className="bg-white rounded-lg md:rounded-xl p-4 md:p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
                     <h3 className="text-lg md:text-xl font-bold text-main mb-3 md:mb-5 flex items-center gap-1.5 md:gap-2">
                       <svg
@@ -306,6 +385,41 @@ const ScanDetailModal = ({ isOpen, onClose, scan }) => {
                             </div>
                           )
                         )}
+                    </div>
+                  </div>
+                  {/* Status Pindai Gizi */}
+                  <div className="mb-2">
+                    <div className="flex items-center gap-3">
+                      <span
+                        className={`flex items-center gap-1 px-3 py-1 rounded-lg shadow text-base font-bold border select-none transition-all duration-200
+                          ${
+                            status === "Baik"
+                              ? "bg-green-50 text-green-700 border-green-200"
+                              : status === "Cukup"
+                              ? "bg-yellow-50 text-yellow-700 border-yellow-200"
+                              : status === "Berlebihan"
+                              ? "bg-red-50 text-red-700 border-red-200"
+                              : status === "Perlu Dibatasi"
+                              ? "bg-orange-50 text-orange-700 border-orange-200"
+                              : status === "Kurang"
+                              ? "bg-blue-50 text-blue-700 border-blue-200"
+                              : "bg-gray-50 text-gray-700 border-gray-200"
+                          }
+                        `}
+                        style={{ minWidth: 110, justifyContent: "center" }}
+                        title={
+                          details.length > 0
+                            ? `Nutrisi: ${details.join(", ")}`
+                            : ""
+                        }
+                      >
+                        Status Gizi: {status}
+                        {details.length > 0 && (
+                          <span className="ml-2 font-normal text-sm opacity-80">
+                            ({details.join(", ")})
+                          </span>
+                        )}
+                      </span>
                     </div>
                   </div>
                   {/* Perbandingan dengan Kebutuhan Harian */}

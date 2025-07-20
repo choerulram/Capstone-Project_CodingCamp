@@ -437,6 +437,7 @@ const ScanHistoryCard = ({ scan, onDelete, dailyNeeds }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         scan={scan}
+        dailyNeeds={dailyNeeds}
       />
     </div>
   );
