@@ -13,12 +13,12 @@ const RegisterForm = () => {
     age_unit: "years",
     height: "",
     weight: "",
-    gender: "Laki-laki",
+    gender: "",
     is_pregnant: false,
     pregnancy_age: "",
     is_nursing: false,
     child_age: "",
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    timezone: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -176,6 +176,7 @@ const RegisterForm = () => {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Masukkan nama lengkap Anda"
+                  autoComplete="off"
                   className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
               </div>{" "}
@@ -194,6 +195,7 @@ const RegisterForm = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Masukkan email Anda"
+                  autoComplete="new-email"
                   className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
               </div>
@@ -243,6 +245,7 @@ const RegisterForm = () => {
                         placeholder={
                           formData.age_unit === "months" ? "1-12" : "1-150"
                         }
+                        autoComplete="off"
                         className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                       />
                     </div>
@@ -274,6 +277,7 @@ const RegisterForm = () => {
                       value={formData.height}
                       onChange={handleChange}
                       placeholder="Masukkan tinggi badan Anda"
+                      autoComplete="off"
                       className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 pr-10 sm:pr-12 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
@@ -296,6 +300,7 @@ const RegisterForm = () => {
                       value={formData.weight}
                       onChange={handleChange}
                       placeholder="Masukkan berat badan Anda"
+                      autoComplete="off"
                       className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 pr-10 sm:pr-12 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
@@ -318,6 +323,7 @@ const RegisterForm = () => {
                   onChange={handleChange}
                   className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 >
+                  <option value="">Pilih Zona Waktu</option>
                   <option value="Asia/Jakarta">WIB - Jakarta</option>
                   <option value="Asia/Makassar">WITA - Makassar</option>
                   <option value="Asia/Jayapura">WIT - Jayapura</option>
@@ -430,6 +436,7 @@ const RegisterForm = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Minimal 8 karakter"
+                  autoComplete="new-password"
                   className="w-full border border-gray-300 rounded-lg sm:rounded-xl p-2.5 sm:p-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent transition-all duration-300"
                 />
                 <button
