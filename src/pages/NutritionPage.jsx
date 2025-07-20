@@ -87,13 +87,15 @@ const NutritionPage = () => {
             <div className="animate-fade-in-down">
               <NutritionHeader />
             </div>
-            <div className="grid md:grid-cols-12 gap-8">
-              <div className="md:col-span-5 animate-fade-in-left">
+            <div className="space-y-8">
+              <div className="animate-fade-in-left">
                 <NutritionDataCard nutritionData={nutritionData} />
               </div>
-              <div className="md:col-span-7 space-y-8 animate-fade-in-right">
+              <div className="grid md:grid-cols-2 gap-8 animate-fade-in-right">
                 <CalculationInfoCard />
                 <NutritionTipsCard />
+              </div>
+              <div className="animate-fade-in-right">
                 <AdditionalRecommendations />
               </div>
             </div>
