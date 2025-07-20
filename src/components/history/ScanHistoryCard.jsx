@@ -23,7 +23,107 @@ const calculateTimeAgo = (timestamp) => {
   return `${days} hari yang lalu`;
 };
 
-const ScanHistoryCard = ({ scan, onDelete }) => {
+// Fungsi utilitas untuk menghitung status scan
+function getScanStatus(scan, dailyNeeds) {
+  if (!scan.kandungan_gizi || !dailyNeeds) return { status: "-", details: [] };
+
+  // Normalisasi property agar konsisten
+  // dailyNeeds bisa saja nested di kebutuhan_harian
+  let needs = dailyNeeds;
+  if (needs.kebutuhan_harian) needs = needs.kebutuhan_harian;
+  // Mapping property gizi
+  const gizi = {
+    energi: scan.kandungan_gizi.energi,
+    gula: scan.kandungan_gizi.gula,
+    garam: scan.kandungan_gizi.garam,
+    lemak:
+      scan.kandungan_gizi.lemak !== undefined
+        ? scan.kandungan_gizi.lemak
+        : scan.kandungan_gizi["lemak total"] !== undefined
+        ? scan.kandungan_gizi["lemak total"]
+        : 0,
+    protein: scan.kandungan_gizi.protein,
+    serat: scan.kandungan_gizi.serat,
+  };
+  // Mapping property needs
+  const needsMap = {
+    energi: needs.energi,
+    gula: needs.gula,
+    garam: needs.garam,
+    lemak:
+      needs.lemak !== undefined
+        ? needs.lemak
+        : needs["lemak total"] !== undefined
+        ? needs["lemak total"]
+        : 0,
+    protein: needs.protein,
+    serat: needs.serat,
+  };
+  const persentase = {
+    energi: needsMap.energi ? (gizi.energi / needsMap.energi) * 100 : 0,
+    gula: needsMap.gula ? (gizi.gula / needsMap.gula) * 100 : 0,
+    garam: needsMap.garam ? (gizi.garam / needsMap.garam) * 100 : 0,
+    lemak: needsMap.lemak ? (gizi.lemak / needsMap.lemak) * 100 : 0,
+    protein: needsMap.protein ? (gizi.protein / needsMap.protein) * 100 : 0,
+    serat: needsMap.serat ? (gizi.serat / needsMap.serat) * 100 : 0,
+  };
+  // Urutan prioritas status:
+  // 1. Berlebihan
+  // 2. Cukup
+  // 3. Perlu Dibatasi
+  // 4. Kurang
+  // 5. Baik
+  let status = "Baik";
+  const details = [];
+
+  // 1. Berlebihan jika ada yang > 100%
+  if (
+    persentase.energi > 100 ||
+    persentase.gula > 100 ||
+    persentase.garam > 100 ||
+    persentase.lemak > 100
+  ) {
+    status = "Berlebihan";
+    if (persentase.energi > 100) details.push("Kalori");
+    if (persentase.gula > 100) details.push("Gula");
+    if (persentase.garam > 100) details.push("Garam");
+    if (persentase.lemak > 100) details.push("Lemak");
+  } else if (
+    // 2. Cukup jika ada yang > 80%
+    persentase.energi > 80 ||
+    persentase.gula > 80 ||
+    persentase.garam > 80 ||
+    persentase.lemak > 80
+  ) {
+    status = "Cukup";
+    if (persentase.energi > 80) details.push("Kalori");
+    if (persentase.gula > 80) details.push("Gula");
+    if (persentase.garam > 80) details.push("Garam");
+    if (persentase.lemak > 80) details.push("Lemak");
+  } else if (
+    // 3. Perlu Dibatasi jika > 50% pada gula/garam/lemak
+    (persentase.gula > 50 && persentase.gula <= 100) ||
+    (persentase.garam > 50 && persentase.garam <= 100) ||
+    (persentase.lemak > 50 && persentase.lemak <= 100)
+  ) {
+    status = "Perlu Dibatasi";
+    if (persentase.gula > 50 && persentase.gula <= 100) details.push("Gula");
+    if (persentase.garam > 50 && persentase.garam <= 100) details.push("Garam");
+    if (persentase.lemak > 50 && persentase.lemak <= 100) details.push("Lemak");
+  } else if (
+    // 4. Kurang jika protein/serat < 20%
+    persentase.protein < 20 ||
+    persentase.serat < 20
+  ) {
+    status = "Kurang";
+    if (persentase.protein < 20) details.push("Protein");
+    if (persentase.serat < 20) details.push("Serat");
+  }
+  // 5. Default Baik jika tidak ada kondisi di atas
+  return { status, details, persentase };
+}
+
+const ScanHistoryCard = ({ scan, onDelete, dailyNeeds }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -51,10 +151,13 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
     }
   };
 
+  // Hitung status scan
+  const { status, details, persentase } = getScanStatus(scan, dailyNeeds);
   return (
     <div className="relative">
       {" "}
       <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] overflow-hidden border border-gray-100/50">
+        {/* Status Scan - Sebaris dengan waktu scan */}
         <div className="p-3 md:p-4">
           <div className="flex flex-col md:flex-row gap-3 md:gap-4">
             {/* Image Container */}
@@ -74,7 +177,7 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
                   {/* Timestamp and TimeAgo Section */}
                   <div className="flex flex-col gap-2">
                     {" "}
-                    <div className="flex items-center gap-1.5 md:gap-2">
+                    <div className="flex items-center gap-1.5 md:gap-2 w-full">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4 md:h-5 md:w-5 text-main/70"
@@ -101,6 +204,37 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
                       <span className="text-xs md:text-sm text-gray-500 bg-gray-50 px-1.5 md:px-2 py-0.5 rounded-md whitespace-nowrap">
                         {calculateTimeAgo(scan.timestamp)}
                       </span>
+                      {/* Status Scan */}
+                      <span
+                        className={`flex items-center gap-1 px-2 py-1 ml-4 md:ml-6 rounded-lg shadow text-xs font-bold border select-none transition-all duration-200
+                          ${
+                            status === "Baik"
+                              ? "bg-green-50 text-green-700 border-green-200"
+                              : status === "Cukup"
+                              ? "bg-yellow-50 text-yellow-700 border-yellow-200"
+                              : status === "Berlebihan"
+                              ? "bg-red-50 text-red-700 border-red-200"
+                              : status === "Perlu Dibatasi"
+                              ? "bg-orange-50 text-orange-700 border-orange-200"
+                              : status === "Kurang"
+                              ? "bg-blue-50 text-blue-700 border-blue-200"
+                              : "bg-gray-50 text-gray-700 border-gray-200"
+                          }
+                        `}
+                        style={{ minWidth: 90, justifyContent: "center" }}
+                        title={
+                          details.length > 0
+                            ? `Nutrisi: ${details.join(", ")}`
+                            : ""
+                        }
+                      >
+                        {status}
+                        {details.length > 0 && (
+                          <span className="ml-1 font-normal text-xs opacity-80">
+                            ({details.join(", ")})
+                          </span>
+                        )}
+                      </span>
                     </div>{" "}
                     {/* Nutrition Info Section */}
                     <div className="flex flex-wrap items-center gap-2">
@@ -122,6 +256,11 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
                         </svg>
                         <span className="font-medium">
                           Energi: {scan.kandungan_gizi.energi || 0} kkal
+                          {dailyNeeds && (
+                            <span className="ml-1 text-[10px] text-amber-700">
+                              ({Math.round(persentase.energi)}%)
+                            </span>
+                          )}
                         </span>
                       </div>
                       {scan.kandungan_gizi && (
@@ -164,6 +303,11 @@ const ScanHistoryCard = ({ scan, onDelete }) => {
                             </svg>
                             <span className="font-medium">
                               Protein: {scan.kandungan_gizi.protein || "0"}g
+                              {dailyNeeds && (
+                                <span className="ml-1 text-[10px] text-green-700">
+                                  ({Math.round(persentase.protein)}%)
+                                </span>
+                              )}
                             </span>
                           </div>
                         </>
