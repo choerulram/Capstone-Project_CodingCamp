@@ -13,23 +13,23 @@ const nutritionUnits = {
 const NutritionDataCard = ({ nutritionData }) => {
   return (
     <div
-      className="overflow-x-auto animate-fade-in"
+      className="w-full overflow-x-auto animate-fade-in scrollbar-thin scrollbar-thumb-main/30 scrollbar-track-transparent"
       style={{ animationDelay: "100ms" }}
     >
-      <div className="rounded-xl shadow-lg border border-main/10 overflow-hidden">
-        <table className="min-w-full border-collapse">
+      <div className="min-w-[500px] md:min-w-0 rounded-xl shadow-lg border border-main/10 overflow-hidden">
+        <table className="min-w-full border-collapse text-base md:text-base">
           <thead>
             <tr className="bg-main">
-              <th className="py-3 px-4 text-center text-white text-lg md:text-xl font-semibold border-b border-white/30 border-r border-white/30 first:border-l">
+              <th className="py-2 px-2 md:py-3 md:px-4 text-center text-white text-lg md:text-xl font-semibold border-b border-white/30 border-r border-white/30 first:border-l">
                 Nutrisi
               </th>
-              <th className="py-3 px-4 text-center text-white text-lg md:text-xl font-semibold border-b border-white/30 border-r border-white/30">
+              <th className="py-2 px-2 md:py-3 md:px-4 text-center text-white text-lg md:text-xl font-semibold border-b border-white/30 border-r border-white/30">
                 Per Hari
               </th>
-              <th className="py-3 px-4 text-center text-white text-lg md:text-xl font-semibold border-b border-white/30 border-r border-white/30">
+              <th className="py-2 px-2 md:py-3 md:px-4 text-center text-white text-lg md:text-xl font-semibold border-b border-white/30 border-r border-white/30">
                 Per Minggu
               </th>
-              <th className="py-3 px-4 text-center text-white text-lg md:text-xl font-semibold border-b border-white/30 border-r border-white/30 last:border-r-0">
+              <th className="py-2 px-2 md:py-3 md:px-4 text-center text-white text-lg md:text-xl font-semibold border-b border-white/30 border-r border-white/30 last:border-r-0">
                 Per Bulan
               </th>
             </tr>
@@ -50,7 +50,7 @@ const NutritionDataCard = ({ nutritionData }) => {
                     animation: "fadeInUp 0.5s ease-out forwards",
                   }}
                 >
-                  <td className="py-2 px-4 text-gray-800 font-medium border-b border-main/10 border-r border-main/10 first:border-l">
+                  <td className="py-2 px-2 md:py-2 md:px-4 text-gray-800 font-medium text-base md:text-base border-b border-main/10 border-r border-main/10 first:border-l">
                     {key
                       .split("_")
                       .map(
@@ -58,17 +58,17 @@ const NutritionDataCard = ({ nutritionData }) => {
                       )
                       .join(" ")}
                   </td>
-                  <td className="py-2 px-4 text-main font-bold border-b border-main/10 border-r border-main/10">
+                  <td className="py-2 px-2 md:py-2 md:px-4 text-main font-bold text-base md:text-base border-b border-main/10 border-r border-main/10">
                     {typeof value === "number"
                       ? `${value.toFixed(1)} ${unit}`
                       : value}
                   </td>
-                  <td className="py-2 px-4 text-main font-bold border-b border-main/10 border-r border-main/10">
+                  <td className="py-2 px-2 md:py-2 md:px-4 text-main font-bold text-base md:text-base border-b border-main/10 border-r border-main/10">
                     {typeof value === "number"
                       ? `${(value * 7).toFixed(1)} ${unit}`
                       : "-"}
                   </td>
-                  <td className="py-2 px-4 text-main font-bold border-b border-main/10 border-r border-main/10 last:border-r-0">
+                  <td className="py-2 px-2 md:py-2 md:px-4 text-main font-bold text-base md:text-base border-b border-main/10 border-r border-main/10 last:border-r-0">
                     {typeof value === "number"
                       ? `${(value * 30).toFixed(1)} ${unit}`
                       : "-"}

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import api from "../utils/api.js";
@@ -84,20 +86,40 @@ const NutritionPage = () => {
       <main className="flex-grow bg-gray-50">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto">
-            <div className="animate-fade-in-down">
+            <motion.div
+              initial={{ opacity: 0, y: -40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+            >
               <NutritionHeader />
-            </div>
+            </motion.div>
             <div className="space-y-8">
-              <div className="animate-fade-in-left">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7, ease: "easeOut" }}
+              >
                 <NutritionDataCard nutritionData={nutritionData} />
+              </motion.div>
+              <div className="grid md:grid-cols-2 gap-8">
+                <motion.div
+                  initial={{ opacity: 0, x: -40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+                >
+                  <CalculationInfoCard />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+                >
+                  <NutritionTipsCard />
+                </motion.div>
               </div>
-              <div className="grid md:grid-cols-2 gap-8 animate-fade-in-right">
-                <CalculationInfoCard />
-                <NutritionTipsCard />
-              </div>
-              <div className="animate-fade-in-right">
+              {/* <div className="animate-fade-in-right">
                 <AdditionalRecommendations />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
