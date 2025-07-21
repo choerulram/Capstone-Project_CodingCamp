@@ -240,36 +240,52 @@ const ProductRecommendation = () => {
           {/* Area Fokus Gizi */}
           {Array.isArray(recommendation.gizi_fokus) &&
             recommendation.gizi_fokus.length > 0 && (
-              <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
-                <h3 className="text-base md:text-lg font-bold text-main mb-3 md:mb-4 flex items-center">
+              <div className="bg-yellow-50/80 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-yellow-200 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
+                <div className="flex items-center mb-2 md:mb-3">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 md:h-5 md:w-5 mr-2 text-main"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
+                    className="h-5 w-5 md:h-6 md:w-6 mr-2 text-yellow-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
                     <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  Area Fokus Gizi Anda
-                </h3>
-                <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 md:gap-4">
+                  <h3 className="text-base md:text-lg font-bold text-yellow-800">
+                    Area Fokus Gizi Anda
+                  </h3>
+                </div>
+                <p className="text-xs md:text-sm text-yellow-700 mb-4 animate-fade-in animate-delay-100">
+                  Area Fokus Gizi di bawah ini adalah nutrisi yang{" "}
+                  <span className="font-semibold">belum terpenuhi</span> sesuai
+                  target harian Anda. Silakan penuhi kebutuhan gizi tersebut
+                  untuk hasil yang optimal.
+                </p>
+                <div className="flex flex-wrap gap-3 md:gap-4 justify-start items-center">
                   {recommendation.gizi_fokus.map((nutrient, index) => (
                     <div
                       key={nutrient}
-                      className="bg-gradient-to-r from-highlight/20 to-secondary/30 p-2 md:p-4 rounded-lg md:rounded-xl text-xs md:text-sm font-medium text-main flex items-center gap-1 md:gap-2 shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in transform hover:-translate-y-1"
+                      className="flex items-center gap-2 bg-yellow-100 border border-yellow-300 px-3 py-2 rounded-lg text-xs md:text-sm font-medium text-yellow-900 shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in"
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3 md:h-4 md:w-4 text-main"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
+                        className="h-4 w-4 text-yellow-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
                       >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
                       </svg>
                       {nutrient.split("_")[0].charAt(0).toUpperCase() +
                         nutrient.split("_")[0].slice(1)}
@@ -282,8 +298,8 @@ const ProductRecommendation = () => {
           {/* Rekomendasi Produk */}
           {Array.isArray(recommendation.rekomendasi) &&
             recommendation.rekomendasi.length > 0 && (
-              <div className="space-y-4 md:space-y-6">
-                <h3 className="text-lg md:text-xl font-bold text-main flex items-center">
+              <div className="bg-white/90 backdrop-blur-sm p-4 md:p-6 rounded-xl md:rounded-2xl border border-main/20 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
+                <div className="flex items-center mb-4 md:mb-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5 md:h-6 md:w-6 mr-2 text-main"
@@ -298,61 +314,66 @@ const ProductRecommendation = () => {
                       d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                     />
                   </svg>
-                  Rekomendasi Produk untuk Anda
-                </h3>
-                <div className="grid gap-4 md:gap-6">
+                  <h3 className="text-lg md:text-xl font-bold text-main">
+                    Rekomendasi Produk untuk Anda
+                  </h3>
+                </div>
+                <p className="text-xs md:text-sm text-gray-600 mb-4 animate-fade-in animate-delay-100">
+                  <span className="font-semibold text-main">Skor Gizi</span>{" "}
+                  adalah penilaian seberapa baik produk memenuhi kebutuhan gizi
+                  harian Anda. Semakin tinggi skor gizi, semakin sesuai produk
+                  tersebut dengan kebutuhan nutrisi Anda.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                   {recommendation.rekomendasi.map((product, index) => (
                     <div
                       key={index}
-                      className="bg-white rounded-xl md:rounded-2xl border border-gray-200/80 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden"
+                      className="bg-white rounded-2xl border border-main/20 overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1 hover:border-main/40"
                       style={{ animationDelay: `${index * 150}ms` }}
                     >
-                      <div className="p-4 md:p-6">
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 md:gap-4 mb-4 md:mb-6">
-                          <div className="flex-1">
-                            <h4 className="text-base md:text-xl font-bold text-main mb-2">
-                              {product.nama_produk || product.product_name}
-                            </h4>
-                            <div className="flex items-center gap-2">
-                              <span
-                                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs md:text-sm font-semibold ${
-                                  product.skor_gizi >= 8
-                                    ? "bg-highlight/40 text-main"
-                                    : product.skor_gizi >= 6
-                                    ? "bg-secondary/50 text-main"
-                                    : "bg-gray-100 text-main"
-                                }`}
-                              >
-                                Skor Gizi: {product.skor_gizi?.toFixed(1)}
-                              </span>
-                            </div>
-                          </div>
+                      <div className="p-6 flex flex-col gap-4 h-full">
+                        <div className="flex flex-col items-center mb-2">
+                          <h4
+                            className="text-lg md:text-xl font-bold text-main mb-1 text-center truncate"
+                            title={product.nama_produk || product.product_name}
+                          >
+                            {product.nama_produk || product.product_name}
+                          </h4>
+                          <span
+                            className={`inline-block px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold shadow ${
+                              product.skor_gizi >= 8
+                                ? "bg-green-100 text-green-700 border border-green-200"
+                                : product.skor_gizi >= 6
+                                ? "bg-yellow-100 text-yellow-800 border border-yellow-200"
+                                : "bg-gray-100 text-gray-700 border border-gray-200"
+                            }`}
+                          >
+                            Skor Gizi: {product.skor_gizi?.toFixed(1)}
+                          </span>
                         </div>
-
-                        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-4">
+                        <div className="grid grid-cols-2 gap-3">
                           {Object.entries({
-                            Energi: ["⚡", "energi"],
-                            Protein: ["🥩", "protein"],
-                            "Lemak total": ["🥑", "lemak_total"],
-                            Karbohidrat: ["🌾", "karbohidrat"],
-                            Serat: ["🌿", "serat"],
-                            Gula: ["🍯", "gula"],
-                            Garam: ["🧂", "garam"],
-                          }).map(([label, [emoji, key]]) => {
+                            Energi: "energi",
+                            Protein: "protein",
+                            "Lemak total": "lemak_total",
+                            Karbohidrat: "karbohidrat",
+                            Serat: "serat",
+                            Gula: "gula",
+                            Garam: "garam",
+                          }).map(([label, key]) => {
                             const value = product[label];
                             if (value) {
                               return (
                                 <div
                                   key={key}
-                                  className="bg-gradient-to-br from-highlight/20 to-white p-3 md:p-4 rounded-lg md:rounded-xl shadow-sm"
+                                  className="bg-gray-50 border border-main/10 rounded-lg px-3 py-2 flex flex-col items-center"
                                 >
-                                  <div className="text-xs md:text-sm text-main font-medium flex items-center gap-1 md:gap-2 mb-1">
-                                    <span>{emoji}</span>
+                                  <span className="text-xs md:text-sm text-gray-500 mb-1 text-center font-medium">
                                     {label}
-                                  </div>
-                                  <div className="text-sm md:text-base font-bold text-main">
+                                  </span>
+                                  <span className="text-base md:text-lg font-bold text-main text-center">
                                     {value}
-                                  </div>
+                                  </span>
                                 </div>
                               );
                             }
