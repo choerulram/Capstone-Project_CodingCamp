@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../../states/authUser/slice.js";
@@ -7,6 +7,14 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading } = useSelector((state) => state.auth);
+
+  // Add useEffect to handle authentication state
+  useEffect(() => {
+    const authState = localStorage.getItem("token");
+    if (authState) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -25,28 +33,42 @@ const LoginForm = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+
     if (!formData.email || !formData.password) {
       setError("Email dan kata sandi wajib diisi");
       return;
     }
 
+    setError(""); // Reset any previous error
+
     try {
-      const response = await dispatch(loginUser(formData));
-      if (response && response.token) {
-        // Login successful
+      const resultAction = await dispatch(loginUser(formData));
+
+      if (loginUser.fulfilled.match(resultAction)) {
+        // Login successful - navigation will happen via useEffect
         navigate("/");
-      } else {
-        setError("Email atau kata sandi salah");
+      } else if (loginUser.rejected.match(resultAction)) {
+        const errorMessage = resultAction.payload;
+        if (errorMessage?.includes("not verified")) {
+          setError(
+            "Email belum diverifikasi. Silakan periksa email Anda untuk link verifikasi. Cek folder spam jika email tidak ditemukan di kotak masuk."
+          );
+        } else if (
+          errorMessage?.includes("Invalid credentials") ||
+          errorMessage?.includes("incorrect")
+        ) {
+          setError("Email atau kata sandi salah");
+        } else if (errorMessage?.includes("not found")) {
+          setError("Email tidak ditemukan. Silakan daftar terlebih dahulu");
+        } else {
+          setError(
+            errorMessage || "Terjadi kesalahan. Silakan coba lagi nanti"
+          );
+        }
       }
     } catch (err) {
-      if (err.response?.status === 401) {
-        setError("Email atau kata sandi salah");
-      } else if (err.response?.status === 404) {
-        setError("Email tidak ditemukan. Silakan daftar terlebih dahulu");
-      } else {
-        setError("Terjadi kesalahan. Silakan coba lagi nanti");
-      }
+      console.error("Login error:", err);
+      setError("Terjadi kesalahan. Silakan coba lagi nanti");
     }
   };
 

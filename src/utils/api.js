@@ -34,6 +34,20 @@ const api = {
         const errorData = await response
           .json()
           .catch(() => ({ detail: "Terjadi kesalahan pada server" }));
+
+        // Handle specific error cases
+        if (response.status === 401) {
+          if (errorData.detail === "Email not verified") {
+            throw new Error("Email not verified");
+          } else {
+            throw new Error("Invalid credentials");
+          }
+        } else if (response.status === 404) {
+          throw new Error("User not found");
+        } else if (response.status === 403) {
+          throw new Error("Account not verified");
+        }
+
         throw new Error(errorData.detail || "Login gagal");
       }
 
@@ -181,6 +195,26 @@ const api = {
       handleApiError(error);
     }
   },
+
+  verifyEmail: async (token) => {
+    try {
+      const response = await fetchWithTimeout(
+        `${BASE_URL}/verify-email?token=${encodeURIComponent(token)}`,
+        {
+          method: "GET",
+          headers: {
+            ...defaultHeaders,
+          },
+        }
+      );
+
+      const data = await response.json();
+      return { status: response.status, data };
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
   getTodayScanHistory: async (token) => {
     try {
       const response = await fetchWithTimeout(`${BASE_URL}/scan-history`, {

@@ -27,11 +27,29 @@ function asyncSetAuthUser({ email, password }) {
   return async (dispatch) => {
     try {
       const loginResult = await api.login({ email, password });
-      dispatch(setAuthUserActionCreator(loginResult));
-      return loginResult;
+
+      // Jika login berhasil, simpan token ke localStorage
+      if (loginResult && loginResult.token) {
+        localStorage.setItem("token", loginResult.token);
+        if (loginResult.userId) {
+          localStorage.setItem("userId", loginResult.userId);
+        }
+        dispatch(setAuthUserActionCreator(loginResult));
+        return loginResult;
+      } else {
+        throw new Error("Login gagal: Data tidak valid");
+      }
     } catch (error) {
-      alert(error.message);
-      return null;
+      // Pastikan error memiliki response untuk error dari API
+      if (error.response) {
+        const errorMessage =
+          error.response.data?.detail ||
+          error.response.data?.message ||
+          error.message;
+        throw new Error(errorMessage);
+      }
+      // Untuk error lainnya, gunakan pesan error asli
+      throw error;
     }
   };
 }

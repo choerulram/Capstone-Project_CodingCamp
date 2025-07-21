@@ -124,7 +124,9 @@ const RegisterForm = () => {
     try {
       const response = await api.register(formData);
       if (!response.error) {
-        setAlertMessage("Registrasi berhasil! Anda dapat masuk ke akun Anda.");
+        setAlertMessage(
+          "Registrasi berhasil! Silakan periksa email Anda untuk melakukan verifikasi akun. Cek folder spam jika email tidak ditemukan di kotak masuk."
+        );
         setShowAlert(true);
       }
     } catch (err) {

@@ -5,6 +5,7 @@ import NutritionPage from "../pages/NutritionPage.jsx";
 import DailySummaryPage from "../pages/DailySummaryPage.jsx";
 import LoginPage from "../pages/LoginPage.jsx";
 import RegisterPage from "../pages/RegisterPage.jsx";
+import EmailVerificationPage from "../pages/EmailVerificationPage.jsx";
 import ProtectedRoute from "../components/auth/ProtectedRoute.jsx";
 import ProfilePage from "../pages/ProfilePage.jsx";
 
@@ -73,5 +74,10 @@ export const publicRoutes = [
     path: "/register",
     element: <RegisterPage />,
     title: "Daftar",
+  },
+  {
+    path: "/verify-email",
+    element: <EmailVerificationPage />,
+    title: "Verifikasi Email",
   },
 ];
