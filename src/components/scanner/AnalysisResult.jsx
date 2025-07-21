@@ -11,15 +11,11 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
   const token = useSelector((state) => state.auth.token);
 
   // Helper untuk mendapatkan satuan nutrisi yang sesuai
-  const getNutritionUnit = (nutrientKey) => {
-    switch (nutrientKey.toLowerCase()) {
-      case "energi":
-        return "kkal";
-      case "garam":
-        return "mg";
-      default:
-        return "g";
-    }
+  const getNutritionUnit = (label) => {
+    const key = label.toLowerCase();
+    if (key === "energi") return "kkal";
+    if (key === "garam") return "mg";
+    return "g";
   };
   // Helper untuk memformat nilai nutrisi sesuai satuannya
   const formatNutritionValue = (value) => {
@@ -109,22 +105,45 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
       if (response?.message) {
         setSuccessMessage("Berhasil memperbarui kandungan gizi!");
         // Update local state dengan nilai baru
+        const normalize = (str) =>
+          str
+            .toLowerCase()
+            .replace(/\s+/g, "_")
+            .replace(/[^a-z0-9_]/g, "");
         const updatedNutritionData = {
           ...nutritionData,
           kandungan: updatedValues,
-          // Update juga nilai di perbandingan
-          perbandingan: nutritionData.perbandingan.map((row) => ({
-            ...row,
-            hasil_ocr: updatedValues[row.label]
-              ? `${updatedValues[row.label]} g`
-              : row.hasil_ocr,
-          })),
+          perbandingan: nutritionData.perbandingan.map((row) => {
+            // Normalisasi label ke key
+            const key = normalize(row.label);
+            // Ambil nilai hasil OCR terbaru
+            const ocrValue =
+              updatedValues[key] !== undefined
+                ? updatedValues[key]
+                : row.hasil_ocr;
+            // Ambil kebutuhan harian (support kebutuhan_harian/kebutuhan)
+            let kebutuhanValue =
+              row.kebutuhan_harian !== undefined
+                ? row.kebutuhan_harian
+                : row.kebutuhan;
+            const ocrNum = parseFloat(ocrValue);
+            const kebutuhanNum = parseFloat(kebutuhanValue);
+            let status = "Aman";
+            if (
+              !isNaN(ocrNum) &&
+              !isNaN(kebutuhanNum) &&
+              ocrNum > kebutuhanNum
+            ) {
+              status = "Melebihi";
+            }
+            return {
+              ...row,
+              hasil_ocr: ocrValue,
+              status,
+            };
+          }),
         };
-
-        // Reset state editing
         setIsEditing(false);
-
-        // Panggil callback untuk memperbarui data parent
         if (onUpdateSuccess) {
           onUpdateSuccess(updatedNutritionData);
         }
@@ -377,7 +396,7 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2h2a2 2 0 002-2z"
                     />
                   </svg>
                 </span>
@@ -441,66 +460,156 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-100">
-                        {nutritionData.perbandingan.map((row, index) => (
-                          <tr
-                            key={index}
-                            className="hover:bg-gray-50 transition-colors"
-                          >
-                            <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm font-medium text-main">
-                              {row.label}
-                            </td>
-                            <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm text-gray-600">
-                              {isEditing && row.label in updatedValues
-                                ? `${updatedValues[row.label]} g`
-                                : row.hasil_ocr}
-                            </td>
-                            <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm text-gray-600">
-                              {row.kebutuhan_harian}
-                            </td>
-                            <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm">
-                              <span
-                                className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium ${
-                                  row.status === "Melebihi"
-                                    ? "bg-red-50 text-red-700 border border-red-200"
-                                    : "bg-green-50 text-green-700 border border-green-200"
-                                }`}
-                              >
-                                {row.status === "Melebihi" ? (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-3.5 w-3.5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                                    />
-                                  </svg>
-                                ) : (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-3.5 w-3.5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M5 13l4 4L19 7"
-                                    />
-                                  </svg>
-                                )}
-                                {row.status}
-                              </span>
-                            </td>
-                          </tr>
-                        ))}
+                        {(() => {
+                          // Urutan nutrisi yang diinginkan
+                          const order = [
+                            "Energi",
+                            "Protein",
+                            "Lemak Total",
+                            "Karbohidrat",
+                            "Serat",
+                            "Gula",
+                            "Garam",
+                          ];
+                          // Sort perbandingan sesuai urutan di atas
+                          const sorted = [...nutritionData.perbandingan].sort(
+                            (a, b) =>
+                              order.indexOf(a.label) - order.indexOf(b.label)
+                          );
+                          return sorted.map((row, index) => (
+                            <tr
+                              key={index}
+                              className="hover:bg-gray-50 transition-colors"
+                            >
+                              <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm font-medium text-main">
+                                {row.label}
+                              </td>
+                              <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm text-gray-600">
+                                {(() => {
+                                  // Normalisasi label ke key
+                                  const normalize = (str) => {
+                                    let norm = str
+                                      .toLowerCase()
+                                      .replace(/\s+/g, "_")
+                                      .replace(/[^a-z0-9_]/g, "");
+                                    if (
+                                      norm === "lemak_total" ||
+                                      norm === "lemak total" ||
+                                      norm === "lemaktotal" ||
+                                      norm === "lemak__total"
+                                    )
+                                      return "lemak total";
+                                    return norm;
+                                  };
+                                  const key = normalize(row.label);
+                                  let value;
+                                  if (isEditing) {
+                                    value =
+                                      updatedValues[key] !== undefined &&
+                                      updatedValues[key] !== ""
+                                        ? updatedValues[key]
+                                        : "-";
+                                  } else {
+                                    value =
+                                      nutritionData.kandungan[key] !==
+                                        undefined &&
+                                      nutritionData.kandungan[key] !== ""
+                                        ? nutritionData.kandungan[key]
+                                        : "-";
+                                  }
+                                  return `${value} ${getNutritionUnit(
+                                    row.label
+                                  )}`;
+                                })()}
+                              </td>
+                              <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm text-gray-600">
+                                {row.kebutuhan_harian}{" "}
+                                {getNutritionUnit(row.label)}
+                              </td>
+                              <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm">
+                                {(() => {
+                                  // Normalisasi label ke key
+                                  const normalize = (str) =>
+                                    str.toLowerCase().replace(/ /g, "_");
+                                  const key = normalize(row.label);
+                                  // Ambil nilai hasil OCR terbaru
+                                  let ocrValue;
+                                  if (
+                                    isEditing &&
+                                    updatedValues[key] !== undefined
+                                  ) {
+                                    ocrValue = updatedValues[key];
+                                  } else {
+                                    // Ambil angka dari hasil_ocr
+                                    const match =
+                                      typeof row.hasil_ocr === "string"
+                                        ? row.hasil_ocr.match(/([\d.]+)/)
+                                        : null;
+                                    ocrValue = match
+                                      ? parseFloat(match[1])
+                                      : row.hasil_ocr;
+                                  }
+                                  // Ambil kebutuhan harian
+                                  const kebutuhanNum = parseFloat(
+                                    row.kebutuhan_harian
+                                  );
+                                  // Hitung status baru
+                                  let status = "Aman";
+                                  if (
+                                    !isNaN(ocrValue) &&
+                                    !isNaN(kebutuhanNum) &&
+                                    ocrValue > kebutuhanNum
+                                  ) {
+                                    status = "Melebihi";
+                                  }
+                                  return (
+                                    <span
+                                      className={
+                                        "inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium " +
+                                        (status === "Melebihi"
+                                          ? "bg-red-50 text-red-700 border border-red-200"
+                                          : "bg-green-50 text-green-700 border border-green-200")
+                                      }
+                                    >
+                                      {status === "Melebihi" ? (
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          className="h-3.5 w-3.5"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                                          />
+                                        </svg>
+                                      ) : (
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          className="h-3.5 w-3.5"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M5 13l4 4L19 7"
+                                          />
+                                        </svg>
+                                      )}
+                                      {status}
+                                    </span>
+                                  );
+                                })()}
+                              </td>
+                            </tr>
+                          ));
+                        })()}
                       </tbody>
                     </table>
                   </div>
