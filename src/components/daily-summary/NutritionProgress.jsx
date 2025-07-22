@@ -76,6 +76,27 @@ const NutritionProgress = () => {
     return (current / target) * 100;
   };
 
+  // Calculate the dynamic scale for Y-axis
+  const calculateDynamicScale = () => {
+    let maxPercent = 0;
+    nutrients.forEach((nutrient) => {
+      const percent = calculatePercentage(nutrient.current, nutrient.target);
+      maxPercent = Math.max(maxPercent, percent);
+    });
+
+    // If max percentage is less than or equal to 100%, use 0-100% scale
+    if (maxPercent <= 100) {
+      return { maxScale: 100, step: 20 };
+    }
+
+    // Round up to the nearest 60 for values above 100%
+    const roundedMax = Math.ceil(maxPercent / 60) * 60;
+    return {
+      maxScale: roundedMax,
+      step: roundedMax / 5,
+    };
+  };
+
   // Array of nutrients in correct order with their units
   const nutrients = [
     {
@@ -180,24 +201,36 @@ const NutritionProgress = () => {
           <div className="absolute inset-0 flex pt-[30px]">
             {/* Y-axis labels (percentages) */}
             <div className="w-10 sm:w-12 md:w-16 flex flex-col justify-between h-[140px] sm:h-[300px]">
-              {[100, 80, 60, 40, 20, 0].map((percent) => (
-                <div key={percent} className="relative h-0">
-                  <div className="absolute -top-2 right-0 flex items-center">
-                    <span className="text-[8px] sm:text-[10px] md:text-xs text-main/70 mr-1 sm:mr-2 font-medium">
-                      {percent}%
-                    </span>
-                    <div className="h-[1px] w-2 bg-main/30"></div>
+              {(() => {
+                const { maxScale, step } = calculateDynamicScale();
+                return Array.from(
+                  { length: 6 },
+                  (_, i) => maxScale - i * step
+                ).map((percent) => (
+                  <div key={percent} className="relative h-0">
+                    <div className="absolute -top-2 right-0 flex items-center">
+                      <span className="text-[8px] sm:text-[10px] md:text-xs text-main/70 mr-1 sm:mr-2 font-medium">
+                        {Math.round(percent)}%
+                      </span>
+                      <div className="h-[1px] w-2 bg-main/30"></div>
+                    </div>
                   </div>
-                </div>
-              ))}{" "}
+                ));
+              })()}{" "}
             </div>
             {/* Grid lines */}
             <div className="flex-1 flex flex-col justify-between h-[220px] sm:h-[300px]">
-              {[100, 80, 60, 40, 20, 0].map((percent) => (
-                <div key={percent} className="relative">
-                  <div className="absolute top-0 w-full h-[1px] bg-gray-200"></div>
-                </div>
-              ))}
+              {(() => {
+                const { maxScale, step } = calculateDynamicScale();
+                return Array.from(
+                  { length: 6 },
+                  (_, i) => maxScale - i * step
+                ).map((percent) => (
+                  <div key={percent} className="relative">
+                    <div className="absolute top-0 w-full h-[1px] bg-gray-200"></div>
+                  </div>
+                ));
+              })()}
             </div>
           </div>{" "}
           {/* Bars Container */}
@@ -216,7 +249,14 @@ const NutritionProgress = () => {
                   {/* Bar Container - Aligns with grid */}{" "}
                   <div className="relative w-4 sm:w-8 md:w-20 h-full">
                     {/* Target Bar (Background) */}
-                    <div className="absolute inset-0 rounded-md md:rounded-lg bg-gray-200/50 border border-gray-300/30 backdrop-blur-sm"></div>{" "}
+                    <div
+                      className="absolute bottom-0 w-full rounded-md md:rounded-lg bg-gray-200/50 border border-gray-300/30 backdrop-blur-sm"
+                      style={{
+                        height: `${
+                          (100 / calculateDynamicScale().maxScale) * 100
+                        }%`,
+                      }}
+                    ></div>{" "}
                     {/* Progress Bar */}{" "}
                     <div
                       className={`absolute bottom-0 w-full rounded-t-md md:rounded-t-lg transition-all duration-500 ease-in-out animate-progress-grow ${
@@ -227,7 +267,9 @@ const NutritionProgress = () => {
                           : "bg-yellow-500"
                       } border-2 border-transparent hover:border-blue-400/80 hover:shadow-[0_0_8px_rgba(59,130,246,0.3)]`}
                       style={{
-                        "--target-height": `${Math.min(percentage, 100)}%`
+                        "--target-height": `${
+                          (percentage / calculateDynamicScale().maxScale) * 100
+                        }%`,
                       }}
                     >
                       {/* Shine effect */}
