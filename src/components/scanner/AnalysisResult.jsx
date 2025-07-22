@@ -400,42 +400,83 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
                 Perbandingan dengan Kebutuhan Harian
               </h3>
               {/* Peringatan jika ada yang melebihi */}
-              {nutritionData.perbandingan.some(
-                (row) => row.status === "Melebihi"
-              ) && (
-                <div className="mb-4 bg-red-50 border border-red-200 p-4 rounded-lg">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0">
-                      <svg
-                        className="h-5 w-5 text-red-600"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    <div className="ml-3">
-                      <h4 className="text-sm font-semibold text-red-800">
-                        Peringatan Nutrisi
-                      </h4>
-                      <div className="mt-1">
-                        <p className="text-sm text-red-700">
-                          Beberapa kandungan gizi{" "}
-                          <b>melebihi kebutuhan harian yang direkomendasikan</b>
-                        </p>
-                        <p className="text-xs text-red-600 mt-1">
-                          Saran: Pertimbangkan untuk mengurangi konsumsi atau
-                          mengimbangi dengan aktivitas fisik yang sesuai
-                        </p>
+              {(() => {
+                // Periksa status terkini berdasarkan perbandingan nilai aktual
+                const hasExceedingNutrients = nutritionData.perbandingan.some(
+                  (row) => {
+                    const normalize = (str) =>
+                      str.toLowerCase().replace(/ /g, "_");
+                    const ocrKey = normalize(row.label);
+                    let ocrValue;
+
+                    // Ambil nilai terkini (dari form edit atau data asli)
+                    if (isEditing && updatedValues[ocrKey] !== undefined) {
+                      ocrValue = updatedValues[ocrKey];
+                    } else {
+                      ocrValue = nutritionData.kandungan[ocrKey];
+                    }
+
+                    // Ambil kebutuhan harian
+                    const normalizeKey = (str) => {
+                      let norm = str.toLowerCase();
+                      if (norm === "lemak total") return "lemak total";
+                      return norm.replace(/ /g, "");
+                    };
+
+                    const kebutuhanKey = normalizeKey(row.label);
+                    const kebutuhanValue =
+                      nutritionData.kebutuhan[kebutuhanKey];
+
+                    // Bandingkan nilai
+                    return (
+                      !isNaN(ocrValue) &&
+                      !isNaN(kebutuhanValue) &&
+                      parseFloat(ocrValue) > parseFloat(kebutuhanValue)
+                    );
+                  }
+                );
+
+                if (hasExceedingNutrients) {
+                  return (
+                    <div className="mb-4 bg-red-50 border border-red-200 p-4 rounded-lg">
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0">
+                          <svg
+                            className="h-5 w-5 text-red-600"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                        <div className="ml-3">
+                          <h4 className="text-sm font-semibold text-red-800">
+                            Peringatan Nutrisi
+                          </h4>
+                          <div className="mt-1">
+                            <p className="text-sm text-red-700">
+                              Beberapa kandungan gizi{" "}
+                              <b>
+                                melebihi kebutuhan harian yang direkomendasikan
+                              </b>
+                            </p>
+                            <p className="text-xs text-red-600 mt-1">
+                              Saran: Pertimbangkan untuk mengurangi konsumsi
+                              atau mengimbangi dengan aktivitas fisik yang
+                              sesuai
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              )}
+                  );
+                }
+                return null;
+              })()}
               <div className="overflow-x-auto -mx-4 lg:mx-0">
                 <div className="inline-block min-w-full align-middle">
                   <div className="overflow-hidden rounded-lg border border-gray-100">
@@ -559,8 +600,17 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
                               <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm">
                                 {(() => {
                                   // Normalisasi label ke key
-                                  const normalize = (str) =>
-                                    str.toLowerCase().replace(/ /g, "_");
+                                  const normalize = (str) => {
+                                    let norm = str
+                                      .toLowerCase()
+                                      .replace(/\s+/g, "_")
+                                      .replace(/[^a-z0-9_]/g, "");
+                                    // Khusus untuk lemak total
+                                    if (norm === "lemak total") {
+                                      return "lemak total";
+                                    }
+                                    return norm;
+                                  };
                                   const ocrKey = normalize(row.label);
                                   // Ambil nilai hasil OCR terbaru
                                   let ocrValue;
