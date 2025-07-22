@@ -15,20 +15,47 @@ const HistoryList = ({
   itemsPerPage,
   setCurrentPage,
 }) => {
-  const [dailyNeeds, setDailyNeeds] = useState(null);
+  const defaultDailyNeeds = React.useMemo(
+    () => ({
+      kebutuhan_harian: {
+        energi: 2000,
+        protein: 60,
+        "lemak total": 70,
+        karbohidrat: 300,
+        serat: 25,
+        gula: 50,
+        garam: 2000,
+      },
+    }),
+    []
+  );
+  const [dailyNeeds, setDailyNeeds] = useState(defaultDailyNeeds);
+
   useEffect(() => {
     const fetchNeeds = async () => {
       try {
         const token = localStorage.getItem("token");
-        if (!token) return;
+        if (!token) {
+          return;
+        }
+
         const needs = await api.getDailyNutrition(token);
-        setDailyNeeds(needs);
-      } catch {
-        setDailyNeeds(null);
+
+        // Pastikan data kebutuhan harian tersedia
+        const finalNeeds = {
+          kebutuhan_harian:
+            needs?.kebutuhan_harian || defaultDailyNeeds.kebutuhan_harian,
+        };
+
+        setDailyNeeds(finalNeeds);
+      } catch (error) {
+        console.log("Error fetching nutrition:", error);
+        // Gunakan default values jika terjadi error
+        setDailyNeeds(defaultDailyNeeds);
       }
     };
     fetchNeeds();
-  }, []);
+  }, [defaultDailyNeeds]);
   const filteredHistory = history
     .filter((scan) => {
       if (searchQuery) {
@@ -170,14 +197,24 @@ const HistoryList = ({
                 (currentPage - 1) * itemsPerPage,
                 currentPage * itemsPerPage
               )
-              .map((scan) => (
-                <ScanHistoryCard
-                  key={scan.id}
-                  scan={scan}
-                  onDelete={handleDelete}
-                  dailyNeeds={dailyNeeds}
-                />
-              ))}
+              .map((scan) => {
+                const kebutuhanHarian =
+                  dailyNeeds?.kebutuhan_harian ||
+                  defaultDailyNeeds.kebutuhan_harian;
+                console.log(
+                  "Kebutuhan Harian yang Digunakan:",
+                  kebutuhanHarian
+                );
+
+                return (
+                  <ScanHistoryCard
+                    key={scan.id}
+                    scan={scan}
+                    onDelete={handleDelete}
+                    dailyNeeds={dailyNeeds}
+                  />
+                );
+              })}
           </div>
           <div className="mt-6">
             <Pagination
