@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
@@ -53,12 +53,20 @@ const DailyNutritionStats = () => {
   };
 
   const { token } = useSelector((state) => state.auth);
-  const [dailyTarget, setDailyTarget] = useState({
-    energi: 0,
-    protein: 0,
-    "lemak total": 0,
-    karbohidrat: 0,
-  });
+  const defaultTarget = useMemo(
+    () => ({
+      energi: 2000,
+      protein: 60,
+      "lemak total": 70,
+      karbohidrat: 300,
+      serat: 25,
+      gula: 50,
+      garam: 2000,
+    }),
+    []
+  );
+
+  const [dailyTarget, setDailyTarget] = useState(defaultTarget);
   const [totalNutrition, setTotalNutrition] = useState({
     energi: 0,
     protein: 0,
@@ -72,11 +80,23 @@ const DailyNutritionStats = () => {
         const dailyNutrition = await api.getDailyNutrition(token);
         if (dailyNutrition?.kebutuhan_harian) {
           setDailyTarget({
-            energi: dailyNutrition.kebutuhan_harian.energi,
-            protein: dailyNutrition.kebutuhan_harian.protein,
-            "lemak total": dailyNutrition.kebutuhan_harian["lemak total"],
-            karbohidrat: dailyNutrition.kebutuhan_harian.karbohidrat,
+            ...defaultTarget,
+            energi:
+              dailyNutrition.kebutuhan_harian.energi || defaultTarget.energi,
+            protein:
+              dailyNutrition.kebutuhan_harian.protein || defaultTarget.protein,
+            "lemak total":
+              dailyNutrition.kebutuhan_harian["lemak total"] ||
+              defaultTarget["lemak total"],
+            karbohidrat:
+              dailyNutrition.kebutuhan_harian.karbohidrat ||
+              defaultTarget.karbohidrat,
+            serat: dailyNutrition.kebutuhan_harian.serat || defaultTarget.serat,
+            gula: dailyNutrition.kebutuhan_harian.gula || defaultTarget.gula,
+            garam: dailyNutrition.kebutuhan_harian.garam || defaultTarget.garam,
           });
+        } else {
+          setDailyTarget(defaultTarget);
         }
 
         // Get today's scan history
@@ -110,7 +130,7 @@ const DailyNutritionStats = () => {
     if (token) {
       fetchData();
     }
-  }, [token]);
+  }, [token, defaultTarget]);
 
   const calculatePercentage = (current, target) => {
     if (!target || target === 0) return 0;
