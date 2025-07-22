@@ -115,16 +115,25 @@ const Scanner = () => {
 
       // Mengambil data target harian dari API
       const dailyNutritionData = await api.getDailyNutrition(token);
-      if (!dailyNutritionData) {
-        throw new Error("Gagal mengambil data target harian");
-      }
+
+      // Default nilai kebutuhan harian jika data tidak ada
+      const defaultKebutuhanHarian = {
+        energi: 2000,
+        protein: 60,
+        lemak: 70,
+        karbohidrat: 300,
+        serat: 25,
+        gula: 50,
+        garam: 2000,
+      };
 
       // Mengambil riwayat scan hari ini untuk menghitung total nutrisi
       const historyData = await api.getTodayScanHistory(token);
       const todayHistory = historyData?.history || [];
 
-      // Mengambil target harian dari response API dengan pengecekan
-      const kebutuhanHarian = dailyNutritionData.kebutuhan_harian || {};
+      // Mengambil target harian dari response API dengan pengecekan, gunakan default jika tidak ada
+      const kebutuhanHarian =
+        dailyNutritionData?.kebutuhan_harian || defaultKebutuhanHarian;
 
       const targetHarian = {
         energy_kal: Number(kebutuhanHarian.energi || 0),
@@ -472,16 +481,25 @@ const Scanner = () => {
             try {
               // Mengambil data target harian dari API
               const dailyNutritionData = await api.getDailyNutrition(token);
-              if (!dailyNutritionData) {
-                throw new Error("Gagal mengambil data target harian");
-              }
+
+              // Default nilai kebutuhan harian jika data tidak ada
+              const defaultKebutuhanHarian = {
+                energi: 2000,
+                protein: 60,
+                lemak: 70,
+                karbohidrat: 300,
+                serat: 25,
+                gula: 50,
+                garam: 2000,
+              };
 
               // Mengambil riwayat scan hari ini untuk menghitung total nutrisi
               const historyData = await api.getTodayScanHistory(token);
               const todayHistory = historyData?.history || [];
 
-              // Mengambil target harian dari response API dengan pengecekan
-              const kebutuhanHarian = dailyNutritionData.kebutuhan_harian || {};
+              // Mengambil target harian dari response API dengan pengecekan, gunakan default jika tidak ada
+              const kebutuhanHarian =
+                dailyNutritionData?.kebutuhan_harian || defaultKebutuhanHarian;
 
               const targetHarian = {
                 energy_kal: Number(kebutuhanHarian.energi || 0),

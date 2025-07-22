@@ -523,8 +523,27 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
                                 })()}
                               </td>
                               <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm text-gray-600">
-                                {row.kebutuhan_harian}{" "}
-                                {getNutritionUnit(row.label)}
+                                {(() => {
+                                  // Default values untuk kebutuhan harian
+                                  const defaultKebutuhan = {
+                                    Energi: 2000,
+                                    Protein: 60,
+                                    "Lemak Total": 70,
+                                    Karbohidrat: 300,
+                                    Serat: 25,
+                                    Gula: 50,
+                                    Garam: 2000,
+                                  };
+
+                                  // Gunakan nilai default jika kebutuhan_harian kosong atau null
+                                  const value =
+                                    row.kebutuhan_harian ||
+                                    defaultKebutuhan[row.label] ||
+                                    0;
+                                  return `${value} ${getNutritionUnit(
+                                    row.label
+                                  )}`;
+                                })()}
                               </td>
                               <td className="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-xs lg:text-sm">
                                 {(() => {
@@ -549,10 +568,23 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
                                       ? parseFloat(match[1])
                                       : row.hasil_ocr;
                                   }
-                                  // Ambil kebutuhan harian
+                                  // Default values untuk kebutuhan harian
+                                  const defaultKebutuhan = {
+                                    Energi: 2000,
+                                    Protein: 60,
+                                    "Lemak Total": 70,
+                                    Karbohidrat: 300,
+                                    Serat: 25,
+                                    Gula: 50,
+                                    Garam: 2000,
+                                  };
+
+                                  // Ambil kebutuhan harian, gunakan default jika tidak ada
                                   const kebutuhanNum = parseFloat(
-                                    row.kebutuhan_harian
+                                    row.kebutuhan_harian ||
+                                      defaultKebutuhan[row.label]
                                   );
+
                                   // Hitung status baru
                                   let status = "Aman";
                                   if (
