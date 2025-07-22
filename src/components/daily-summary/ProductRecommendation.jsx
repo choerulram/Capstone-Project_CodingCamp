@@ -2,6 +2,18 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import api from "../../utils/api";
 
+const defaultKebutuhanHarian = {
+  kebutuhan_harian: {
+    energi: 2000,
+    protein: 60,
+    "lemak total": 70,
+    karbohidrat: 300,
+    serat: 25,
+    gula: 50,
+    garam: 2000
+  }
+};
+
 const ProductRecommendation = () => {
   const [recommendation, setRecommendation] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -26,24 +38,23 @@ const ProductRecommendation = () => {
         );
       } // Mengambil data target harian dari API
       const dailyNutritionData = await api.getDailyNutrition(token);
-      if (!dailyNutritionData) {
-        throw new Error("Gagal mengambil data target harian");
-      }
-
+      
       console.log("Response Daily Nutrition:", dailyNutritionData);
 
-      // Mengambil target harian dari response API dengan pengecekan
-      // Menggunakan kebutuhan_harian dari response sesuai dengan NutritionPage
-      const kebutuhanHarian = dailyNutritionData.kebutuhan_harian || {};
+      // Menggunakan data dari API atau nilai default
+      const kebutuhanHarian = dailyNutritionData?.kebutuhan_harian || defaultKebutuhanHarian.kebutuhan_harian;
+
+      console.log("Kebutuhan Harian yang digunakan:", kebutuhanHarian);
+      console.log("Source:", dailyNutritionData?.kebutuhan_harian ? "API" : "Default Values");
 
       const targetHarian = {
-        energy_kal: Number(kebutuhanHarian.energi || 0),
-        protein_g: Number(kebutuhanHarian.protein || 0),
-        fat_g: Number(kebutuhanHarian["lemak total"] || 0),
-        carbohydrate_g: Number(kebutuhanHarian.karbohidrat || 0),
-        fiber_g: Number(kebutuhanHarian.serat || 0),
-        sugar_g: Number(kebutuhanHarian.gula || 0),
-        sodium_mg: Number(kebutuhanHarian.garam || 0),
+        energy_kal: Number(kebutuhanHarian.energi),
+        protein_g: Number(kebutuhanHarian.protein),
+        fat_g: Number(kebutuhanHarian["lemak total"]),
+        carbohydrate_g: Number(kebutuhanHarian.karbohidrat),
+        fiber_g: Number(kebutuhanHarian.serat),
+        sugar_g: Number(kebutuhanHarian.gula),
+        sodium_mg: Number(kebutuhanHarian.garam),
       };
 
       // Menghitung total nutrisi

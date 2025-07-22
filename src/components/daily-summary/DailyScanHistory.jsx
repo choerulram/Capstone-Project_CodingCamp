@@ -18,85 +18,85 @@ function calculateTimeAgo(timestamp) {
 }
 
 // Fungsi utilitas untuk menghitung status scan
-function getScanStatus(scan, dailyNeeds) {
+// function getScanStatus(scan, dailyNeeds) {
   // Jika tidak ada kandungan gizi atau kebutuhan harian, return status "-"
-  if (!scan?.kandungan_gizi || !dailyNeeds) return { status: "-", details: [] };
+  // if (!scan?.kandungan_gizi || !dailyNeeds) return { status: "-", details: [] };
 
-  let needs = dailyNeeds;
+  // let needs = dailyNeeds;
   // Jika ada properti kebutuhan_harian, gunakan itu
-  if (needs?.kebutuhan_harian) needs = needs.kebutuhan_harian;
+  // if (needs?.kebutuhan_harian) needs = needs.kebutuhan_harian;
 
   // Validasi jika needs masih undefined setelah transformasi
-  if (!needs) return { status: "-", details: [] };
+  // if (!needs) return { status: "-", details: [] };
 
-  const gizi = {
-    energi: parseFloat(scan.kandungan_gizi.energi) || 0,
-    gula: parseFloat(scan.kandungan_gizi.gula) || 0,
-    garam: parseFloat(scan.kandungan_gizi.garam) || 0,
-    lemak:
-      parseFloat(
-        scan.kandungan_gizi.lemak !== undefined
-          ? scan.kandungan_gizi.lemak
-          : scan.kandungan_gizi["lemak total"]
-      ) || 0,
-    protein: parseFloat(scan.kandungan_gizi.protein) || 0,
-    serat: parseFloat(scan.kandungan_gizi.serat) || 0,
-  };
+  // const gizi = {
+  //   energi: parseFloat(scan.kandungan_gizi.energi) || 0,
+  //   gula: parseFloat(scan.kandungan_gizi.gula) || 0,
+  //   garam: parseFloat(scan.kandungan_gizi.garam) || 0,
+  //   lemak:
+  //     parseFloat(
+  //       scan.kandungan_gizi.lemak !== undefined
+  //         ? scan.kandungan_gizi.lemak
+  //         : scan.kandungan_gizi["lemak total"]
+  //     ) || 0,
+  //   protein: parseFloat(scan.kandungan_gizi.protein) || 0,
+  //   serat: parseFloat(scan.kandungan_gizi.serat) || 0,
+  // };
 
-  const needsMap = {
-    energi: parseFloat(needs.energi) || 0,
-    gula: parseFloat(needs.gula) || 0,
-    garam: parseFloat(needs.garam) || 0,
-    lemak: parseFloat(needs.lemak || needs["lemak total"]) || 0,
-    protein: parseFloat(needs.protein) || 0,
-    serat: parseFloat(needs.serat) || 0,
-  };
+  // const needsMap = {
+    // energi: parseFloat(needs.energi) || 0,
+    // gula: parseFloat(needs.gula) || 0,
+    // garam: parseFloat(needs.garam) || 0,
+    // lemak: parseFloat(needs.lemak || needs["lemak total"]) || 0,
+  //   protein: parseFloat(needs.protein) || 0,
+  //   serat: parseFloat(needs.serat) || 0,
+  // };
 
-  // Hitung persentase dan pastikan nilainya valid
-  const persentase = {
-    energi: needsMap.energi > 0 ? (gizi.energi / needsMap.energi) * 100 : 0,
-    gula: needsMap.gula > 0 ? (gizi.gula / needsMap.gula) * 100 : 0,
-    garam: needsMap.garam > 0 ? (gizi.garam / needsMap.garam) * 100 : 0,
-    lemak: needsMap.lemak > 0 ? (gizi.lemak / needsMap.lemak) * 100 : 0,
-    protein: needsMap.protein > 0 ? (gizi.protein / needsMap.protein) * 100 : 0,
-    serat: needsMap.serat > 0 ? (gizi.serat / needsMap.serat) * 100 : 0,
-  };
+  // // Hitung persentase dan pastikan nilainya valid
+  // const persentase = {
+  //   energi: needsMap.energi > 0 ? (gizi.energi / needsMap.energi) * 100 : 0,
+  //   gula: needsMap.gula > 0 ? (gizi.gula / needsMap.gula) * 100 : 0,
+  //   garam: needsMap.garam > 0 ? (gizi.garam / needsMap.garam) * 100 : 0,
+  //   lemak: needsMap.lemak > 0 ? (gizi.lemak / needsMap.lemak) * 100 : 0,
+  //   protein: needsMap.protein > 0 ? (gizi.protein / needsMap.protein) * 100 : 0,
+  //   serat: needsMap.serat > 0 ? (gizi.serat / needsMap.serat) * 100 : 0,
+  // };
 
-  console.log("Perhitungan Nutrisi:", {
-    kandunganGizi: gizi,
-    kebutuhanHarian: needsMap,
-    persentaseNutrisi: persentase,
-  });
+  // console.log("Perhitungan Nutrisi:", {
+  //   kandunganGizi: gizi,
+  //   kebutuhanHarian: needsMap,
+  //   persentaseNutrisi: persentase,
+  // });
 
-  let status = "Baik";
-  const details = [];
+  // let status = "Baik";
+  // const details = [];
 
-  if (
-    persentase.energi > 100 ||
-    persentase.gula > 100 ||
-    persentase.garam > 100 ||
-    persentase.lemak > 100
-  ) {
-    status = "Berlebihan";
-    if (persentase.energi > 100) details.push("Kalori");
-    if (persentase.gula > 100) details.push("Gula");
-    if (persentase.garam > 100) details.push("Garam");
-    if (persentase.lemak > 100) details.push("Lemak");
-  } else if (
-    persentase.energi > 80 ||
-    persentase.gula > 80 ||
-    persentase.garam > 80 ||
-    persentase.lemak > 80
-  ) {
-    status = "Mendekati Batas";
-    if (persentase.energi > 80) details.push("Kalori");
-    if (persentase.gula > 80) details.push("Gula");
-    if (persentase.garam > 80) details.push("Garam");
-    if (persentase.lemak > 80) details.push("Lemak");
-  }
+  // if (
+  //   persentase.energi > 100 ||
+  //   persentase.gula > 100 ||
+  //   persentase.garam > 100 ||
+  //   persentase.lemak > 100
+  // ) {
+  //   status = "Berlebihan";
+  //   if (persentase.energi > 100) details.push("Kalori");
+  //   if (persentase.gula > 100) details.push("Gula");
+  //   if (persentase.garam > 100) details.push("Garam");
+  //   if (persentase.lemak > 100) details.push("Lemak");
+  // } else if (
+  //   persentase.energi > 80 ||
+  //   persentase.gula > 80 ||
+  //   persentase.garam > 80 ||
+  //   persentase.lemak > 80
+  // ) {
+  //   status = "Mendekati Batas";
+  //   if (persentase.energi > 80) details.push("Kalori");
+  //   if (persentase.gula > 80) details.push("Gula");
+  //   if (persentase.garam > 80) details.push("Garam");
+  //   if (persentase.lemak > 80) details.push("Lemak");
+  // }
 
-  return { status, details };
-}
+  // return { status, details };
+// }
 
 const DailyScanHistory = () => {
   const { token } = useSelector((state) => state.auth);
@@ -214,7 +214,7 @@ const DailyScanHistory = () => {
                     dailyNeeds = todayScans[0].daily_needs;
 
                   console.log("Kebutuhan Nutrisi yang digunakan:", dailyNeeds);
-                  const { status, details } = getScanStatus(scan, dailyNeeds);
+                  // const { status, details } = getScanStatus(scan, dailyNeeds);
                   return (
                     <div
                       key={scan.id || scan.filename}
@@ -270,7 +270,7 @@ const DailyScanHistory = () => {
                                   {calculateTimeAgo(scan.uploaded_at)}
                                 </span>
                                 {/* Status Scan */}
-                                <span
+                                {/* <span
                                   className={`flex items-center gap-1 px-2 py-1 ml-2 md:ml-4 rounded-lg shadow text-xs font-bold border select-none transition-all duration-200
                                     ${
                                       status === "Baik"
@@ -302,7 +302,7 @@ const DailyScanHistory = () => {
                                       ({details.join(", ")})
                                     </span>
                                   )}
-                                </span>
+                                </span> */}
                               </div>
 
                               {/* Nutrition Info */}
