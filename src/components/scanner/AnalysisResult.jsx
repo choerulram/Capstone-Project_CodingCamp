@@ -526,20 +526,34 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
                                 {(() => {
                                   // Default values untuk kebutuhan harian
                                   const defaultKebutuhan = {
-                                    Energi: 2000,
-                                    Protein: 60,
-                                    "Lemak Total": 70,
-                                    Karbohidrat: 300,
-                                    Serat: 25,
-                                    Gula: 50,
-                                    Garam: 2000,
+                                    energi: 2000,
+                                    protein: 60,
+                                    "lemak total": 70,
+                                    karbohidrat: 300,
+                                    serat: 25,
+                                    gula: 50,
+                                    garam: 2000,
                                   };
 
-                                  // Gunakan nilai default jika kebutuhan_harian kosong atau null
+                                  const normalize = (str) => {
+                                    let norm = str.toLowerCase();
+                                    if (norm === "lemak total")
+                                      return "lemak total";
+                                    return norm.replace(/ /g, "");
+                                  };
+
+                                  // Mendapatkan key yang sesuai dari objek kebutuhan
+                                  const key = normalize(row.label);
+
+                                  // Mengambil nilai dari nutritionData.kebutuhan, jika null gunakan default
                                   const value =
-                                    row.kebutuhan_harian ||
-                                    defaultKebutuhan[row.label] ||
-                                    0;
+                                    nutritionData.kebutuhan[key] !==
+                                      undefined &&
+                                    nutritionData.kebutuhan[key] !== null
+                                      ? nutritionData.kebutuhan[key]
+                                      : defaultKebutuhan[key.toLowerCase()] ||
+                                        0;
+
                                   return `${value} ${getNutritionUnit(
                                     row.label
                                   )}`;
@@ -550,14 +564,14 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
                                   // Normalisasi label ke key
                                   const normalize = (str) =>
                                     str.toLowerCase().replace(/ /g, "_");
-                                  const key = normalize(row.label);
+                                  const ocrKey = normalize(row.label);
                                   // Ambil nilai hasil OCR terbaru
                                   let ocrValue;
                                   if (
                                     isEditing &&
-                                    updatedValues[key] !== undefined
+                                    updatedValues[ocrKey] !== undefined
                                   ) {
-                                    ocrValue = updatedValues[key];
+                                    ocrValue = updatedValues[ocrKey];
                                   } else {
                                     // Ambil angka dari hasil_ocr
                                     const match =
@@ -570,20 +584,35 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
                                   }
                                   // Default values untuk kebutuhan harian
                                   const defaultKebutuhan = {
-                                    Energi: 2000,
-                                    Protein: 60,
-                                    "Lemak Total": 70,
-                                    Karbohidrat: 300,
-                                    Serat: 25,
-                                    Gula: 50,
-                                    Garam: 2000,
+                                    energi: 2000,
+                                    protein: 60,
+                                    "lemak total": 70,
+                                    karbohidrat: 300,
+                                    serat: 25,
+                                    gula: 50,
+                                    garam: 2000,
                                   };
 
-                                  // Ambil kebutuhan harian, gunakan default jika tidak ada
-                                  const kebutuhanNum = parseFloat(
-                                    row.kebutuhan_harian ||
-                                      defaultKebutuhan[row.label]
-                                  );
+                                  const normalizeKey = (str) => {
+                                    let norm = str.toLowerCase();
+                                    if (norm === "lemak total")
+                                      return "lemak total";
+                                    return norm.replace(/ /g, "");
+                                  };
+
+                                  // Mengambil kebutuhan dari nutritionData.kebutuhan, gunakan default jika null
+                                  const kebutuhanKey = normalizeKey(row.label);
+                                  const kebutuhanValue =
+                                    nutritionData.kebutuhan[kebutuhanKey] !==
+                                      undefined &&
+                                    nutritionData.kebutuhan[kebutuhanKey] !==
+                                      null
+                                      ? nutritionData.kebutuhan[kebutuhanKey]
+                                      : defaultKebutuhan[
+                                          kebutuhanKey.toLowerCase()
+                                        ] || 0;
+                                  const kebutuhanNum =
+                                    parseFloat(kebutuhanValue);
 
                                   // Hitung status baru
                                   let status = "Aman";
