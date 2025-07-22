@@ -83,9 +83,6 @@ const AnalysisResult = forwardRef(({ nutritionData, onUpdateSuccess }, ref) => {
     }
 
     try {
-      // Debug log untuk melihat data yang diterima
-      console.log("nutritionData:", nutritionData);
-
       // Periksa apakah ID ada di dalam objek nutritionData
       if (!nutritionData.id) {
         console.error(

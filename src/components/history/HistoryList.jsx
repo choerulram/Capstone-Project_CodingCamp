@@ -48,8 +48,7 @@ const HistoryList = ({
         };
 
         setDailyNeeds(finalNeeds);
-      } catch (error) {
-        console.log("Error fetching nutrition:", error);
+      } catch {
         // Gunakan default values jika terjadi error
         setDailyNeeds(defaultDailyNeeds);
       }
@@ -198,14 +197,6 @@ const HistoryList = ({
                 currentPage * itemsPerPage
               )
               .map((scan) => {
-                const kebutuhanHarian =
-                  dailyNeeds?.kebutuhan_harian ||
-                  defaultDailyNeeds.kebutuhan_harian;
-                console.log(
-                  "Kebutuhan Harian yang Digunakan:",
-                  kebutuhanHarian
-                );
-
                 return (
                   <ScanHistoryCard
                     key={scan.id}

@@ -75,6 +75,14 @@ function getScanStatus(scan, dailyNeeds) {
     if (persentase.gula > 50 && persentase.gula <= 100) details.push("Gula");
     if (persentase.garam > 50 && persentase.garam <= 100) details.push("Garam");
     if (persentase.lemak > 50 && persentase.lemak <= 100) details.push("Lemak");
+  } else if (
+    // 4. Kurang jika protein/serat < 20%
+    persentase.protein < 20 ||
+    persentase.serat < 20
+  ) {
+    status = "Kurang";
+    if (persentase.protein < 20) details.push("Protein");
+    if (persentase.serat < 20) details.push("Serat");
   }
   return { status, details, persentase };
 }

@@ -115,10 +115,6 @@ const Scanner = () => {
 
       // Mengambil data target harian dari API
       const dailyNutritionData = await api.getDailyNutrition(token);
-      console.log(
-        "[Scanner] Daily Nutrition Data from API:",
-        dailyNutritionData
-      );
 
       // Default nilai kebutuhan harian jika data tidak ada
       const defaultKebutuhanHarian = {
@@ -134,15 +130,10 @@ const Scanner = () => {
       // Mengambil riwayat scan hari ini untuk menghitung total nutrisi
       const historyData = await api.getTodayScanHistory(token);
       const todayHistory = historyData?.history || [];
-      console.log("[Scanner] History Data:", historyData);
 
       // Mengambil target harian dari response API dengan pengecekan, gunakan default jika tidak ada
       const kebutuhanHarian =
         dailyNutritionData?.kebutuhan_harian || defaultKebutuhanHarian;
-      console.log(
-        "[Scanner] Kebutuhan Harian after fallback:",
-        kebutuhanHarian
-      );
 
       const targetHarian = {
         energy_kal: Number(kebutuhanHarian.energi || 0),
@@ -153,7 +144,6 @@ const Scanner = () => {
         sugar_g: Number(kebutuhanHarian.gula || 0),
         sodium_mg: Number(kebutuhanHarian.garam || 0),
       };
-      console.log("[Scanner] Target Harian after conversion:", targetHarian);
 
       // Menghitung total nutrisi termasuk hasil scan terbaru
       const totalGizi = todayHistory.reduce((acc, item) => {
@@ -177,7 +167,6 @@ const Scanner = () => {
         perbandingan: result.perbandingan || [],
         kebutuhan: kebutuhanHarian || {}, // Use kebutuhanHarian instead of result.kebutuhan_harian
       };
-      console.log("[Scanner] Final nutritionDataToSave:", nutritionDataToSave);
       setNutritionData(nutritionDataToSave);
 
       // Set loading false sebelum menyimpan rekomendasi
@@ -305,9 +294,7 @@ const Scanner = () => {
       if (!isComponentMounted || !videoElement) return;
 
       try {
-        console.log("Video dapat diputar");
         await videoElement.play();
-        console.log("Video mulai berputar");
       } catch (err) {
         if (isComponentMounted) {
           console.error("Error memutar video:", err);
@@ -539,11 +526,6 @@ const Scanner = () => {
                 };
               }, {});
 
-              // Log informasi nutrisi setelah update
-              console.log("=== Informasi Nutrisi Harian Setelah Update ===");
-              console.log("Target Harian:", targetHarian);
-              console.log("Total Konsumsi Setelah Update:", totalGizi);
-
               // Menyimpan rekomendasi dengan data lengkap
               const inputData = {
                 konsumsi: totalGizi,
@@ -551,7 +533,6 @@ const Scanner = () => {
               };
 
               await api.saveRecommendation(token, inputData);
-              console.log("Rekomendasi berhasil disimpan setelah update");
             } catch (saveError) {
               console.error(
                 "Error saat menyimpan rekomendasi setelah update:",
