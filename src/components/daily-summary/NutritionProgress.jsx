@@ -227,7 +227,7 @@ const NutritionProgress = () => {
                           : "bg-yellow-500"
                       } border-2 border-transparent hover:border-blue-400/80 hover:shadow-[0_0_8px_rgba(59,130,246,0.3)]`}
                       style={{
-                        "--target-height": `${Math.min(percentage, 100)}%`,
+                        "--target-height": `${Math.min(percentage, 100)}%`
                       }}
                     >
                       {/* Shine effect */}

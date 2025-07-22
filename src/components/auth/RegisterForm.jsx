@@ -10,7 +10,7 @@ const RegisterForm = () => {
     email: "",
     password: "",
     age: "",
-    age_unit: "years",
+    age_unit: "tahun",
     height: "",
     weight: "",
     gender: "",
@@ -41,6 +41,25 @@ const RegisterForm = () => {
     }
     if (formData.password.length < 8) {
       setError("Kata sandi minimal 8 karakter");
+      return false;
+    }
+    if (!formData.weight || Number(formData.weight) <= 0) {
+      setError("Berat badan harus berupa angka positif");
+      return false;
+    }
+    if (!formData.height || Number(formData.height) <= 0) {
+      setError("Tinggi badan harus berupa angka positif");
+      return false;
+    }
+    if (!formData.age || Number(formData.age) <= 0) {
+      setError("Umur harus berupa angka positif");
+      return false;
+    }
+    if (
+      !formData.gender ||
+      !["Laki-laki", "Perempuan"].includes(formData.gender)
+    ) {
+      setError('Gender harus dipilih "Laki-laki" atau "Perempuan"');
       return false;
     }
     return true;

@@ -73,14 +73,47 @@ const api = {
     height,
     gender,
     age,
-    age_unit = "years",
-    timezone = Intl.DateTimeFormat().resolvedOptions().timeZone,
+    age_unit = "tahun", // Default ke "tahun" sesuai format backend
+    timezone = "Asia/Jakarta", // Default ke timezone Indonesia
     is_pregnant = false,
     pregnancy_age = null,
     is_nursing = false,
     child_age = null,
   }) => {
     try {
+      // Validasi format data
+      if (
+        !name ||
+        !email ||
+        !password ||
+        !weight ||
+        !height ||
+        !gender ||
+        !age
+      ) {
+        throw new Error("Semua field wajib diisi");
+      }
+
+      // Konversi weight dan height ke number dan validasi
+      const weightNum = Number(weight);
+      const heightNum = Number(height);
+      const ageNum = Number(age);
+
+      if (isNaN(weightNum) || weightNum <= 0) {
+        throw new Error("Berat badan harus berupa angka positif");
+      }
+      if (isNaN(heightNum) || heightNum <= 0) {
+        throw new Error("Tinggi badan harus berupa angka positif");
+      }
+      if (isNaN(ageNum) || ageNum <= 0) {
+        throw new Error("Umur harus berupa angka positif");
+      }
+
+      // Validasi gender
+      if (gender !== "Laki-laki" && gender !== "Perempuan") {
+        throw new Error('Gender harus "Laki-laki" atau "Perempuan"');
+      }
+
       const response = await fetchWithTimeout(`${BASE_URL}/register`, {
         method: "POST",
         headers: {
@@ -90,10 +123,10 @@ const api = {
           nama: name,
           email,
           password,
-          bb: Number(weight) || null,
-          tinggi: Number(height) || null,
+          bb: weightNum,
+          tinggi: heightNum,
           gender,
-          umur: Number(age) || null,
+          umur: ageNum,
           umur_satuan: age_unit,
           hamil: is_pregnant,
           usia_kandungan: pregnancy_age ? Number(pregnancy_age) : null,
@@ -198,6 +231,11 @@ const api = {
 
   verifyEmail: async (token) => {
     try {
+      // Jika tidak ada token, kembalikan error
+      if (!token) {
+        throw new Error("Token verifikasi tidak ditemukan");
+      }
+
       const response = await fetchWithTimeout(
         `${BASE_URL}/verify-email?token=${encodeURIComponent(token)}`,
         {
@@ -212,6 +250,7 @@ const api = {
       return { status: response.status, data };
     } catch (error) {
       handleApiError(error);
+      throw error;
     }
   },
 
