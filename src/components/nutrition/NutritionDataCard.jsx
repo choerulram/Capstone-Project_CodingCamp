@@ -23,14 +23,8 @@ const NutritionDataCard = ({ nutritionData }) => {
               <th className="py-2 px-2 md:py-3 md:px-4 text-center text-white text-lg md:text-xl font-semibold border-b border-white/30 border-r border-white/30 first:border-l">
                 Nutrisi
               </th>
-              <th className="py-2 px-2 md:py-3 md:px-4 text-center text-white text-lg md:text-xl font-semibold border-b border-white/30 border-r border-white/30">
-                Per Hari
-              </th>
-              <th className="py-2 px-2 md:py-3 md:px-4 text-center text-white text-lg md:text-xl font-semibold border-b border-white/30 border-r border-white/30">
-                Per Minggu
-              </th>
               <th className="py-2 px-2 md:py-3 md:px-4 text-center text-white text-lg md:text-xl font-semibold border-b border-white/30 border-r border-white/30 last:border-r-0">
-                Per Bulan
+                Per Hari
               </th>
             </tr>
           </thead>
@@ -58,20 +52,10 @@ const NutritionDataCard = ({ nutritionData }) => {
                       )
                       .join(" ")}
                   </td>
-                  <td className="py-2 px-2 md:py-2 md:px-4 text-main font-bold text-base md:text-base border-b border-main/10 border-r border-main/10">
+                  <td className="py-2 px-2 md:py-2 md:px-4 text-main font-bold text-base md:text-base border-b border-main/10 border-r border-main/10 last:border-r-0">
                     {typeof value === "number"
                       ? `${value.toFixed(1)} ${unit}`
                       : value}
-                  </td>
-                  <td className="py-2 px-2 md:py-2 md:px-4 text-main font-bold text-base md:text-base border-b border-main/10 border-r border-main/10">
-                    {typeof value === "number"
-                      ? `${(value * 7).toFixed(1)} ${unit}`
-                      : "-"}
-                  </td>
-                  <td className="py-2 px-2 md:py-2 md:px-4 text-main font-bold text-base md:text-base border-b border-main/10 border-r border-main/10 last:border-r-0">
-                    {typeof value === "number"
-                      ? `${(value * 30).toFixed(1)} ${unit}`
-                      : "-"}
                   </td>
                 </tr>
               );

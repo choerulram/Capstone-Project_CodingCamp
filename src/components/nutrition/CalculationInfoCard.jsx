@@ -10,68 +10,6 @@ const CalculationInfoCard = () => {
       </div>
       <div className="p-3 md:p-6">
         <div className="text-gray-600 text-base md:text-lg space-y-4">
-          <div
-            className="flex items-start gap-3 bg-main/5 border border-main/10 rounded-lg p-3 animate-fade-in group"
-            style={{ animationDelay: "100ms" }}
-          >
-            <div className="flex-shrink-0">
-              <svg
-                className="h-7 w-7 text-main"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 10c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-                />
-              </svg>
-            </div>
-            <div className="flex flex-col gap-2 w-full">
-              <div className="font-semibold text-main mb-2 text-xs sm:text-base md:text-lg transition-all duration-300">
-                Penjelasan Perhitungan
-              </div>
-              <div className="text-gray-700 text-sm md:text-base leading-relaxed">
-                <span className="block mb-2 transition-all duration-300 hover:text-main hover:translate-x-1">
-                  Tabel di atas ini menampilkan kebutuhan gizi{" "}
-                  <span className="font-semibold text-main transition-all duration-300 hover:text-main/80 hover:translate-x-1">
-                    per hari
-                  </span>
-                  ,{" "}
-                  <span className="font-semibold text-main transition-all duration-300 hover:text-main/80 hover:translate-x-1">
-                    per minggu
-                  </span>
-                  , dan{" "}
-                  <span className="font-semibold text-main transition-all duration-300 hover:text-main/80 hover:translate-x-1">
-                    per bulan
-                  </span>{" "}
-                  Anda.
-                </span>
-                <ul className="list-disc list-inside pl-4 space-y-2">
-                  <li className="transition-all duration-300 hover:text-main hover:translate-x-1">
-                    <span className="font-semibold text-main transition-all duration-300 hover:text-main/80 hover:translate-x-1">
-                      Per Hari
-                    </span>{" "}
-                    dihitung berdasarkan profil Anda (lihat poin di bawah).
-                  </li>
-                  <li className="transition-all duration-300 hover:text-main hover:translate-x-1">
-                    <span className="font-semibold text-main transition-all duration-300 hover:text-main/80 hover:translate-x-1">
-                      Per Minggu
-                    </span>{" "}
-                    = hasil perkalian kebutuhan harian x 7 hari.
-                  </li>
-                  <li className="transition-all duration-300 hover:text-main hover:translate-x-1">
-                    <span className="font-semibold text-main transition-all duration-300 hover:text-main/80 hover:translate-x-1">
-                      Per Bulan
-                    </span>{" "}
-                    = hasil perkalian kebutuhan harian x 30 hari.
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
           <div className="font-semibold text-main mt-2 mb-1 transition-all duration-300 hover:text-main/80 hover:translate-x-1">
             Faktor Perhitungan Kebutuhan Harian:
           </div>

@@ -43,16 +43,25 @@ const NutritionPage = () => {
     const fetchNutritionData = async () => {
       try {
         if (!token) {
+          console.log(
+            "[NutritionPage] Token tidak ditemukan, redirect ke login"
+          );
           navigate("/login");
           return;
         }
-
-        console.log("[NutritionPage] Memulai fetch data nutrisi...");
         const response = await api.getDailyNutrition(token);
         console.log("[NutritionPage] Data nutrisi diterima:", response);
-        setNutritionData(response.kebutuhan_harian || {});
+        const defaultNutrition = {
+          energi: 2000,
+          protein: 60,
+          lemak: 70,
+          karbohidrat: 300,
+          serat: 25,
+          gula: 50,
+          garam: 2000,
+        };
+        setNutritionData(response.kebutuhan_harian || defaultNutrition);
       } catch (err) {
-        console.error("[NutritionPage] Error saat fetch data nutrisi:", err);
         setError(err.message || "Failed to fetch nutrition data");
       } finally {
         setLoading(false);
