@@ -4,7 +4,7 @@ import Footer from "../components/layouts/Footer";
 import WeeklyScanHistory from "../components/weekly-summary/WeeklyScanHistory";
 import WeeklyNutritionProgress from "../components/weekly-summary/WeeklyNutritionProgress";
 import WeeklyNutritionScore from "../components/weekly-summary/WeeklyNutritionScore";
-import DiseasePrediction from "../components/daily-summary/DiseasePrediction";
+import WeeklyDiseasePrediction from "../components/weekly-summary/WeeklyDiseasePrediction";
 import DailyScanHistory from "../components/daily-summary/DailyScanHistory";
 import WeeklyTotalNutritionSummary from "../components/weekly-summary/WeeklyTotalNutritionSummary";
 import ProductRecommendation from "../components/daily-summary/ProductRecommendation";
@@ -45,7 +45,7 @@ const WeeklySummaryPage = () => {
               className="opacity-0 animate-fade-in"
               style={{ animationDelay: "600ms", animationFillMode: "forwards" }}
             >
-              <DiseasePrediction />
+              <WeeklyDiseasePrediction />
             </div>
             <div
               className="opacity-0 animate-fade-in"
