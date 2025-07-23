@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
-import WeeklyScanHistory from "../components/weekly-summary/WeeklyScanHistory";
+import MonthlyScanHistory from "../components/monthly-summary/MonthlyScanHistory";
 import MonthlyNutritionProgress from "../components/monthly-summary/MonthlyNutritionProgress";
 import MonthlyNutritionScore from "../components/monthly-summary/MonthlyNutritionScore";
 import MonthlyDiseasePrediction from "../components/monthly-summary/MonthlyDiseasePrediction";
@@ -50,7 +50,7 @@ const MonthlySummaryPage = () => {
               className="opacity-0 animate-fade-in"
               style={{ animationDelay: "800ms", animationFillMode: "forwards" }}
             >
-              <WeeklyScanHistory />
+              <MonthlyScanHistory />
             </div>
             <div
               className="opacity-0 animate-fade-in"
