@@ -5,7 +5,7 @@ import WeeklyScanHistory from "../components/weekly-summary/WeeklyScanHistory";
 import MonthlyNutritionProgress from "../components/monthly-summary/MonthlyNutritionProgress";
 import MonthlyNutritionScore from "../components/monthly-summary/MonthlyNutritionScore";
 import WeeklyDiseasePrediction from "../components/weekly-summary/WeeklyDiseasePrediction";
-import WeeklyTotalNutritionSummary from "../components/weekly-summary/WeeklyTotalNutritionSummary";
+import MonthlyTotalNutritionSummary from "../components/monthly-summary/MonthlyTotalNutritionSummary";
 import WeeklyProductRecommendation from "../components/weekly-summary/WeeklyProductRecommendation";
 
 const MonthlySummaryPage = () => {
@@ -37,7 +37,7 @@ const MonthlySummaryPage = () => {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <MonthlyNutritionScore />
-                <WeeklyTotalNutritionSummary />
+                <MonthlyTotalNutritionSummary />
               </div>
             </div>
             <div
