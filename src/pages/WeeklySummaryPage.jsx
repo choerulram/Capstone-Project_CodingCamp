@@ -3,7 +3,7 @@ import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import WeeklyScanHistory from "../components/weekly-summary/WeeklyScanHistory";
 import WeeklyNutritionProgress from "../components/weekly-summary/WeeklyNutritionProgress";
-import NutritionScore from "../components/daily-summary/NutritionScore";
+import WeeklyNutritionScore from "../components/weekly-summary/WeeklyNutritionScore";
 import DiseasePrediction from "../components/daily-summary/DiseasePrediction";
 import ProductRecommendation from "../components/daily-summary/ProductRecommendation";
 
@@ -35,7 +35,7 @@ const WeeklySummaryPage = () => {
               style={{ animationDelay: "400ms", animationFillMode: "forwards" }}
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                <NutritionScore />
+                <WeeklyNutritionScore />
                 <WeeklyScanHistory />
               </div>
             </div>
