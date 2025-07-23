@@ -146,17 +146,70 @@ const Header = () => {
             >
               Nutrisi Harian
             </a>
-            <a
-              href="/daily-summary"
-              onClick={(e) => handleProtectedLink(e, "/daily-summary")}
-              className={`transition-all duration-300 px-4 py-2 rounded-lg ${
-                isActive("/daily-summary")
-                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
-                  : "text-main hover:bg-highlight/10 hover:text-highlight"
-              }`}
-            >
-              Ringkasan Harian
-            </a>
+            <div className="relative group">
+              <button
+                className={`transition-all duration-300 px-4 py-2 rounded-lg flex items-center space-x-1 ${
+                  isActive("/daily-summary") ||
+                  isActive("/weekly-summary") ||
+                  isActive("/monthly-summary")
+                    ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                    : "text-main hover:bg-highlight/10 hover:text-highlight"
+                }`}
+              >
+                <span>Ringkasan</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 transition-transform group-hover:rotate-180"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+              <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                <div className="py-1">
+                  <a
+                    href="/daily-summary"
+                    onClick={(e) => handleProtectedLink(e, "/daily-summary")}
+                    className={`block px-4 py-2 text-sm ${
+                      isActive("/daily-summary")
+                        ? "bg-highlight/10 text-highlight"
+                        : "text-main hover:bg-highlight/10 hover:text-highlight"
+                    }`}
+                  >
+                    Ringkasan Harian
+                  </a>
+                  <a
+                    href="/weekly-summary"
+                    onClick={(e) => handleProtectedLink(e, "/weekly-summary")}
+                    className={`block px-4 py-2 text-sm ${
+                      isActive("/weekly-summary")
+                        ? "bg-highlight/10 text-highlight"
+                        : "text-main hover:bg-highlight/10 hover:text-highlight"
+                    }`}
+                  >
+                    Ringkasan Mingguan
+                  </a>
+                  <a
+                    href="/monthly-summary"
+                    onClick={(e) => handleProtectedLink(e, "/monthly-summary")}
+                    className={`block px-4 py-2 text-sm ${
+                      isActive("/monthly-summary")
+                        ? "bg-highlight/10 text-highlight"
+                        : "text-main hover:bg-highlight/10 hover:text-highlight"
+                    }`}
+                  >
+                    Ringkasan Bulanan
+                  </a>
+                </div>
+              </div>
+            </div>
           </nav>
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
@@ -269,20 +322,50 @@ const Header = () => {
             >
               Nutrisi Harian
             </a>
-            <a
-              href="/daily-summary"
-              onClick={(e) => {
-                setIsMobileMenuOpen(false);
-                handleProtectedLink(e, "/daily-summary");
-              }}
-              className={`transition-all duration-300 px-4 py-3 rounded-lg ${
-                isActive("/daily-summary")
-                  ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
-                  : "text-main hover:bg-highlight/10 hover:text-highlight"
-              }`}
-            >
-              Ringkasan Harian
-            </a>{" "}
+            <div className="space-y-2">
+              <a
+                href="/daily-summary"
+                onClick={(e) => {
+                  setIsMobileMenuOpen(false);
+                  handleProtectedLink(e, "/daily-summary");
+                }}
+                className={`block transition-all duration-300 px-4 py-3 rounded-lg ${
+                  isActive("/daily-summary")
+                    ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                    : "text-main hover:bg-highlight/10 hover:text-highlight"
+                }`}
+              >
+                Ringkasan Harian
+              </a>
+              <a
+                href="/weekly-summary"
+                onClick={(e) => {
+                  setIsMobileMenuOpen(false);
+                  handleProtectedLink(e, "/weekly-summary");
+                }}
+                className={`block transition-all duration-300 px-4 py-3 rounded-lg ${
+                  isActive("/weekly-summary")
+                    ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                    : "text-main hover:bg-highlight/10 hover:text-highlight"
+                }`}
+              >
+                Ringkasan Mingguan
+              </a>
+              <a
+                href="/monthly-summary"
+                onClick={(e) => {
+                  setIsMobileMenuOpen(false);
+                  handleProtectedLink(e, "/monthly-summary");
+                }}
+                className={`block transition-all duration-300 px-4 py-3 rounded-lg ${
+                  isActive("/monthly-summary")
+                    ? "bg-highlight text-gray-900 font-medium shadow-[0_2px_4px_rgba(0,128,128,0.2)]"
+                    : "text-main hover:bg-highlight/10 hover:text-highlight"
+                }`}
+              >
+                Ringkasan Bulanan
+              </a>
+            </div>{" "}
             {/* Mobile Auth Buttons */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
               {token ? (
