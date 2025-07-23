@@ -7,6 +7,7 @@ import MonthlyNutritionScore from "../components/monthly-summary/MonthlyNutritio
 import MonthlyDiseasePrediction from "../components/monthly-summary/MonthlyDiseasePrediction";
 import MonthlyTotalNutritionSummary from "../components/monthly-summary/MonthlyTotalNutritionSummary";
 import MonthlyProductRecommendation from "../components/monthly-summary/MonthlyProductRecommendation";
+import MonthlyAdditionalRecommendations from "../components/monthly-summary/MonthlyAdditionalRecommendations";
 
 const MonthlySummaryPage = () => {
   return (
@@ -51,6 +52,12 @@ const MonthlySummaryPage = () => {
               style={{ animationDelay: "800ms", animationFillMode: "forwards" }}
             >
               <MonthlyScanHistory />
+            </div>
+            <div
+              className="opacity-0 animate-fade-in"
+              style={{ animationDelay: "900ms", animationFillMode: "forwards" }}
+            >
+              <MonthlyAdditionalRecommendations />
             </div>
             <div
               className="opacity-0 animate-fade-in"

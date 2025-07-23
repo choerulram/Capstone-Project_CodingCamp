@@ -7,6 +7,7 @@ import WeeklyNutritionScore from "../components/weekly-summary/WeeklyNutritionSc
 import WeeklyDiseasePrediction from "../components/weekly-summary/WeeklyDiseasePrediction";
 import WeeklyTotalNutritionSummary from "../components/weekly-summary/WeeklyTotalNutritionSummary";
 import WeeklyProductRecommendation from "../components/weekly-summary/WeeklyProductRecommendation";
+import WeeklyAdditionalRecommendations from "../components/weekly-summary/WeeklyAdditionalRecommendations";
 
 const WeeklySummaryPage = () => {
   return (
@@ -51,6 +52,12 @@ const WeeklySummaryPage = () => {
               style={{ animationDelay: "800ms", animationFillMode: "forwards" }}
             >
               <WeeklyScanHistory />
+            </div>
+            <div
+              className="opacity-0 animate-fade-in"
+              style={{ animationDelay: "900ms", animationFillMode: "forwards" }}
+            >
+              <WeeklyAdditionalRecommendations />
             </div>
             <div
               className="opacity-0 animate-fade-in"

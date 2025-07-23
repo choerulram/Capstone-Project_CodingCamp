@@ -7,6 +7,7 @@ import NutritionProgress from "../components/daily-summary/NutritionProgress";
 import ProductRecommendation from "../components/daily-summary/ProductRecommendation";
 import NutritionScore from "../components/daily-summary/NutritionScore";
 import DiseasePrediction from "../components/daily-summary/DiseasePrediction";
+import AdditionalRecommendations from "../components/daily-summary/AdditionalRecommendations";
 
 const DailySummaryPage = () => {
   return (
@@ -45,13 +46,19 @@ const DailySummaryPage = () => {
               className="opacity-0 animate-fade-in"
               style={{ animationDelay: "600ms", animationFillMode: "forwards" }}
             >
-                <DiseasePrediction />
+              <DiseasePrediction />
             </div>
             <div
               className="opacity-0 animate-fade-in"
               style={{ animationDelay: "800ms", animationFillMode: "forwards" }}
             >
               <DailyScanHistory />
+            </div>
+            <div
+              className="opacity-0 animate-fade-in"
+              style={{ animationDelay: "900ms", animationFillMode: "forwards" }}
+            >
+              <AdditionalRecommendations />
             </div>
             <div
               className="opacity-0 animate-fade-in"
