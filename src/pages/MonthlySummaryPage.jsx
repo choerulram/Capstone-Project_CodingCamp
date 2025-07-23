@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import WeeklyScanHistory from "../components/weekly-summary/WeeklyScanHistory";
-import WeeklyNutritionProgress from "../components/weekly-summary/WeeklyNutritionProgress";
+import MonthlyNutritionProgress from "../components/monthly-summary/MonthlyNutritionProgress";
 import WeeklyNutritionScore from "../components/weekly-summary/WeeklyNutritionScore";
 import WeeklyDiseasePrediction from "../components/weekly-summary/WeeklyDiseasePrediction";
 import WeeklyTotalNutritionSummary from "../components/weekly-summary/WeeklyTotalNutritionSummary";
@@ -29,7 +29,7 @@ const MonthlySummaryPage = () => {
               className="opacity-0 animate-fade-in"
               style={{ animationDelay: "200ms", animationFillMode: "forwards" }}
             >
-              <WeeklyNutritionProgress />
+              <MonthlyNutritionProgress />
             </div>
             <div
               className="opacity-0 animate-fade-in"
