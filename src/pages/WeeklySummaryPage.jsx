@@ -5,6 +5,8 @@ import WeeklyScanHistory from "../components/weekly-summary/WeeklyScanHistory";
 import WeeklyNutritionProgress from "../components/weekly-summary/WeeklyNutritionProgress";
 import WeeklyNutritionScore from "../components/weekly-summary/WeeklyNutritionScore";
 import DiseasePrediction from "../components/daily-summary/DiseasePrediction";
+import DailyScanHistory from "../components/daily-summary/DailyScanHistory";
+import WeeklyTotalNutritionSummary from "../components/weekly-summary/WeeklyTotalNutritionSummary";
 import ProductRecommendation from "../components/daily-summary/ProductRecommendation";
 
 const WeeklySummaryPage = () => {
@@ -36,7 +38,7 @@ const WeeklySummaryPage = () => {
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <WeeklyNutritionScore />
-                <WeeklyScanHistory />
+                <WeeklyTotalNutritionSummary />
               </div>
             </div>
             <div
@@ -48,6 +50,15 @@ const WeeklySummaryPage = () => {
             <div
               className="opacity-0 animate-fade-in"
               style={{ animationDelay: "800ms", animationFillMode: "forwards" }}
+            >
+              <DailyScanHistory />
+            </div>
+            <div
+              className="opacity-0 animate-fade-in"
+              style={{
+                animationDelay: "1000ms",
+                animationFillMode: "forwards",
+              }}
             >
               <ProductRecommendation />
             </div>
