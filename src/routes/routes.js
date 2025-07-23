@@ -4,6 +4,7 @@ import HistoryPage from "../pages/HistoryPage.jsx";
 import NutritionPage from "../pages/NutritionPage.jsx";
 import DailySummaryPage from "../pages/DailySummaryPage.jsx";
 import WeeklySummaryPage from "../pages/WeeklySummaryPage.jsx";
+import MonthlySummaryPage from "../pages/MonthlySummaryPage.jsx";
 import LoginPage from "../pages/LoginPage.jsx";
 import RegisterPage from "../pages/RegisterPage.jsx";
 import EmailVerificationPage from "../pages/EmailVerificationPage.jsx";
@@ -61,6 +62,15 @@ export const privateRoutes = [
       </ProtectedRoute>
     ),
     title: "Ringkasan Mingguan",
+  },
+  {
+    path: "/monthly-summary",
+    element: (
+      <ProtectedRoute>
+        <MonthlySummaryPage />
+      </ProtectedRoute>
+    ),
+    title: "Ringkasan Bulanan",
   },
   {
     path: "/profile",
