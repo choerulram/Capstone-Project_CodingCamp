@@ -6,7 +6,7 @@ import MonthlyNutritionProgress from "../components/monthly-summary/MonthlyNutri
 import MonthlyNutritionScore from "../components/monthly-summary/MonthlyNutritionScore";
 import MonthlyDiseasePrediction from "../components/monthly-summary/MonthlyDiseasePrediction";
 import MonthlyTotalNutritionSummary from "../components/monthly-summary/MonthlyTotalNutritionSummary";
-import WeeklyProductRecommendation from "../components/weekly-summary/WeeklyProductRecommendation";
+import MonthlyProductRecommendation from "../components/monthly-summary/MonthlyProductRecommendation";
 
 const MonthlySummaryPage = () => {
   return (
@@ -59,7 +59,7 @@ const MonthlySummaryPage = () => {
                 animationFillMode: "forwards",
               }}
             >
-              <WeeklyProductRecommendation />
+              <MonthlyProductRecommendation />
             </div>
           </div>
         </div>
