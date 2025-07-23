@@ -6,7 +6,7 @@ import WeeklyNutritionProgress from "../components/weekly-summary/WeeklyNutritio
 import WeeklyNutritionScore from "../components/weekly-summary/WeeklyNutritionScore";
 import WeeklyDiseasePrediction from "../components/weekly-summary/WeeklyDiseasePrediction";
 import WeeklyTotalNutritionSummary from "../components/weekly-summary/WeeklyTotalNutritionSummary";
-import ProductRecommendation from "../components/daily-summary/ProductRecommendation";
+import WeeklyProductRecommendation from "../components/weekly-summary/WeeklyProductRecommendation";
 
 const WeeklySummaryPage = () => {
   return (
@@ -59,7 +59,7 @@ const WeeklySummaryPage = () => {
                 animationFillMode: "forwards",
               }}
             >
-              <ProductRecommendation />
+              <WeeklyProductRecommendation />
             </div>
           </div>
         </div>
