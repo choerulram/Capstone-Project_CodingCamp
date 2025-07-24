@@ -179,8 +179,8 @@ const Header = () => {
                     onClick={(e) => handleProtectedLink(e, "/daily-summary")}
                     className={`block px-4 py-2 text-sm ${
                       isActive("/daily-summary")
-                        ? "bg-highlight/10 text-highlight"
-                        : "text-main hover:bg-highlight/10 hover:text-highlight"
+                        ? "bg-highlight text-gray-900 font-medium"
+                        : "text-main hover:bg-highlight hover:text-gray-900 hover:font-medium"
                     }`}
                   >
                     Ringkasan Harian
@@ -190,8 +190,8 @@ const Header = () => {
                     onClick={(e) => handleProtectedLink(e, "/weekly-summary")}
                     className={`block px-4 py-2 text-sm ${
                       isActive("/weekly-summary")
-                        ? "bg-highlight/10 text-highlight"
-                        : "text-main hover:bg-highlight/10 hover:text-highlight"
+                        ? "bg-highlight text-gray-900 font-medium"
+                        : "text-main hover:bg-highlight hover:text-gray-900 hover:font-medium"
                     }`}
                   >
                     Ringkasan Mingguan
@@ -201,8 +201,8 @@ const Header = () => {
                     onClick={(e) => handleProtectedLink(e, "/monthly-summary")}
                     className={`block px-4 py-2 text-sm ${
                       isActive("/monthly-summary")
-                        ? "bg-highlight/10 text-highlight"
-                        : "text-main hover:bg-highlight/10 hover:text-highlight"
+                        ? "bg-highlight text-gray-900 font-medium"
+                        : "text-main hover:bg-highlight hover:text-gray-900 hover:font-medium"
                     }`}
                   >
                     Ringkasan Bulanan
